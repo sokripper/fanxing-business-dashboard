@@ -6,7 +6,11 @@
 
 ## 打开页面
 
-下载或克隆仓库后，直接使用现代浏览器打开 `index.html`。无需登录，也无需安装依赖。GitHub 仓库页面显示的是代码，不会自动变成在线网站；本次没有启用 GitHub Pages 或其他公网部署。
+公开访问地址：<https://sokripper.github.io/fanxing-business-dashboard/>。无需登录，也无需安装依赖。
+
+也可以下载或克隆仓库后，直接使用现代浏览器打开 `index.html`。代码仓库和演示网页均为公开内容，请勿提交真实业务数据或访问凭证。
+
+GitHub Pages 从 `main` 分支根目录发布。更新源代码后执行下方构建和测试，再将 `meeting-dashboard.html` 与更新后的 `index.html` 一起提交推送，网页会自动更新。
 
 ## 文件与维护
 
