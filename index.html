@@ -1,0 +1,1485 @@
+<!doctype html>
+<html lang="en" data-visualize-standalone>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>梵行经营看板 · 会议版</title>
+<style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255), rgb(24 24 24))}html,body{margin:0}body{box-sizing:border-box;padding:1rem;background:inherit}iframe{display:block;width:100%;height:calc(100vh - 2rem);margin:0 auto;border:0}</style>
+</head>
+<body>
+<iframe sandbox="allow-scripts" referrerpolicy="no-referrer" title="梵行经营看板 · 会议版" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot; data-visualize-standalone&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#x27;none&#x27;; script-src &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; &#x27;wasm-unsafe-eval&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src &#x27;unsafe-inline&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src &#x27;none&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;&quot;&gt;
+&lt;title&gt;梵行经营看板 · 会议版&lt;/title&gt;
+&lt;style&gt;:root {
+  color-scheme: light dark;
+  background-color: var(
+    --background,
+    var(--color-background-primary, light-dark(rgb(255 255 255), rgb(24 24 24)))
+  ) !important;
+
+  /* Agent-facing contract; keep in sync with SKILL.md. */
+  --background: var(
+    --color-background-primary,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --card: color-mix(in oklab, var(--foreground) 5%, var(--background));
+  --card-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --popover: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255), rgb(45 45 45))
+  );
+  --popover-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --primary: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --primary-foreground: var(
+    --color-text-inverse,
+    light-dark(rgb(255 255 255), rgb(13 13 13))
+  );
+  --secondary: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255 / 96%), rgb(54 54 54 / 96%))
+  );
+  --secondary-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --muted: color-mix(in srgb, var(--foreground) 10%, transparent);
+  --muted-foreground: var(
+    --color-text-secondary,
+    light-dark(rgb(26 28 31 / 49.4%), rgb(255 255 255 / 49.8%))
+  );
+  --accent: var(
+    --color-background-info,
+    light-dark(rgb(229 242 255), rgb(13 39 63))
+  );
+  --accent-foreground: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --destructive: var(
+    --color-text-warning,
+    light-dark(rgb(226 85 7), rgb(255 133 73))
+  );
+  --border: var(
+    --color-border-secondary,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+  --input: var(
+    --color-border-primary,
+    light-dark(
+      rgb(26 28 31 / 11.8%),
+      color-mix(in oklab, rgb(0 0 0) 10%, transparent)
+    )
+  );
+  --ring: var(
+    --color-ring-primary,
+    light-dark(rgb(51 156 255), rgb(131 195 255 / 76%))
+  );
+  --font-size-base: var(--font-text-md-size, 14px);
+  --blue: light-dark(rgb(51 156 255), rgb(51 156 255));
+  --orange: light-dark(rgb(226 85 7), rgb(251 106 34));
+  --green: light-dark(rgb(0 162 64), rgb(64 201 119));
+  --red: light-dark(rgb(224 46 42), rgb(255 103 100));
+  --purple: light-dark(rgb(146 79 247), rgb(173 123 249));
+  --yellow: light-dark(rgb(255 195 0), rgb(255 210 64));
+  --viz-series-1: var(--primary);
+  --viz-series-2: light-dark(rgb(243 136 59), rgb(245 154 86));
+  --viz-series-3: light-dark(rgb(93 201 119), rgb(116 213 139));
+  --viz-series-4: light-dark(rgb(235 119 177), rgb(240 143 192));
+  --viz-series-5: light-dark(rgb(155 121 236), rgb(170 145 239));
+  --viz-series-6: light-dark(rgb(58 185 177), rgb(90 203 194));
+
+  /* Internal implementation variables; not part of the agent contract. */
+  --font-sans: -apple-system, system-ui, &quot;Segoe UI&quot;, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;,
+    monospace;
+  --font-size-normal: max(11px, var(--font-size-base));
+  --font-size-tooltip: calc(var(--font-size-base) - 1px);
+  --font-size-small: max(11px, calc(var(--font-size-base) - 2px));
+  --font-size-h1: calc(var(--font-size-normal) * 1.7142857143);
+  --font-size-h2: calc(var(--font-size-normal) * 1.4285714286);
+  --font-size-h3: calc(var(--font-size-normal) * 1.2857142857);
+  --font-weight-normal: 430;
+  --font-weight-medium: 500;
+  --icon-size: 16px;
+  --line-height-normal: calc(var(--font-size-normal) * 1.5);
+  --line-height-tooltip: calc(var(--font-size-tooltip) * 1.4285714286);
+  --line-height-small: calc(var(--font-size-small) + 4px);
+  --corner-shape: round;
+  --radius: var(--border-radius-lg, 10px);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-2xl: calc(var(--radius) * 1.6);
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px -1px rgb(0 0 0 / 8%);
+  --checkmark-image: url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 17 17&#x27;%3E%3Cpath d=&#x27;M12.8961 3.64101C13.1297 3.41418 13.4984 3.37523 13.7779 3.56581C14.0571 3.75635 14.1554 4.11331 14.0299 4.41347L13.9615 4.53847L7.71151 13.7045C7.59411 13.8767 7.4063 13.9877 7.19881 14.0072C6.99136 14.0267 6.78564 13.9533 6.63826 13.806L2.88826 10.056L2.79842 9.9457C2.6192 9.67407 2.64927 9.30496 2.88826 9.06581C3.12738 8.82669 3.49647 8.79676 3.76815 8.97597L3.8785 9.06581L7.03084 12.2182L12.8053 3.74941L12.8961 3.64101Z&#x27;/%3E%3C/svg%3E&quot;);
+
+  /* Legacy aliases; not part of the current agent contract. */
+  --viz-bg: transparent;
+  --viz-panel: var(--card);
+  --viz-border: var(--border);
+  --viz-text: var(--foreground);
+  --viz-muted: var(--muted-foreground);
+  --viz-accent: var(--primary);
+  --viz-accent-text: var(--primary-foreground);
+  --viz-accent-bg: var(--accent);
+  --viz-font-size: var(--font-size-base);
+  --viz-warning: var(--destructive);
+}
+
+:root[data-theme=&quot;light&quot;] {
+  color-scheme: light;
+}
+
+:root[data-theme=&quot;dark&quot;] {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html &gt; body {
+  /* Preserve MCP aliases for older inline renderers without creating :root cycles. */
+  --color-background-primary: var(
+    --background,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --color-text-primary: var(
+    --foreground,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --color-border-secondary: var(
+    --border,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+
+  margin: 0;
+  padding: var(--visualize-paint-gutter, 0px);
+  color: var(--foreground);
+  background: transparent !important;
+  font-family: var(--font-sans) !important;
+  font-size: var(--font-size-normal);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+}
+
+a {
+  color: color-mix(in srgb, var(--viz-accent) 80%, var(--viz-text) 20%);
+  cursor: pointer;
+  font-weight: var(--font-weight-medium, 500);
+  text-decoration: none;
+  text-underline-offset: 2px;
+}
+
+a:is(:hover, :focus-visible) {
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 0.5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-block: 0;
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.3;
+}
+
+b,
+strong,
+th {
+  font-weight: var(--font-weight-medium);
+}
+
+code:not(pre code) {
+  display: inline;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  corner-shape: var(--corner-shape);
+  background: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  word-break: break-word;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--foreground);
+  font: inherit;
+  text-align: start;
+}
+
+.table :is(th, td) {
+  padding-block: 10px;
+  padding-inline: 0 24px;
+  overflow-wrap: anywhere;
+  border-bottom: 1px solid var(--border);
+  text-align: start;
+  vertical-align: top;
+}
+
+.table-responsive &gt; .table :is(th, td) {
+  overflow-wrap: break-word;
+}
+
+.table :is(th, td):last-child {
+  padding-inline-end: 0;
+}
+
+.table :is(caption, thead th) {
+  font-weight: 600;
+}
+
+.table thead th {
+  padding-block: 8px;
+  border-bottom-color: color-mix(in srgb, var(--foreground) 16%, transparent);
+}
+
+.table tbody tr:last-child :is(th, td) {
+  border-bottom: 0;
+}
+
+.table.table-sm :is(th, td) {
+  padding-block: 6px;
+}
+
+.table.table-sm :is(th, td):not(:last-child) {
+  padding-inline-end: 16px;
+}
+
+.table :is(.text-end, [align=&quot;right&quot;]) {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.table :is(.text-center, [align=&quot;center&quot;]) {
+  text-align: center;
+}
+
+.table .text-nowrap {
+  white-space: nowrap;
+}
+
+#widget {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  background: transparent !important;
+}
+
+.card {
+  min-width: 0;
+  padding: 12px;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  border-radius: var(--radius-2xl);
+  corner-shape: var(--corner-shape);
+  color: var(--card-foreground);
+  background: var(--card);
+}
+
+#widget &gt; :not(.card, .progress) {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  width: max-content;
+  max-width: min(
+    20rem,
+    var(--tooltip-available-width, calc(100vw - 10px)),
+    calc(100vw - 10px)
+  );
+  max-height: min(
+    var(--tooltip-available-height, calc(100vh - 10px)),
+    calc(100vh - 10px)
+  );
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  corner-shape: var(--corner-shape);
+  color: var(--popover-foreground);
+  background: var(--popover);
+  box-shadow: none;
+  font-size: var(--font-size-tooltip);
+  line-height: var(--line-height-tooltip);
+  overflow-wrap: break-word;
+  white-space: normal;
+  pointer-events: none;
+  user-select: none;
+}
+
+.viz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(max(180px, 24%), 1fr));
+  gap: 10px;
+}
+
+.viz-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.viz-stat-value {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+.viz-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+hr {
+  width: 100%;
+  height: 1px;
+  margin-block: 6px;
+  border: 0;
+  background: var(--border);
+}
+
+.nav {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 4px;
+}
+
+.progress {
+  display: flex;
+  height: 8px;
+  margin-block: calc((var(--line-height-normal, 1.5em) - 8px) / 2);
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+}
+
+.progress-bar:only-child {
+  border-radius: var(--radius-full);
+}
+
+.progress-bar {
+  height: 100%;
+  flex-shrink: 0;
+  border: 0;
+  background: var(--viz-series-1);
+}
+
+.viz-badge {
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  color: var(--accent-foreground);
+  background: var(--accent);
+  font-weight: var(--font-weight-medium);
+}
+
+small,
+.text-small,
+.viz-badge {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+}
+
+.text-muted {
+  color: var(--muted-foreground);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.viz-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.viz-controls &gt; .form-label {
+  display: grid;
+  min-width: min(100%, 260px);
+  flex: 1 1 280px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 2px 12px;
+  margin-bottom: 0;
+}
+
+.viz-controls &gt; .form-label &gt; :is(.form-control, .form-range, .form-select) {
+  grid-column: 1 / -1;
+}
+
+.btn,
+.nav-link,
+.form-check-input,
+.form-control,
+.form-range,
+.form-select {
+  font: inherit;
+}
+
+.btn,
+.nav-link {
+  appearance: button;
+  display: inline-flex;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0 8px;
+  -webkit-app-region: no-drag;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: var(--corner-shape);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: var(--cursor-interaction, pointer);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn:is(.btn-block, .viz-tile) {
+  inline-size: 100%;
+}
+
+.btn.viz-tile {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+a.btn {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn:not(:disabled):hover,
+.nav-link:not(:disabled):not([aria-disabled=&quot;true&quot;]):hover {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.btn-primary {
+  border-color: transparent;
+  color: var(--primary-foreground);
+  background: var(--foreground);
+  background-clip: padding-box;
+}
+
+.btn-primary .text-muted {
+  color: color-mix(in srgb, var(--primary-foreground) 50%, transparent);
+}
+
+.btn-primary:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 80%, transparent);
+  background-clip: padding-box;
+}
+
+.btn-ghost {
+  border-color: transparent;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+.btn-ghost:not(:disabled):hover {
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.nav-pills .nav-link {
+  min-width: 0;
+  border-color: transparent;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+.nav-justified .nav-link {
+  flex: 1 1 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.nav-pills .nav-link.active {
+  color: var(--foreground);
+  background: var(--muted);
+}
+
+.btn:disabled,
+.nav-link:disabled,
+.nav-link[aria-disabled=&quot;true&quot;] {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+[data-lucide] {
+  stroke-width: 1.6;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--foreground);
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  padding: 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: var(--corner-shape);
+  color: var(--foreground);
+  background: var(--secondary);
+}
+
+.form-control::placeholder {
+  color: var(--muted-foreground);
+}
+
+.form-control[type=&quot;file&quot;] {
+  padding: 0;
+  overflow: hidden;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control[type=&quot;file&quot;]::file-selector-button {
+  min-height: 26px;
+  margin-right: 8px;
+  padding: 0 8px;
+  border: 0;
+  border-right: 1px solid var(--input);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: inherit;
+  font: inherit;
+}
+
+.form-control[type=&quot;file&quot;]:not(:disabled):hover::file-selector-button {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-control-color[type=&quot;color&quot;] {
+  width: 40px;
+  height: 28px;
+  padding: 3px;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch {
+  border: 0;
+  border-radius: calc(var(--radius-lg) - 4px);
+  corner-shape: var(--corner-shape);
+}
+
+textarea.form-control {
+  height: auto;
+  min-height: 72px;
+  padding: 8px 10px;
+  resize: vertical;
+}
+
+.form-control:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-control:disabled,
+.form-select:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.form-select {
+  appearance: none;
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  margin: 0;
+  padding: 0 32px 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: var(--corner-shape);
+  color: var(--foreground);
+  background-color: var(--secondary);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--muted-foreground) 50%),
+    linear-gradient(135deg, var(--muted-foreground) 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) 50%,
+    calc(100% - 10px) 50%;
+  background-repeat: no-repeat;
+  background-size: 4px 4px;
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-select:not(:disabled):hover {
+  background-color: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-select:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-check {
+  display: flex;
+  min-height: 20px;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-check-input {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  margin: 0;
+  border: 1px solid var(--input);
+  color: var(--primary-foreground);
+  background-color: transparent;
+  cursor: var(--cursor-interaction, default);
+  transition:
+    background-color 150ms,
+    border-color 150ms,
+    box-shadow 150ms;
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;] {
+  border-color: var(--input);
+  border-radius: var(--radius-sm);
+  corner-shape: var(--corner-shape);
+  background-color: var(--secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input:not(:disabled):not(:checked):hover {
+  background-color: var(--card);
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;]:checked {
+  border-color: var(--primary);
+  background-color: var(--primary);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input[type=&quot;checkbox&quot;]:checked::before {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-foreground);
+  content: &quot;&quot;;
+  mask: var(--checkmark-image) center / 12px 12px no-repeat;
+}
+
+.form-check-input[type=&quot;radio&quot;] {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-full);
+}
+
+.form-check-input[type=&quot;radio&quot;]:checked {
+  border: 2px solid var(--primary);
+  background:
+    radial-gradient(circle, var(--primary-foreground) 0 2.5px, transparent 3px),
+    var(--primary);
+}
+
+.form-check:not(.form-switch) .form-check-input:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+}
+
+.form-switch .form-check-input:disabled,
+.form-switch .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.form-check-label {
+  color: var(--foreground);
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-switch .form-check-input {
+  position: relative;
+  width: 32px;
+  height: 20px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+  box-shadow: none;
+  transition: background-color 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border: 1px solid light-dark(var(--primary-foreground), var(--foreground));
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+  box-shadow: var(--shadow-sm);
+  content: &quot;&quot;;
+  transform: translate(2px, -50%);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input:checked {
+  background: var(--primary);
+}
+
+.form-switch .form-check-input:checked::before {
+  transform: translate(14px, -50%);
+}
+
+.form-switch .form-check-input:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.form-range {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 28px;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: 0;
+  accent-color: var(--primary);
+  background: linear-gradient(
+      color-mix(in srgb, var(--foreground) 7%, transparent),
+      color-mix(in srgb, var(--foreground) 7%, transparent)
+    )
+    center / 100% 2px no-repeat;
+}
+
+.form-range::-webkit-slider-runnable-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-webkit-slider-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range::-moz-range-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-moz-range-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.btn:not(.btn-primary, .viz-tile):is(
+  [aria-pressed=&quot;true&quot;],
+  [aria-selected=&quot;true&quot;],
+  .is-selected
+) {
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+  background: var(--primary);
+}
+
+.btn.viz-tile:is([aria-pressed=&quot;true&quot;], [aria-selected=&quot;true&quot;], .is-selected) {
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.btn:focus-visible,
+.nav-link:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (pointer: coarse) {
+  .btn,
+  .nav-link,
+  .form-control,
+  .form-select {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Keep small-screen WebKit from zooming when a text field receives focus. */
+  .form-control,
+  .form-select {
+    font-size: max(16px, var(--font-size-normal));
+  }
+
+  .form-control[type=&quot;file&quot;]::file-selector-button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .form-control-color[type=&quot;color&quot;] {
+    width: 44px;
+    height: 44px;
+  }
+
+  .form-control:is(
+    [type=&quot;date&quot;],
+    [type=&quot;datetime-local&quot;],
+    [type=&quot;month&quot;],
+    [type=&quot;time&quot;],
+    [type=&quot;week&quot;]
+  ) {
+    min-width: 0;
+    max-width: 100%;
+    padding-block: 8px;
+  }
+
+  .form-check {
+    min-height: 44px;
+    padding-inline: 15px;
+  }
+
+  .form-check-input {
+    position: relative;
+  }
+
+  .form-check-input::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 44px;
+    height: 44px;
+    content: &quot;&quot;;
+    transform: translate(-50%, -50%);
+  }
+
+  .form-check-label {
+    display: inline-flex;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .form-range {
+    height: 44px;
+    touch-action: pan-y;
+  }
+
+  .form-range::-webkit-slider-runnable-track {
+    height: 44px;
+  }
+
+  .form-range::-moz-range-track {
+    height: 44px;
+  }
+
+  .form-range::-webkit-slider-thumb {
+    margin-top: 12px;
+  }
+}
+
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+#widget &gt; svg {
+  width: 100%;
+}
+
+/* Model-authored chart rules can otherwise stretch icons after these styles load. */
+svg.lucide {
+  display: block;
+  width: var(--icon-size) !important;
+  height: var(--icon-size) !important;
+  flex: none;
+  margin: 0 !important;
+  stroke-width: 1.6;
+}
+
+.text-warning,
+.text-destructive {
+  color: var(--destructive);
+}
+
+html&gt;body{padding:0}&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;!-- dashboard:begin --&gt;
+&lt;div id=&quot;meeting-dashboard&quot; aria-label=&quot;会议版经营看板&quot;&gt;
+&lt;style&gt;
+#meeting-dashboard{--md-bg:light-dark(#f4f6fa,#151a23);--md-surface:light-dark(#fff,#202734);--md-ink:light-dark(#1f2d44,#eef2f9);--md-muted:light-dark(#67758b,#b1bed2);--md-line:light-dark(#e4e9f1,#394354);--md-blue:light-dark(#3e5bd5,#a6b9ff);--md-soft:light-dark(#eef2ff,#303e5c);--md-green:light-dark(#198073,#82d2c5);--md-green-soft:light-dark(#e9f6f1,#243e3c);--md-amber:light-dark(#ad6513,#f0c279);--md-amber-soft:light-dark(#fff5e7,#443722);--md-red:light-dark(#b64c4a,#f3aaa7);--md-track:light-dark(#edf0f5,#343f50);--md-space:22px;font:14px/1.5 -apple-system,BlinkMacSystemFont,&quot;PingFang SC&quot;,&quot;Microsoft YaHei&quot;,sans-serif;color:var(--md-ink);background:var(--md-bg);border:1px solid var(--md-line);border-radius:12px;text-align:left}
+#meeting-dashboard *{box-sizing:border-box}#meeting-dashboard h1,#meeting-dashboard h2,#meeting-dashboard h3,#meeting-dashboard p{margin:0;font-weight:400}#meeting-dashboard button,#meeting-dashboard select,#meeting-dashboard input{font:inherit;color:inherit}#meeting-dashboard button{cursor:pointer}#meeting-dashboard button:focus-visible,#meeting-dashboard summary:focus-visible,#meeting-dashboard input:focus-visible,#meeting-dashboard select:focus-visible{outline:2px solid var(--md-blue);outline-offset:3px}#meeting-dashboard [hidden]{display:none!important}#meeting-dashboard .md-top{padding:20px 24px;background:var(--md-surface);border-radius:12px 12px 0 0;border-bottom:1px solid var(--md-line)}#meeting-dashboard .md-title-row,#meeting-dashboard .md-section-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}#meeting-dashboard .md-brand{display:flex;align-items:center;gap:10px}#meeting-dashboard .md-mark{display:grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--md-blue);color:var(--md-surface);font-weight:500}#meeting-dashboard h1{font-size:21px;font-weight:500;letter-spacing:.02em}#meeting-dashboard .md-sub{color:var(--md-muted);font-size:12px}#meeting-dashboard .md-demo{font-size:12px;padding:4px 8px;border-radius:5px;background:var(--md-bg);color:var(--md-muted)}#meeting-dashboard .md-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:17px}#meeting-dashboard .md-control{display:flex;align-items:center;gap:9px;color:var(--md-muted);font-size:12px}#meeting-dashboard input,#meeting-dashboard select{border:1px solid var(--md-line);border-radius:6px;background:var(--md-surface);min-height:35px;padding:5px 8px;max-width:100%;font-size:13px}#meeting-dashboard .md-control input{width:146px}#meeting-dashboard .md-control select{min-width:136px}#meeting-dashboard .md-coverage{margin-left:auto;color:var(--md-muted);font-size:11px}#meeting-dashboard .md-body{padding:var(--md-space);display:flex;flex-direction:column;gap:18px}#meeting-dashboard .md-panel{background:var(--md-surface);border:1px solid var(--md-line);border-radius:10px;padding:20px;min-width:0}#meeting-dashboard h2{font-size:17px;font-weight:500;display:flex;align-items:center;gap:8px}#meeting-dashboard h2 em{font-size:12px;font-style:normal;color:var(--md-blue);font-weight:400}#meeting-dashboard h3{font-size:14px;font-weight:500}#meeting-dashboard .md-section-top{margin-bottom:16px}#meeting-dashboard .md-time-scope{font-size:12px;color:var(--md-muted)}#meeting-dashboard .md-sales{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;border:1px solid var(--md-line);border-radius:8px;overflow:hidden}#meeting-dashboard .md-stat{border:0;border-right:1px solid var(--md-line);background:var(--md-surface);text-align:left;padding:14px 14px 11px;min-width:0}#meeting-dashboard .md-stat:last-child{border-right:0}#meeting-dashboard .md-stat[aria-pressed=&quot;true&quot;]{background:var(--md-soft);box-shadow:inset 0 -3px var(--md-blue)}#meeting-dashboard .md-stat-title{font-size:13px;display:block}#meeting-dashboard .md-value{font-size:28px;line-height:1.35;font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:-.03em;margin:6px 0 3px;display:block}#meeting-dashboard .md-value small{font-size:11px;letter-spacing:0;color:var(--md-muted);margin-left:4px;font-weight:400}#meeting-dashboard .md-note{font-size:11px;color:var(--md-muted);display:block}#meeting-dashboard .md-warning{color:var(--md-amber)}#meeting-dashboard .md-success{color:var(--md-green)}#meeting-dashboard .md-chart-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:17px 0 9px}#meeting-dashboard .md-op-chart{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}#meeting-dashboard .md-op-chart&gt;div{min-width:0}#meeting-dashboard .md-bar-label{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:7px;font-size:12px}#meeting-dashboard .md-bar-label strong{font-weight:500;font-variant-numeric:tabular-nums}#meeting-dashboard .md-track{height:7px;background:var(--md-track);border-radius:4px;overflow:hidden}#meeting-dashboard .md-track i{display:block;height:100%;background:var(--md-blue);border-radius:4px}#meeting-dashboard .md-track i.md-green{background:var(--md-green)}#meeting-dashboard .md-legend{display:flex;align-items:center;gap:14px;color:var(--md-muted);font-size:11px;flex-wrap:wrap}#meeting-dashboard .md-legend span{display:inline-flex;gap:5px;align-items:center}#meeting-dashboard .md-dot{display:inline-block;width:7px;height:7px;border-radius:2px;background:var(--md-blue)}#meeting-dashboard .md-dot.green{background:var(--md-green)}#meeting-dashboard .md-dot.amber{background:var(--md-amber)}#meeting-dashboard .md-rules{margin-top:16px;border-top:1px solid var(--md-line);padding-top:12px;color:var(--md-muted);font-size:12px}#meeting-dashboard .md-rules summary{color:var(--md-blue);cursor:pointer;width:fit-content;max-width:100%;padding:2px 0}#meeting-dashboard .md-rules ul{padding-left:19px;margin:10px 0 2px}#meeting-dashboard .md-rules li{margin:7px 0;line-height:1.7}#meeting-dashboard .md-rules b{font-weight:500;color:var(--md-ink)}#meeting-dashboard .md-tag{font-size:11px;background:var(--md-amber-soft);color:var(--md-amber);border-radius:4px;padding:2px 6px;display:inline-flex;align-items:center;gap:4px}#meeting-dashboard .md-tag.ok{background:var(--md-green-soft);color:var(--md-green)}#meeting-dashboard .md-projects{width:100%;border-collapse:collapse;font-size:12px}#meeting-dashboard .md-projects th{text-align:left;font-weight:400;color:var(--md-muted);background:var(--md-bg);padding:10px 12px;border-bottom:1px solid var(--md-line)}#meeting-dashboard .md-projects td{padding:13px 12px;border-bottom:1px solid var(--md-line);vertical-align:middle}#meeting-dashboard .md-projects tr:last-child td{border-bottom:0}#meeting-dashboard .md-projects th:nth-child(1){width:23%}#meeting-dashboard .md-projects th:nth-child(2),#meeting-dashboard .md-projects th:nth-child(3){width:29%}#meeting-dashboard .md-budget-head{display:flex;justify-content:space-between;gap:10px;align-items:baseline;margin-bottom:6px;font-variant-numeric:tabular-nums}#meeting-dashboard .md-budget-head strong{font-weight:500}#meeting-dashboard .md-projects small{display:block;color:var(--md-muted);font-size:11px;margin-top:4px}#meeting-dashboard .md-over{color:var(--md-red)}#meeting-dashboard .md-over-track i{background:var(--md-red)}#meeting-dashboard .md-text-btn{background:none;border:0;padding:0;color:var(--md-blue);font-size:12px;text-align:left}#meeting-dashboard .md-text-btn:hover{text-decoration:underline}#meeting-dashboard .md-delay-btn{border:0;background:var(--md-amber-soft);color:var(--md-amber);border-radius:5px;padding:5px 8px;font-size:12px;white-space:nowrap}#meeting-dashboard .md-recognition{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:var(--md-bg);border-radius:8px;padding:16px 0}#meeting-dashboard .md-recognition&gt;div{padding:0 18px;border-right:1px solid var(--md-line);min-width:0}#meeting-dashboard .md-recognition&gt;div:last-child{border:0}#meeting-dashboard .md-recognition .md-value{font-size:30px}#meeting-dashboard .md-delta-btn{background:none;border:0;color:var(--md-amber);padding:0;display:block;text-align:left}#meeting-dashboard .md-delta-btn .md-value{color:var(--md-amber)}#meeting-dashboard .md-operating-bottom{display:grid;grid-template-columns:1.7fr 1fr;gap:24px;margin-top:19px}#meeting-dashboard .md-cost-header{display:flex;justify-content:space-between;gap:8px;align-items:baseline;margin-bottom:12px}#meeting-dashboard .md-cost-header strong{font-size:22px;font-weight:500;font-variant-numeric:tabular-nums}#meeting-dashboard .md-cost-row{display:grid;grid-template-columns:67px 1fr 63px;gap:8px;align-items:center;font-size:12px;margin:12px 0}#meeting-dashboard .md-cost-row strong{text-align:right;font-weight:400;font-variant-numeric:tabular-nums}#meeting-dashboard .md-idle{border-left:1px solid var(--md-line);padding-left:24px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}#meeting-dashboard .md-idle .md-value{font-size:30px;margin-top:9px}#meeting-dashboard .md-idle .md-text-btn{margin-top:10px}#meeting-dashboard .md-detail{background:var(--md-bg);border-radius:8px;padding:14px 16px;margin-top:16px}#meeting-dashboard .md-detail-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}#meeting-dashboard .md-detail-row{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--md-line);padding:10px 0;font-size:12px}#meeting-dashboard .md-detail-row:last-child{border-bottom:0}#meeting-dashboard .md-detail-row strong{font-weight:500}#meeting-dashboard .md-detail-row p{font-size:12px;color:var(--md-muted);margin-top:4px}#meeting-dashboard .md-detail-row .md-number{text-align:right;min-width:58px;font-variant-numeric:tabular-nums}#meeting-dashboard .md-bridge{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid var(--md-line);padding-top:10px;margin-top:6px;font-size:12px}#meeting-dashboard .md-alert{background:var(--md-amber-soft);color:var(--md-amber);padding:12px 16px;border-radius:7px;font-size:13px;margin-top:12px}#meeting-dashboard .md-footer{padding:11px 24px;border-top:1px solid var(--md-line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--md-muted);background:var(--md-surface);border-radius:0 0 12px 12px}#meeting-dashboard .md-live{position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}
+@media(max-width:760px){#meeting-dashboard .md-sales{grid-template-columns:repeat(3,minmax(0,1fr))}#meeting-dashboard .md-stat{border-bottom:1px solid var(--md-line)}#meeting-dashboard .md-stat:nth-child(3){border-right:0}#meeting-dashboard .md-stat:nth-child(4),#meeting-dashboard .md-stat:nth-child(5){border-bottom:0}#meeting-dashboard .md-coverage{width:100%;margin-left:0}#meeting-dashboard .md-operating-bottom{grid-template-columns:1fr;gap:16px}#meeting-dashboard .md-idle{border-left:0;border-top:1px solid var(--md-line);padding:16px 0 0}#meeting-dashboard .md-op-chart{gap:14px}#meeting-dashboard .md-projects th,#meeting-dashboard .md-projects td{padding:10px 7px}#meeting-dashboard .md-projects th:nth-child(1){width:24%}#meeting-dashboard .md-projects th:nth-child(2),#meeting-dashboard .md-projects th:nth-child(3){width:28%}#meeting-dashboard .md-budget-head{flex-wrap:wrap;gap:2px}#meeting-dashboard .md-controls{gap:12px}}
+@media(max-width:500px){#meeting-dashboard .md-top{padding:16px}#meeting-dashboard .md-body{padding:12px;gap:12px}#meeting-dashboard .md-panel{padding:14px}#meeting-dashboard .md-control{flex-wrap:wrap;gap:6px;max-width:100%}#meeting-dashboard .md-control input{width:120px;font-size:16px}#meeting-dashboard .md-control select{font-size:16px}#meeting-dashboard .md-sales{grid-template-columns:repeat(2,minmax(0,1fr))}#meeting-dashboard .md-stat{padding:12px 10px;border-bottom:1px solid var(--md-line)!important}#meeting-dashboard .md-stat:nth-child(3){border-right:1px solid var(--md-line)}#meeting-dashboard .md-stat:nth-child(2),#meeting-dashboard .md-stat:nth-child(4){border-right:0}#meeting-dashboard .md-stat:last-child{grid-column:1/-1;border:0!important}#meeting-dashboard .md-value{font-size:25px}#meeting-dashboard .md-op-chart{grid-template-columns:1fr;gap:12px}#meeting-dashboard .md-recognition{grid-template-columns:1fr;padding:0 14px}#meeting-dashboard .md-recognition&gt;div{padding:12px 0;border:0;border-bottom:1px solid var(--md-line)}#meeting-dashboard .md-recognition .md-value{font-size:27px}#meeting-dashboard .md-projects,#meeting-dashboard .md-projects tbody,#meeting-dashboard .md-projects tr,#meeting-dashboard .md-projects td{display:block}#meeting-dashboard .md-projects thead{display:none}#meeting-dashboard .md-projects tr{padding:10px 0;border-bottom:1px solid var(--md-line)}#meeting-dashboard .md-projects td{padding:5px 0;border:0}#meeting-dashboard .md-projects td[data-label]:before{content:attr(data-label);display:block;color:var(--md-muted);font-size:11px;margin-bottom:4px}#meeting-dashboard .md-projects td:first-child{font-size:14px}#meeting-dashboard .md-detail{padding:12px}#meeting-dashboard .md-cost-row{grid-template-columns:64px 1fr 58px}#meeting-dashboard .md-rules li{overflow-wrap:anywhere}#meeting-dashboard .md-footer{padding:11px 16px}}
+@media(max-width:500px){#meeting-dashboard .md-control:first-child{display:grid;grid-template-columns:24px minmax(0,1fr);width:100%;gap:8px}#meeting-dashboard .md-control input{width:100%;min-width:0}#meeting-dashboard .md-control:first-child span{grid-column:1;text-align:center}}
+@media(pointer:coarse){#meeting-dashboard button,#meeting-dashboard summary{min-height:44px}}@media(prefers-reduced-motion:no-preference){#meeting-dashboard .md-track i{transition:width .2s ease}}
+&lt;/style&gt;
+&lt;header class=&quot;md-top&quot;&gt;&lt;div class=&quot;md-title-row&quot;&gt;&lt;div class=&quot;md-brand&quot;&gt;&lt;span class=&quot;md-mark&quot; aria-hidden=&quot;true&quot;&gt;梵&lt;/span&gt;&lt;div&gt;&lt;h1&gt;经营看板&lt;/h1&gt;&lt;div class=&quot;md-sub&quot;&gt;销售 · 项目健康 · 公司经营&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;span class=&quot;md-demo&quot;&gt;会议版草图 · 全部为模拟数据&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;md-controls&quot;&gt;&lt;div class=&quot;md-control&quot;&gt;&lt;label for=&quot;md-start&quot;&gt;时间&lt;/label&gt;&lt;input type=&quot;month&quot; id=&quot;md-start&quot; aria-label=&quot;开始月份&quot; value=&quot;2026-09&quot; min=&quot;2026-01&quot; max=&quot;2026-09&quot;&gt;&lt;span&gt;至&lt;/span&gt;&lt;input type=&quot;month&quot; id=&quot;md-end&quot; aria-label=&quot;结束月份&quot; value=&quot;2026-09&quot; min=&quot;2026-01&quot; max=&quot;2026-09&quot;&gt;&lt;/div&gt;&lt;div class=&quot;md-control&quot;&gt;&lt;label for=&quot;md-op&quot;&gt;组织&lt;/label&gt;&lt;select id=&quot;md-op&quot;&gt;&lt;option value=&quot;all&quot;&gt;全公司&lt;/option&gt;&lt;option value=&quot;人力&quot;&gt;人力 OP&lt;/option&gt;&lt;option value=&quot;汽车&quot;&gt;汽车 OP&lt;/option&gt;&lt;option value=&quot;数字员工&quot;&gt;数字员工 OP&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;span class=&quot;md-coverage&quot;&gt;模拟覆盖 2026.01—09 · 金额：万元&lt;/span&gt;&lt;/div&gt;&lt;div id=&quot;md-error&quot; class=&quot;md-alert&quot; role=&quot;alert&quot; hidden&gt;&lt;/div&gt;&lt;/header&gt;
+&lt;main class=&quot;md-body&quot; id=&quot;md-content&quot;&gt;
+&lt;section class=&quot;md-panel&quot; aria-label=&quot;销售看板&quot;&gt;&lt;div class=&quot;md-section-top&quot;&gt;&lt;h2&gt;&lt;em&gt;01&lt;/em&gt;销售看板&lt;/h2&gt;&lt;span class=&quot;md-time-scope&quot; data-scope&gt;&lt;/span&gt;&lt;/div&gt;&lt;div id=&quot;md-sales&quot; class=&quot;md-sales&quot;&gt;&lt;/div&gt;&lt;div class=&quot;md-chart-head&quot;&gt;&lt;h3 id=&quot;md-sales-heading&quot;&gt;签约金额 · OP 构成&lt;/h3&gt;&lt;span class=&quot;md-note&quot;&gt;点击上方指标切换构成&lt;/span&gt;&lt;/div&gt;&lt;div id=&quot;md-sales-chart&quot; class=&quot;md-op-chart&quot;&gt;&lt;/div&gt;&lt;div id=&quot;md-sales-foot&quot; class=&quot;md-note&quot; style=&quot;margin-top:9px&quot;&gt;&lt;/div&gt;&lt;details class=&quot;md-rules&quot; id=&quot;md-sales-rules&quot;&gt;&lt;summary&gt;销售指标口径与待确认项&lt;/summary&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;签约金额：&lt;/b&gt;汇总签约日期落在所选月份区间内的签约金额。无金额的开口框架合同不估算，后续取对应 PO；框架与 PO 不重复统计。&lt;/li&gt;&lt;li&gt;&lt;b&gt;净签约金额：&lt;/b&gt;按签约日期筛选，汇总授权人员人工确认的净签约值，不自动用合同金额减采购金额。未确认值不按零处理，单独提示待确认笔数。&lt;/li&gt;&lt;li&gt;&lt;b&gt;开票 / 回款：&lt;/b&gt;分别按开票日期、实际回款日期，汇总所选区间内金额。&lt;/li&gt;&lt;li&gt;&lt;b&gt;当前商机金额：&lt;/b&gt;仅汇总当前状态为“确保、争取”的商机，排除“已签、战败”；不按创建日期、预计签约日期筛选，不受全局时间条件影响，不代表历史时点余额。&lt;/li&gt;&lt;li&gt;&lt;b&gt;筛选：&lt;/b&gt;月份区间、OP 组织；本版暂不增加销售人员筛选。来源：商机表、合同管理表、开票及回款记录。会议 04:18—15:12。&lt;/li&gt;&lt;/ul&gt;&lt;/details&gt;&lt;/section&gt;
+&lt;section class=&quot;md-panel&quot; aria-label=&quot;项目健康看板&quot;&gt;&lt;div class=&quot;md-section-top&quot;&gt;&lt;h2&gt;&lt;em&gt;02&lt;/em&gt;项目健康看板&lt;/h2&gt;&lt;span class=&quot;md-time-scope&quot; id=&quot;md-health-summary&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;table class=&quot;md-projects&quot;&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;项目 / OP&lt;/th&gt;&lt;th&gt;人工预算执行&lt;small class=&quot;md-note&quot;&gt;所选期间 · 实际 / 预算&lt;/small&gt;&lt;/th&gt;&lt;th&gt;费用预算执行&lt;small class=&quot;md-note&quot;&gt;截至期末 · 累计 / 项目预算&lt;/small&gt;&lt;/th&gt;&lt;th&gt;是否延期&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody id=&quot;md-projects&quot;&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;div id=&quot;md-project-detail&quot; hidden&gt;&lt;/div&gt;&lt;details class=&quot;md-rules&quot; id=&quot;md-project-rules&quot;&gt;&lt;summary&gt;项目健康口径与待确认项&lt;/summary&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;人工预算：&lt;/b&gt;比较同一所选期间的人工预算与实际人工成本，实际成本 = Σ（项目实际人天 × 对应 P 值），占比 = 实际 ÷ 同期预算；预算为零或缺失时不生成占比。P 值单价、单位待确认，演示采用元/人天。&lt;/li&gt;&lt;li&gt;&lt;b&gt;费用预算：&lt;/b&gt;比较截至所选期末的项目累计费用与全项目费用预算，费用占比 = 累计费用 ÷ 项目费用预算；不强行把费用预算按里程碑拆月。来源为项目关联的飞书费用。&lt;/li&gt;&lt;li&gt;&lt;b&gt;是否延期：&lt;/b&gt;检查该期间应完成的确收 / 里程碑节点，计划日期到期但未完成确认，或实际确认日期晚于计划日期，标为延期；点击查看具体节点与责任人。历史已延期后补确认仍保留“当期曾延期”事实。&lt;/li&gt;&lt;li&gt;&lt;b&gt;待确认：&lt;/b&gt;预算版本及调整追溯、历史延期展示方式、人工与费用预算的最终对齐口径。本草图明确区分“期间人工预算”和“截至期末费用池”，不混为同一时间口径。&lt;/li&gt;&lt;li&gt;&lt;b&gt;本期不展示：&lt;/b&gt;项目进度百分比与工时百分比的线性比较、统一里程碑模板。项目一条一行，确收与人员闲置移至经营板块。会议 41:56—44:58、55:14—55:39。&lt;/li&gt;&lt;/ul&gt;&lt;/details&gt;&lt;/section&gt;
+&lt;section class=&quot;md-panel&quot; aria-label=&quot;公司经营看板&quot;&gt;&lt;div class=&quot;md-section-top&quot;&gt;&lt;h2&gt;&lt;em&gt;03&lt;/em&gt;公司经营看板&lt;/h2&gt;&lt;span class=&quot;md-time-scope&quot; data-scope&gt;&lt;/span&gt;&lt;/div&gt;&lt;div id=&quot;md-revenue&quot; class=&quot;md-recognition&quot;&gt;&lt;/div&gt;&lt;div id=&quot;md-revenue-detail&quot; hidden&gt;&lt;/div&gt;&lt;div class=&quot;md-operating-bottom&quot;&gt;&lt;section&gt;&lt;div class=&quot;md-cost-header&quot;&gt;&lt;h3&gt;成本构成&lt;/h3&gt;&lt;strong id=&quot;md-cost-total&quot;&gt;&lt;/strong&gt;&lt;/div&gt;&lt;div id=&quot;md-costs&quot;&gt;&lt;/div&gt;&lt;/section&gt;&lt;section class=&quot;md-idle&quot;&gt;&lt;h3&gt;人员闲置&lt;/h3&gt;&lt;div id=&quot;md-idle-value&quot;&gt;&lt;/div&gt;&lt;button id=&quot;md-idle-button&quot; class=&quot;md-text-btn&quot; type=&quot;button&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;md-idle-detail&quot;&gt;查看闲置人员明细 ↗&lt;/button&gt;&lt;/section&gt;&lt;/div&gt;&lt;div id=&quot;md-idle-detail&quot; hidden&gt;&lt;/div&gt;&lt;details class=&quot;md-rules&quot; id=&quot;md-operating-rules&quot;&gt;&lt;summary&gt;经营指标口径与待确认项&lt;/summary&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;确收：&lt;/b&gt;阶段金额 = 已确认的阶段比例 × 对应净签约金额。预计按计划确认日期汇总；实际仅取已完成确认且实际确认日期落在区间内的记录，需有确认材料与审批依据。每个项目自行定义阶段，不统一套用比例模板。&lt;/li&gt;&lt;li&gt;&lt;b&gt;比例与差额：&lt;/b&gt;Mock 暂按各阶段增量比例计算，累计比例需先转换为增量，不能重复计入。差额暂定义为预计 − 实际，正值表示未达；比例字段表达及差额正负方向待确认。差额下钻同时列出未按期完成和跨期补确认，保证能对账。&lt;/li&gt;&lt;li&gt;&lt;b&gt;项目成本：&lt;/b&gt;Σ（项目实际人天 × 对应 P 值）+ 所选期间的项目费用；&lt;b&gt;闲置成本：&lt;/b&gt;Σ（闲置人天 × 对应 P 值）。P 值单价和闲置判定规则需业务确认，演示采用元/人天。&lt;/li&gt;&lt;li&gt;&lt;b&gt;运营成本：&lt;/b&gt;沿用 OP 现有定义和算法，涵盖销售、售前、管理等人员；他们没有项目工时不等于闲置。详细算法会议未展开，待确认。&lt;/li&gt;&lt;li&gt;&lt;b&gt;其他成本：&lt;/b&gt;包括房屋、水电等前述类别以外的公司费用；共同费用如何分摊到 OP 待确认。&lt;/li&gt;&lt;li&gt;&lt;b&gt;汇总边界：&lt;/b&gt;四类成本互斥汇总；“人员闲置”复用闲置成本，不重复计入总额。财务费用及简化税率估算暂不纳入，也不另扣不含税金额。不能把本版结果直接当作法定财务利润。&lt;/li&gt;&lt;li&gt;&lt;b&gt;数据来源：&lt;/b&gt;飞书项目的确收计划 / 确认记录、工时与预算，飞书费用数据及既有 OP 成本口径。会议 22:20—25:26、35:19—39:48、48:24—55:39。&lt;/li&gt;&lt;/ul&gt;&lt;/details&gt;&lt;/section&gt;
+&lt;/main&gt;&lt;footer class=&quot;md-footer&quot;&gt;&lt;span&gt;依据：《经营看板指标体系与数据口径对齐》会议最终结论&lt;/span&gt;&lt;span&gt;仅演示展示与算法 · 未修改飞书数据&lt;/span&gt;&lt;/footer&gt;&lt;div id=&quot;md-live&quot; class=&quot;md-live&quot; aria-live=&quot;polite&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+(()=&gt;{
+const root=document.getElementById(&#x27;meeting-dashboard&#x27;);const $=s=&gt;root.querySelector(s);
+const state={start:&#x27;2026-09&#x27;,end:&#x27;2026-09&#x27;,op:&#x27;all&#x27;,sales:&#x27;signed&#x27;,revenueOpen:false,idleOpen:false,project:null};
+const design={density:&#x27;标准&#x27;,salesStyle:&#x27;强调选中&#x27;};
+const ops=[&#x27;人力&#x27;,&#x27;汽车&#x27;,&#x27;数字员工&#x27;];const money=n=&gt;(Number(n)===0?0:Number(n)).toLocaleString(&#x27;zh-CN&#x27;,{maximumFractionDigits:2});
+const projects=[{id:&#x27;h&#x27;,op:&#x27;人力&#x27;,name:&#x27;人力驻场服务 A&#x27;,owner:&#x27;项目负责人 A&#x27;,p:800,expenseBudget:24},{id:&#x27;a&#x27;,op:&#x27;汽车&#x27;,name:&#x27;车企数据平台 B&#x27;,owner:&#x27;项目负责人 B&#x27;,p:1200,expenseBudget:65},{id:&#x27;d&#x27;,op:&#x27;数字员工&#x27;,name:&#x27;数字员工应用 C&#x27;,owner:&#x27;项目负责人 C&#x27;,p:1000,expenseBudget:32}];
+const contracts=[],invoices=[],payments=[],work=[],milestones=[],idle=[],support=[];
+const mkey=m=&gt;&#x27;2026-&#x27;+String(m).padStart(2,&#x27;0&#x27;);const date=(m,d)=&gt;mkey(m)+&#x27;-&#x27;+String(d).padStart(2,&#x27;0&#x27;);
+const hPlan=[70,72,74,75,76,80,82,84,86];const aRatio=[.05,.05,.05,.1,.1,.1,.1,.1,.1];const dRatio=[.05,.05,.1,.1,.1,.1,.1,.1,.1];
+for(let m=1;m&lt;=9;m++){
+  projects.forEach((p,i)=&gt;{
+    const signed=[85+m,150+m*2,60+m][i];const net=[80+m,132+m,52+m][i];
+    contracts.push({id:`s-${p.id}-${m}`,op:p.op,day:date(m,8),amount:signed,net:p.id===&#x27;a&#x27;&amp;&amp;m===9?null:net,type:p.id===&#x27;h&#x27;?&#x27;PO&#x27;:&#x27;闭口合同&#x27;});
+    invoices.push({op:p.op,day:date(m,18),amount:[80+m,120+2*m,45+m][i]});payments.push({op:p.op,day:date(m,25),amount:[70+m,110+m,35+m][i]});
+    const days=[500+4*m,360+13*m,160+4*m][i],budgetDays=[550+3*m,390+4*m,210+2*m][i],expense=[1.2+.1*m,5+.2*m,1.8+.1*m][i];
+    work.push({project:p.id,op:p.op,month:mkey(m),actual:days*p.p/10000,budget:budgetDays*p.p/10000,expense,days});
+    const planned=[date(m,28),date(m,20),date(m,25)][i];let actual=planned;
+    if(p.id===&#x27;a&#x27;&amp;&amp;m===8)actual=&#x27;2026-09-05&#x27;;if((p.id===&#x27;a&#x27;||p.id===&#x27;d&#x27;)&amp;&amp;m===9)actual=null;
+    const ratio=p.id===&#x27;h&#x27;?1:p.id===&#x27;a&#x27;?aRatio[m-1]:dRatio[m-1],netValue=p.id===&#x27;h&#x27;?hPlan[m-1]:p.id===&#x27;a&#x27;?600:300;
+    milestones.push({id:`r-${p.id}-${m}`,project:p.id,op:p.op,owner:p.owner,name:p.id===&#x27;h&#x27;?`${m}月服务确认`:p.id===&#x27;a&#x27;?`阶段 ${m} 验收`:`版本 ${m} 确认`,planned,actual,approved:actual!==null,ratio,net:netValue,amount:Math.round(netValue*ratio*100)/100});
+    const idleDays=[4,5,6][i]+(m%3);idle.push({op:p.op,month:mkey(m),person:[&#x27;员工 A&#x27;,&#x27;员工 B&#x27;,&#x27;员工 C&#x27;][i],days:idleDays,p:p.p,cost:idleDays*p.p/10000});
+    support.push({op:p.op,month:mkey(m),operating:[8,12,7][i],other:[3,4,2][i]});
+  });
+}
+contracts.push({id:&#x27;frame-h&#x27;,op:&#x27;人力&#x27;,day:&#x27;2026-01-01&#x27;,amount:null,net:null,type:&#x27;开口框架&#x27;});
+const opportunities=[{op:&#x27;人力&#x27;,status:&#x27;确保&#x27;,amount:90},{op:&#x27;人力&#x27;,status:&#x27;争取&#x27;,amount:50},{op:&#x27;汽车&#x27;,status:&#x27;确保&#x27;,amount:120},{op:&#x27;汽车&#x27;,status:&#x27;争取&#x27;,amount:80},{op:&#x27;数字员工&#x27;,status:&#x27;确保&#x27;,amount:48},{op:&#x27;数字员工&#x27;,status:&#x27;争取&#x27;,amount:32},{op:&#x27;汽车&#x27;,status:&#x27;已签&#x27;,amount:168},{op:&#x27;数字员工&#x27;,status:&#x27;战败&#x27;,amount:70}];
+const sum=(rows,fn)=&gt;rows.reduce((a,r)=&gt;a+fn(r),0);const period=(d)=&gt;!!d&amp;&amp;d.slice(0,7)&gt;=state.start&amp;&amp;d.slice(0,7)&lt;=state.end;const scope=r=&gt;state.op===&#x27;all&#x27;||r.op===state.op;const value=n=&gt;`${money(n)}&lt;small&gt;万元&lt;/small&gt;`;
+function valid(){return /^2026-(0[1-9])$/.test(state.start)&amp;&amp;/^2026-(0[1-9])$/.test(state.end)&amp;&amp;state.start&lt;=state.end;}
+function model(){
+ const cs=contracts.filter(r=&gt;scope(r)&amp;&amp;period(r.day)),ps=projects.filter(scope),ws=work.filter(r=&gt;scope(r)&amp;&amp;period(r.month)),ss=support.filter(r=&gt;scope(r)&amp;&amp;period(r.month)),is=idle.filter(r=&gt;scope(r)&amp;&amp;period(r.month)),rs=milestones.filter(scope);
+ const planned=rs.filter(r=&gt;period(r.planned)),actual=rs.filter(r=&gt;r.approved&amp;&amp;period(r.actual)),expected=sum(planned,r=&gt;r.amount),realized=sum(actual,r=&gt;r.amount);
+ const expense=sum(ws,r=&gt;r.expense),labor=sum(ws,r=&gt;r.actual),idling=sum(is,r=&gt;r.cost),operating=sum(ss,r=&gt;r.operating),other=sum(ss,r=&gt;r.other);
+ return {cs,ps,ws,is,rs,planned,actual,expected,realized,delta:expected-realized,labor,expense,cost:{project:labor+expense,idle:idling,operating,other},costTotal:labor+expense+idling+operating+other,sales:{signed:sum(cs.filter(r=&gt;r.amount!==null),r=&gt;r.amount),net:sum(cs.filter(r=&gt;r.net!==null),r=&gt;r.net),invoice:sum(invoices.filter(r=&gt;scope(r)&amp;&amp;period(r.day)),r=&gt;r.amount),cash:sum(payments.filter(r=&gt;scope(r)&amp;&amp;period(r.day)),r=&gt;r.amount),pool:sum(opportunities.filter(r=&gt;scope(r)&amp;&amp;[&#x27;确保&#x27;,&#x27;争取&#x27;].includes(r.status)),r=&gt;r.amount)},pending:cs.filter(r=&gt;r.amount!==null&amp;&amp;r.net===null).length};
+}
+const salesDefs=[[&#x27;signed&#x27;,&#x27;签约金额&#x27;,&#x27;按签约日期&#x27;],[&#x27;net&#x27;,&#x27;净签约金额&#x27;,&#x27;人工确认值&#x27;],[&#x27;invoice&#x27;,&#x27;开票金额&#x27;,&#x27;按开票日期&#x27;],[&#x27;cash&#x27;,&#x27;回款金额&#x27;,&#x27;按实际回款日期&#x27;],[&#x27;pool&#x27;,&#x27;当前商机金额&#x27;,&#x27;不受时间筛选影响&#x27;]];
+function salesForOp(op,key){const fit=r=&gt;r.op===op;const cs=contracts.filter(r=&gt;fit(r)&amp;&amp;period(r.day));return key===&#x27;signed&#x27;?sum(cs.filter(r=&gt;r.amount!==null),r=&gt;r.amount):key===&#x27;net&#x27;?sum(cs.filter(r=&gt;r.net!==null),r=&gt;r.net):key===&#x27;invoice&#x27;?sum(invoices.filter(r=&gt;fit(r)&amp;&amp;period(r.day)),r=&gt;r.amount):key===&#x27;cash&#x27;?sum(payments.filter(r=&gt;fit(r)&amp;&amp;period(r.day)),r=&gt;r.amount):sum(opportunities.filter(r=&gt;fit(r)&amp;&amp;[&#x27;确保&#x27;,&#x27;争取&#x27;].includes(r.status)),r=&gt;r.amount);}
+function renderSales(m){
+ $(&#x27;#md-sales&#x27;).innerHTML=salesDefs.map(([key,label,note])=&gt;`&lt;button type=&quot;button&quot; class=&quot;md-stat&quot; data-sales=&quot;${key}&quot; aria-pressed=&quot;${state.sales===key}&quot;&gt;&lt;span class=&quot;md-stat-title&quot;&gt;${label}&lt;/span&gt;&lt;span class=&quot;md-value&quot;&gt;${value(m.sales[key])}&lt;/span&gt;&lt;span class=&quot;md-note ${key===&#x27;net&#x27;&amp;&amp;m.pending?&#x27;md-warning&#x27;:&#x27;&#x27;}&quot;&gt;${key===&#x27;net&#x27;&amp;&amp;m.pending?&#x27;另有 &#x27;+m.pending+&#x27; 笔待确认&#x27;:note}&lt;/span&gt;&lt;/button&gt;`).join(&#x27;&#x27;);
+ const shown=ops.filter(op=&gt;state.op===&#x27;all&#x27;||op===state.op),nums=shown.map(op=&gt;salesForOp(op,state.sales)),max=Math.max(...nums,1);$(&#x27;#md-sales-chart&#x27;).style.gridTemplateColumns=shown.length===1?&#x27;1fr&#x27;:&#x27;&#x27;;
+ $(&#x27;#md-sales-heading&#x27;).textContent=salesDefs.find(d=&gt;d[0]===state.sales)[1]+&#x27; · OP 构成&#x27;;
+ $(&#x27;#md-sales-chart&#x27;).innerHTML=shown.map((op,i)=&gt;`&lt;div&gt;&lt;div class=&quot;md-bar-label&quot;&gt;&lt;span&gt;${op} OP&lt;/span&gt;&lt;strong&gt;${money(nums[i])} 万&lt;/strong&gt;&lt;/div&gt;&lt;div class=&quot;md-track&quot; role=&quot;img&quot; aria-label=&quot;${op}${money(nums[i])}万元&quot;&gt;&lt;i style=&quot;width:${nums[i]/max*100}%&quot;&gt;&lt;/i&gt;&lt;/div&gt;&lt;/div&gt;`).join(&#x27;&#x27;);
+ const pool=opportunities.filter(r=&gt;scope(r)&amp;&amp;[&#x27;确保&#x27;,&#x27;争取&#x27;].includes(r.status));$(&#x27;#md-sales-foot&#x27;).textContent=state.sales===&#x27;pool&#x27;?`确保 ${money(sum(pool.filter(r=&gt;r.status===&#x27;确保&#x27;),r=&gt;r.amount))} 万 · 争取 ${money(sum(pool.filter(r=&gt;r.status===&#x27;争取&#x27;),r=&gt;r.amount))} 万 · 当前商机为 2026.09 底模拟快照，不随所选月份变化。`:&#x27;各指标按自己的业务日期归属期间；点击指标查看对应 OP 构成。&#x27;;
+}
+function lateFor(p){return milestones.filter(r=&gt;r.project===p.id&amp;&amp;period(r.planned)&amp;&amp;(!r.actual||r.actual&gt;r.planned));}
+function budget(actual,total){const ratio=total&gt;0?actual/total*100:null;return `&lt;div class=&quot;md-budget-head&quot;&gt;&lt;strong&gt;${money(actual)} / ${money(total)} 万&lt;/strong&gt;&lt;span class=&quot;${ratio&gt;100?&#x27;md-over&#x27;:&#x27;&#x27;}&quot;&gt;${ratio===null?&#x27;待确认&#x27;:money(ratio)+&#x27;%&#x27;}&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;md-track ${ratio&gt;100?&#x27;md-over-track&#x27;:&#x27;&#x27;}&quot;&gt;&lt;i style=&quot;width:${ratio===null?0:Math.min(ratio,100)}%&quot;&gt;&lt;/i&gt;&lt;/div&gt;`;}
+function renderProjects(m){
+ $(&#x27;#md-health-summary&#x27;).textContent=`${m.ps.length} 个项目 · ${m.ps.filter(p=&gt;lateFor(p).length).length} 个当期有延期`;
+ $(&#x27;#md-projects&#x27;).innerHTML=m.ps.map(p=&gt;{const rows=m.ws.filter(r=&gt;r.project===p.id),fees=work.filter(r=&gt;r.project===p.id&amp;&amp;r.month&lt;=state.end),late=lateFor(p);return `&lt;tr&gt;&lt;td&gt;${p.name}&lt;small&gt;${p.op} OP&lt;/small&gt;&lt;/td&gt;&lt;td data-label=&quot;人工：所选期间实际 / 预算&quot;&gt;${budget(sum(rows,r=&gt;r.actual),sum(rows,r=&gt;r.budget))}&lt;/td&gt;&lt;td data-label=&quot;费用：截至期末累计 / 总预算&quot;&gt;${budget(sum(fees,r=&gt;r.expense),p.expenseBudget)}&lt;/td&gt;&lt;td&gt;${late.length?`&lt;button type=&quot;button&quot; class=&quot;md-delay-btn&quot; data-project=&quot;${p.id}&quot; aria-expanded=&quot;${state.project===p.id}&quot;&gt;延期 · ${late.length} 个节点 ↗&lt;/button&gt;`:&#x27;&lt;span class=&quot;md-tag ok&quot;&gt;● 正常&lt;/span&gt;&#x27;}&lt;/td&gt;&lt;/tr&gt;`;}).join(&#x27;&#x27;);
+ const box=$(&#x27;#md-project-detail&#x27;);box.hidden=!state.project;if(!state.project)return;const p=m.ps.find(p=&gt;p.id===state.project);if(!p){state.project=null;box.hidden=true;return;}
+ box.innerHTML=`&lt;div class=&quot;md-detail&quot;&gt;&lt;div class=&quot;md-detail-head&quot;&gt;&lt;h3&gt;${p.name} · 延期节点&lt;/h3&gt;&lt;button type=&quot;button&quot; class=&quot;md-text-btn&quot; data-close=&quot;project&quot;&gt;收起&lt;/button&gt;&lt;/div&gt;${lateFor(p).map(r=&gt;`&lt;div class=&quot;md-detail-row&quot;&gt;&lt;div&gt;&lt;strong&gt;${r.name}&lt;/strong&gt;&lt;p&gt;${r.owner} · 计划 ${r.planned} · ${r.actual?&#x27;实际 &#x27;+r.actual:&#x27;截至所选期末未确认&#x27;}&lt;/p&gt;&lt;/div&gt;&lt;span class=&quot;md-number md-warning&quot;&gt;${money(r.amount)} 万&lt;/span&gt;&lt;/div&gt;`).join(&#x27;&#x27;)}&lt;/div&gt;`;
+}
+function renderRecognition(m){
+ $(&#x27;#md-revenue&#x27;).innerHTML=`&lt;div&gt;&lt;span class=&quot;md-stat-title&quot;&gt;预计确认收入&lt;/span&gt;&lt;span class=&quot;md-value&quot;&gt;${value(m.expected)}&lt;/span&gt;&lt;span class=&quot;md-note&quot;&gt;按计划确认日期&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;md-stat-title&quot;&gt;实际确认收入&lt;/span&gt;&lt;span class=&quot;md-value&quot;&gt;${value(m.realized)}&lt;/span&gt;&lt;span class=&quot;md-note&quot;&gt;按实际确认日期与已确认状态&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;button type=&quot;button&quot; class=&quot;md-delta-btn&quot; data-revenue aria-expanded=&quot;${state.revenueOpen}&quot; aria-controls=&quot;md-revenue-detail&quot;&gt;&lt;span class=&quot;md-stat-title&quot;&gt;确收差额 ↗&lt;/span&gt;&lt;span class=&quot;md-value&quot;&gt;${value(m.delta)}&lt;/span&gt;&lt;span class=&quot;md-note&quot;&gt;${m.delta&gt;0?&#x27;预计未达部分&#x27;:m.delta&lt;0?&#x27;实际高于预计&#x27;:&#x27;预计与实际总额一致&#x27;} · 点击看差异构成&lt;/span&gt;&lt;/button&gt;&lt;/div&gt;`;
+ const box=$(&#x27;#md-revenue-detail&#x27;);box.hidden=!state.revenueOpen;if(!state.revenueOpen)return;
+ const rows=m.rs.map(r=&gt;({...r,contribution:(period(r.planned)?r.amount:0)-(r.approved&amp;&amp;period(r.actual)?r.amount:0)})).filter(r=&gt;Math.abs(r.contribution)&gt;.00001);
+ box.innerHTML=`&lt;div class=&quot;md-detail&quot;&gt;&lt;div class=&quot;md-detail-head&quot;&gt;&lt;h3&gt;确收差额 · 项目与节点穿透&lt;/h3&gt;&lt;button type=&quot;button&quot; class=&quot;md-text-btn&quot; data-close=&quot;revenue&quot;&gt;收起&lt;/button&gt;&lt;/div&gt;${rows.length?rows.map(r=&gt;`&lt;div class=&quot;md-detail-row&quot;&gt;&lt;div&gt;&lt;strong&gt;${projects.find(p=&gt;p.id===r.project).name} · ${r.name}&lt;/strong&gt;&lt;p&gt;${r.owner} · 预计 ${r.planned} · ${r.actual?&#x27;实际 &#x27;+r.actual:&#x27;未完成确认&#x27;}&lt;br&gt;${r.contribution&gt;0?&#x27;本期计划未在本期实现&#x27;:&#x27;其他期间计划，在本期补确认&#x27;}&lt;/p&gt;&lt;/div&gt;&lt;span class=&quot;md-number ${r.contribution&gt;0?&#x27;md-warning&#x27;:&#x27;md-success&#x27;}&quot;&gt;${r.contribution&gt;0?&#x27;+&#x27;:&#x27;&#x27;}${money(r.contribution)} 万&lt;/span&gt;&lt;/div&gt;`).join(&#x27;&#x27;):&#x27;&lt;div class=&quot;md-note&quot;&gt;本期预计和实际记录一致，无跨期差额。&lt;/div&gt;&#x27;}&lt;div class=&quot;md-bridge&quot;&gt;&lt;span&gt;未在本期实现 ${money(sum(rows.filter(r=&gt;r.contribution&gt;0),r=&gt;r.contribution))} 万 − 跨期补确认 ${money(-sum(rows.filter(r=&gt;r.contribution&lt;0),r=&gt;r.contribution))} 万&lt;/span&gt;&lt;strong&gt;净差额 ${money(m.delta)} 万&lt;/strong&gt;&lt;/div&gt;&lt;/div&gt;`;
+}
+function renderCosts(m){
+ $(&#x27;#md-cost-total&#x27;).textContent=money(m.costTotal)+&#x27; 万&#x27;;const entries=[[&#x27;project&#x27;,&#x27;项目成本&#x27;],[&#x27;idle&#x27;,&#x27;闲置成本&#x27;],[&#x27;operating&#x27;,&#x27;运营成本&#x27;],[&#x27;other&#x27;,&#x27;其他成本&#x27;]];$(&#x27;#md-costs&#x27;).innerHTML=entries.map(([key,label])=&gt;`&lt;div class=&quot;md-cost-row&quot;&gt;&lt;span&gt;${label}&lt;/span&gt;&lt;div class=&quot;md-track&quot;&gt;&lt;i class=&quot;md-green&quot; style=&quot;width:${m.costTotal?m.cost[key]/m.costTotal*100:0}%&quot;&gt;&lt;/i&gt;&lt;/div&gt;&lt;strong&gt;${money(m.cost[key])} 万&lt;/strong&gt;&lt;/div&gt;`).join(&#x27;&#x27;);
+ $(&#x27;#md-idle-value&#x27;).innerHTML=`&lt;span class=&quot;md-value&quot;&gt;${value(m.cost.idle)}&lt;/span&gt;&lt;span class=&quot;md-note&quot;&gt;${money(sum(m.is,r=&gt;r.days))} 个闲置人天 · 已包含在总成本中&lt;/span&gt;`;$(&#x27;#md-idle-button&#x27;).setAttribute(&#x27;aria-expanded&#x27;,String(state.idleOpen));
+ const box=$(&#x27;#md-idle-detail&#x27;);box.hidden=!state.idleOpen;if(!state.idleOpen)return;const rows=ops.filter(op=&gt;state.op===&#x27;all&#x27;||op===state.op).map(op=&gt;{const rows=m.is.filter(r=&gt;r.op===op);return {op,person:rows[0]?.person,days:sum(rows,r=&gt;r.days),cost:sum(rows,r=&gt;r.cost),p:rows[0]?.p};});
+ box.innerHTML=`&lt;div class=&quot;md-detail&quot;&gt;&lt;div class=&quot;md-detail-head&quot;&gt;&lt;h3&gt;人员闲置 · 所选期间&lt;/h3&gt;&lt;button type=&quot;button&quot; class=&quot;md-text-btn&quot; data-close=&quot;idle&quot;&gt;收起&lt;/button&gt;&lt;/div&gt;${rows.map(r=&gt;`&lt;div class=&quot;md-detail-row&quot;&gt;&lt;div&gt;&lt;strong&gt;${r.person} · ${r.op} OP&lt;/strong&gt;&lt;p&gt;${money(r.days)} 人天 × 模拟 P 值 ${r.p} 元/人天&lt;/p&gt;&lt;/div&gt;&lt;span class=&quot;md-number&quot;&gt;${money(r.cost)} 万&lt;/span&gt;&lt;/div&gt;`).join(&#x27;&#x27;)}&lt;div class=&quot;md-note&quot;&gt;仅为模拟闲置记录，不将销售、售前、管理人员未填项目工时直接判作闲置。&lt;/div&gt;&lt;/div&gt;`;
+}
+function render(announce=false){
+ const ok=valid();$(&#x27;#md-error&#x27;).hidden=ok;$(&#x27;#md-content&#x27;).hidden=!ok;if(!ok){$(&#x27;#md-error&#x27;).textContent=&#x27;请选择 2026 年 1—9 月内的有效月份区间，开始月份不能晚于结束月份。&#x27;;return;}
+ const m=model();root.querySelectorAll(&#x27;[data-scope]&#x27;).forEach(el=&gt;el.textContent=`${state.op===&#x27;all&#x27;?&#x27;全公司&#x27;:state.op+&#x27; OP&#x27;} · ${state.start.replace(&#x27;-&#x27;,&#x27;.&#x27;)}—${state.end.replace(&#x27;-&#x27;,&#x27;.&#x27;)}`);renderSales(m);renderProjects(m);renderRecognition(m);renderCosts(m);root.style.setProperty(&#x27;--md-space&#x27;,design.density===&#x27;紧凑&#x27;?&#x27;14px&#x27;:&#x27;22px&#x27;);root.querySelectorAll(&#x27;.md-stat&#x27;).forEach(el=&gt;{if(design.salesStyle===&#x27;纯白指标&#x27;)el.style.background=&#x27;var(--md-surface)&#x27;;});if(announce)$(&#x27;#md-live&#x27;).textContent=`已更新 ${state.start} 至 ${state.end}，${state.op===&#x27;all&#x27;?&#x27;全公司&#x27;:state.op+&#x27; OP&#x27;}。当前商机仅按组织筛选。`;
+}
+root.addEventListener(&#x27;click&#x27;,e=&gt;{const b=e.target.closest(&#x27;button&#x27;);if(!b||!root.contains(b))return;const d=b.dataset;if(d.sales){state.sales=d.sales;}else if(d.project){state.project=state.project===d.project?null:d.project;}else if(&#x27;revenue&#x27; in d){state.revenueOpen=!state.revenueOpen;}else if(b.id===&#x27;md-idle-button&#x27;){state.idleOpen=!state.idleOpen;}else if(d.close){if(d.close===&#x27;project&#x27;)state.project=null;if(d.close===&#x27;revenue&#x27;)state.revenueOpen=false;if(d.close===&#x27;idle&#x27;)state.idleOpen=false;}else return;render(true);});
+for(const [id,key] of [[&#x27;md-start&#x27;,&#x27;start&#x27;],[&#x27;md-end&#x27;,&#x27;end&#x27;],[&#x27;md-op&#x27;,&#x27;op&#x27;]])$(&#x27;#&#x27;+id).addEventListener(&#x27;change&#x27;,e=&gt;{state[key]=e.target.value;state.project=null;render(true);});
+/* initial-render */render();
+if(globalThis.Tweak){const tweak=new Tweak({container:root,onChange:()=&gt;render()});tweak.addSelect(design,&#x27;density&#x27;,{label:&#x27;板块留白&#x27;,options:[&#x27;标准&#x27;,&#x27;紧凑&#x27;]});tweak.addSelect(design,&#x27;salesStyle&#x27;,{label:&#x27;销售指标样式&#x27;,options:[&#x27;强调选中&#x27;,&#x27;纯白指标&#x27;]});}
+})();
+&lt;/script&gt;
+&lt;/div&gt;
+&lt;!-- dashboard:end --&gt;
+
+&lt;script src=&quot;https://unpkg.com/@floating-ui/core@1.7.3/dist/floating-ui.core.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@floating-ui/dom@1.7.4/dist/floating-ui.dom.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  if (window.FloatingUIDOM == null) {
+    return;
+  }
+  const { autoUpdate, computePosition, flip, offset, shift, size } =
+    window.FloatingUIDOM;
+  const tooltipPlacements = new Set([&quot;top&quot;, &quot;right&quot;, &quot;bottom&quot;, &quot;left&quot;]);
+  const tooltipId = `codex-visualization-tooltip-${
+    window.crypto?.randomUUID?.() ?? Date.now().toString(36)
+  }`;
+  const tooltipGap = 5;
+  const hoverDelay = 700;
+  const skipDelay = 300;
+  let activeTrigger = null;
+  let pendingTrigger = null;
+  let tooltip = null;
+  let openTimeout = null;
+  let autoUpdateCleanup = null;
+  let positionRequest = 0;
+  let skipDelayUntil = 0;
+  let lastPointerWasTouch = false;
+  let pinnedByTouch = false;
+
+  const getTrigger = (target) =&gt;
+    target?.nodeType === Node.ELEMENT_NODE
+      ? target.closest(&quot;[data-tooltip]&quot;)
+      : null;
+  const containsTarget = (trigger, target) =&gt;
+    target?.nodeType != null &amp;&amp; trigger.contains(target);
+  const getContent = (trigger) =&gt;
+    trigger.getAttribute(&quot;data-tooltip&quot;)?.trim() ?? &quot;&quot;;
+  const getPlacement = (trigger) =&gt; {
+    const placement = trigger.getAttribute(&quot;data-tooltip-placement&quot;);
+    return tooltipPlacements.has(placement) ? placement : &quot;top&quot;;
+  };
+  const getTooltip = () =&gt; {
+    if (tooltip == null) {
+      tooltip = document.createElement(&quot;div&quot;);
+      tooltip.id = tooltipId;
+      tooltip.className = &quot;tooltip&quot;;
+      tooltip.setAttribute(&quot;role&quot;, &quot;tooltip&quot;);
+    }
+    return tooltip;
+  };
+  const setDescribedBy = (trigger, described) =&gt; {
+    const ids = new Set(
+      (trigger.getAttribute(&quot;aria-describedby&quot;) ?? &quot;&quot;)
+        .split(/\s+/)
+        .filter(Boolean),
+    );
+    if (described) {
+      ids.add(tooltipId);
+    } else {
+      ids.delete(tooltipId);
+    }
+    if (ids.size === 0) {
+      trigger.removeAttribute(&quot;aria-describedby&quot;);
+    } else {
+      trigger.setAttribute(&quot;aria-describedby&quot;, [...ids].join(&quot; &quot;));
+    }
+  };
+  const clearOpenTimeout = () =&gt; {
+    if (openTimeout != null) {
+      window.clearTimeout(openTimeout);
+      openTimeout = null;
+    }
+    pendingTrigger = null;
+  };
+  const closeTooltip = (activateSkipDelay = true) =&gt; {
+    clearOpenTimeout();
+    pinnedByTouch = false;
+    positionRequest += 1;
+    autoUpdateCleanup?.();
+    autoUpdateCleanup = null;
+    if (activeTrigger == null) {
+      return;
+    }
+    setDescribedBy(activeTrigger, false);
+    activeTrigger = null;
+    tooltip?.remove();
+    if (activateSkipDelay) {
+      skipDelayUntil = Date.now() + skipDelay;
+    }
+  };
+  const updatePosition = (trigger, floating) =&gt; {
+    const request = ++positionRequest;
+    void computePosition(trigger, floating, {
+      middleware: [
+        offset(tooltipGap),
+        flip({ padding: tooltipGap }),
+        shift({ padding: tooltipGap }),
+        size({
+          padding: tooltipGap,
+          apply({ availableHeight, availableWidth, elements }) {
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-width&quot;,
+              `${Math.max(0, availableWidth)}px`,
+            );
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-height&quot;,
+              `${Math.max(0, availableHeight)}px`,
+            );
+          },
+        }),
+      ],
+      placement: getPlacement(trigger),
+      strategy: &quot;fixed&quot;,
+    })
+      .then(({ x, y }) =&gt; {
+        if (activeTrigger !== trigger || request !== positionRequest) {
+          return;
+        }
+        const scale = window.devicePixelRatio || 1;
+        floating.style.transform = `translate(${Math.round(x * scale) / scale}px, ${Math.round(y * scale) / scale}px)`;
+        floating.style.visibility = &quot;visible&quot;;
+      })
+      .catch(() =&gt; {
+        if (activeTrigger === trigger &amp;&amp; request === positionRequest) {
+          closeTooltip(false);
+        }
+      });
+  };
+  const openTooltip = (trigger) =&gt; {
+    const content = getContent(trigger);
+    if (!trigger.isConnected || content.length === 0) {
+      return;
+    }
+    clearOpenTimeout();
+    if (activeTrigger === trigger) {
+      return;
+    }
+    closeTooltip();
+    const floating = getTooltip();
+    floating.textContent = content;
+    floating.style.visibility = &quot;hidden&quot;;
+    floating.style.transform = &quot;translate(0, 0)&quot;;
+    document.body.appendChild(floating);
+    activeTrigger = trigger;
+    setDescribedBy(trigger, true);
+    autoUpdateCleanup = autoUpdate(trigger, floating, () =&gt; {
+      updatePosition(trigger, floating);
+    });
+  };
+  const requestOpen = (trigger, immediate = false) =&gt; {
+    if (
+      getContent(trigger).length === 0 ||
+      activeTrigger === trigger ||
+      pendingTrigger === trigger
+    ) {
+      return;
+    }
+    clearOpenTimeout();
+    pendingTrigger = trigger;
+    const delay =
+      immediate || activeTrigger != null || Date.now() &lt; skipDelayUntil
+        ? 0
+        : hoverDelay;
+    if (delay === 0) {
+      openTooltip(trigger);
+      return;
+    }
+    openTimeout = window.setTimeout(() =&gt; {
+      openTimeout = null;
+      pendingTrigger = null;
+      openTooltip(trigger);
+    }, delay);
+  };
+  const handlePointerOpen = (event) =&gt; {
+    if (event.pointerType === &quot;touch&quot;) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    requestOpen(trigger);
+  };
+  const handlePointer = (event) =&gt; {
+    lastPointerWasTouch =
+      event.type === &quot;pointerdown&quot; &amp;&amp; event.pointerType === &quot;touch&quot;;
+  };
+  const handleTouchClick = (event) =&gt; {
+    const isTouch = event.pointerType === &quot;touch&quot; || lastPointerWasTouch;
+    lastPointerWasTouch = false;
+    if (!isTouch || event.detail === 0) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (
+      trigger == null ||
+      !trigger.isConnected ||
+      getContent(trigger).length === 0 ||
+      (pinnedByTouch &amp;&amp; activeTrigger === trigger)
+    ) {
+      if (pinnedByTouch) {
+        closeTooltip();
+      }
+      return;
+    }
+    openTooltip(trigger);
+    pinnedByTouch = activeTrigger === trigger;
+    window.setTimeout(() =&gt; {
+      if (activeTrigger === trigger &amp;&amp; !trigger.isConnected) {
+        closeTooltip(false);
+      }
+    }, 0);
+  };
+  const handleLeave = (event) =&gt; {
+    if (pinnedByTouch) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const handleFocusIn = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (trigger?.matches(&quot;:focus-visible&quot;)) {
+      requestOpen(trigger, true);
+    }
+  };
+  const handleKeyDown = (event) =&gt; {
+    if (event.key === &quot;Escape&quot;) {
+      closeTooltip();
+    }
+  };
+  const handleContextMenu = (event) =&gt; {
+    lastPointerWasTouch = false;
+    const trigger = getTrigger(event.target);
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const destroy = () =&gt; {
+    closeTooltip(false);
+    lastPointerWasTouch = false;
+    document.removeEventListener(&quot;pointerover&quot;, handlePointerOpen);
+    document.removeEventListener(&quot;pointerdown&quot;, handlePointer);
+    document.removeEventListener(&quot;pointercancel&quot;, handlePointer);
+    document.removeEventListener(&quot;click&quot;, handleTouchClick);
+    document.removeEventListener(&quot;pointerout&quot;, handleLeave);
+    document.removeEventListener(&quot;focusin&quot;, handleFocusIn);
+    document.removeEventListener(&quot;focusout&quot;, handleLeave);
+    document.removeEventListener(&quot;keydown&quot;, handleKeyDown);
+    document.removeEventListener(&quot;contextmenu&quot;, handleContextMenu);
+    tooltip = null;
+  };
+
+  document.addEventListener(&quot;pointerover&quot;, handlePointerOpen);
+  document.addEventListener(&quot;pointerdown&quot;, handlePointer);
+  document.addEventListener(&quot;pointercancel&quot;, handlePointer);
+  document.addEventListener(&quot;click&quot;, handleTouchClick);
+  document.addEventListener(&quot;pointerout&quot;, handleLeave);
+  document.addEventListener(&quot;focusin&quot;, handleFocusIn);
+  document.addEventListener(&quot;focusout&quot;, handleLeave);
+  document.addEventListener(&quot;keydown&quot;, handleKeyDown);
+  document.addEventListener(&quot;contextmenu&quot;, handleContextMenu);
+  window.addEventListener(&quot;pagehide&quot;, destroy, { once: true });
+})();
+&lt;/script&gt;
+&lt;script id=&quot;codex-visualization-tabs&quot;&gt;
+(() =&gt; {
+  const selector = &#x27;.nav[role=&quot;tablist&quot;] [role=&quot;tab&quot;]&#x27;;
+  const disabled = &#x27;:disabled,[aria-disabled=&quot;true&quot;]&#x27;;
+  const selectTab = (selected) =&gt; {
+    const panelId = selected.getAttribute(&quot;aria-controls&quot;);
+    for (const tab of selected.closest(&#x27;[role=&quot;tablist&quot;]&#x27;).querySelectorAll(&#x27;[role=&quot;tab&quot;]&#x27;)) {
+      const active = tab === selected;
+      tab.classList.toggle(&quot;active&quot;, active);
+      tab.setAttribute(&quot;aria-selected&quot;, String(active));
+      const id = tab.getAttribute(&quot;aria-controls&quot;);
+      const panel = id &amp;&amp; document.getElementById(id);
+      if (panel != null) {
+        panel.hidden = id !== panelId;
+        if (!panel.hidden &amp;&amp; selected.id) {
+          panel.setAttribute(&quot;aria-labelledby&quot;, selected.id);
+        }
+      }
+    }
+  };
+  const interact = (event) =&gt; {
+    const tab = event.target?.closest?.(selector);
+    if (event.defaultPrevented || tab == null || tab.matches(disabled)) {
+      return;
+    }
+    if (event.type === &quot;click&quot;) {
+      selectTab(tab);
+      return;
+    }
+    const tabs = Array.from(
+      tab.closest(&#x27;[role=&quot;tablist&quot;]&#x27;).querySelectorAll(&#x27;[role=&quot;tab&quot;]&#x27;),
+    ).filter((candidate) =&gt; !candidate.matches(disabled));
+    const current = tabs.indexOf(tab);
+    let next;
+    if (event.key === &quot;ArrowRight&quot; || event.key === &quot;ArrowDown&quot;) {
+      next = (current + 1) % tabs.length;
+    } else if (event.key === &quot;ArrowLeft&quot; || event.key === &quot;ArrowUp&quot;) {
+      next = (current + tabs.length - 1) % tabs.length;
+    } else if (event.key === &quot;Home&quot;) {
+      next = 0;
+    } else if (event.key === &quot;End&quot;) {
+      next = tabs.length - 1;
+    } else {
+      return;
+    }
+    event.preventDefault();
+    tabs[next].focus();
+    selectTab(tabs[next]);
+  };
+
+  for (const list of document.querySelectorAll(&#x27;.nav[role=&quot;tablist&quot;]&#x27;)) {
+    const selected =
+      list.querySelector(&#x27;[role=&quot;tab&quot;][aria-selected=&quot;true&quot;]&#x27;) ??
+      list.querySelector(&#x27;[role=&quot;tab&quot;].active&#x27;) ??
+      list.querySelector(&#x27;[role=&quot;tab&quot;]&#x27;);
+    if (selected != null) {
+      selectTab(selected);
+    }
+  }
+  document.addEventListener(&quot;click&quot;, interact);
+  document.addEventListener(&quot;keydown&quot;, interact);
+  window.addEventListener(&quot;pagehide&quot;, () =&gt; {
+    document.removeEventListener(&quot;click&quot;, interact);
+    document.removeEventListener(&quot;keydown&quot;, interact);
+  }, { once: true });
+})();
+&lt;/script&gt;
+&lt;script id=&quot;codex-visualization-lucide&quot; async src=&quot;https://unpkg.com/lucide@1.17.0/dist/umd/lucide.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  const initialize = () =&gt; {
+    globalThis.lucide?.createIcons({ attrs: { width: 16, height: 16 } });
+  };
+  if (globalThis.lucide != null) {
+    initialize();
+    return;
+  }
+  document
+    .getElementById(&quot;codex-visualization-lucide&quot;)
+    ?.addEventListener(&quot;load&quot;, initialize, { once: true });
+})();
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "name": "fanxing-business-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "description": "经营看板会议版：销售、项目健康、公司经营（模拟数据）",
+  "scripts": {
+    "build": "node scripts/sync-export.cjs",
+    "test": "node meeting-dashboard.test.cjs && node scripts/sync-export.cjs --check"
+  },
+  "engines": { "node": ">=18" }
+}
