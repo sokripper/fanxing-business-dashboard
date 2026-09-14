@@ -21,23 +21,26 @@ vm.createContext(context); vm.runInContext(script, context);
 const {state, model, valid, milestones, costGroups, renderCosts} = context.audit;
 assert.deepEqual(Array.from(costGroups,g=>g.label),['成本','OP 费用','经营费用']);
 const subjects=Array.from(costGroups).flatMap(g=>Array.from(g.items,([key,label])=>({key,label})));
-assert.equal(new Set(subjects.map(x=>x.key)).size,5);
-assert.deepEqual(subjects.map(x=>x.label),['项目费用','运营费用','销售费用','交付产研费用','管理费用']);
-assert.equal(subjects.some(x=>/财务|finance/i.test(x.label+x.key)),false);
+assert.equal(new Set(subjects.map(x=>x.key)).size,7);
+assert.deepEqual(subjects.map(x=>x.label),['项目费用','运营费用','销售费用','财务税费','交付产研费用','管理费用','财务费用']);
+assert.deepEqual(Array.from(costGroups.find(g=>g.id==='op').items,([key])=>key),['operating','selling','financeTax']);
+assert.deepEqual(Array.from(costGroups.find(g=>g.id==='company').items,([key])=>key),['deliveryResearch','management','financeExpense']);
+assert.equal(/不含财务费用|明确排除|财务费用不纳入|五项/.test(html),false);
 const near=(a,b)=>assert.ok(Math.abs(a-b)<1e-7, `${a} != ${b}`);
 let checks=0;
 for(let first=1;first<=9;first++) for(let last=first;last<=9;last++) {
   state.start=`2026-${String(first).padStart(2,'0')}`;
   state.end=`2026-${String(last).padStart(2,'0')}`;
   assert.ok(valid()); state.op='all'; const all=model();
-  const sub=['人力','汽车','数字员工'].map(op=>{state.op=op;return model();});
+  const sub=['人力','汽车','数字员工'].map((op,i)=>{state.op=op;const item=model();near(item.cost.financeTax,[1.4,2.2,.8][i]*(last-first+1));near(item.cost.financeExpense,[.5,.9,.4][i]*(last-first+1));return item;});
   for(const key of ['expected','realized','delta','costTotal','classifiedCost']) near(all[key],sub.reduce((s,x)=>s+x[key],0));
   for(const key of Object.keys(all.cost)) near(all.cost[key],sub.reduce((s,x)=>s+x.cost[key],0));
   for(const item of [all,...sub]) {
     near(item.classifiedCost,subjects.reduce((s,x)=>s+item.cost[x.key],0));
     near(item.classifiedCost,Object.values(item.groupTotals).reduce((s,x)=>s+x,0));
     near(item.costTotal,item.classifiedCost+item.cost.idle);
-    assert.equal(Object.keys(item.cost).some(key=>/finance|other/i.test(key)),false);
+    assert.equal(Object.keys(item.cost).length,8);
+    assert.ok(item.cost.financeTax>0&&item.cost.financeExpense>0);
     for(const g of costGroups) near(item.groupTotals[g.id],Array.from(g.items).reduce((s,[key])=>s+item.cost[key],0));
   }
   for(const key of ['signed','net','invoice','cash','pool']) near(all.sales[key],sub.reduce((s,x)=>s+x.sales[key],0));
@@ -52,11 +55,22 @@ state.start='2026-09';state.end='2026-09';state.op='all';
 const sample=model();near(sample.expected,176);near(sample.realized,146);near(sample.delta,30);
 near(sample.sales.signed,331);near(sample.sales.net,150);near(sample.sales.pool,420);
 assert.equal(sample.ps.filter(p=>context.audit.lateFor(p).length).length,2);
-near(sample.classifiedCost,195.32);near(sample.cost.idle,1.52);near(sample.costTotal,196.84);
-near(sample.groupTotals.op,38);near(sample.groupTotals.company,26);
+near(sample.classifiedCost,201.52);near(sample.cost.idle,1.52);near(sample.costTotal,203.04);
+near(sample.groupTotals.op,42.4);near(sample.groupTotals.company,27.8);
+near(sample.cost.financeTax,4.4);near(sample.cost.financeExpense,1.8);
+// Finance mock amounts must not silently become revenue-percentage accruals.
+const originalAmounts=milestones.map(r=>r.amount);
+milestones.forEach(r=>{r.amount*=2;});
+near(model().cost.financeTax,sample.cost.financeTax);near(model().cost.financeExpense,sample.cost.financeExpense);
+milestones.forEach((r,i)=>{r.amount=originalAmounts[i];});
 renderCosts(sample);
-assert.equal((nodes.get('#md-costs').innerHTML.match(/data-cost=/g)||[]).length,5);
-assert.equal(nodes.get('#md-costs').innerHTML.includes('财务'),false);
+assert.equal((nodes.get('#md-costs').innerHTML.match(/data-cost=/g)||[]).length,7);
+for(const [group,key,label] of [['op','financeTax','财务税费'],['company','financeExpense','财务费用']]) {
+  const renderedGroup=nodes.get('#md-costs').innerHTML.match(new RegExp(`<section[^>]+data-group="${group}"[\\s\\S]*?<\\/section>`))[0];
+  assert.ok(renderedGroup.includes(`data-cost="${key}"`));assert.ok(renderedGroup.includes(label));
+  assert.ok(renderedGroup.includes('模拟金额'));
+}
+assert.equal(nodes.get('#md-cost-total').textContent,'203.04 万');
 assert.ok(nodes.get('#md-cost-boundary').innerHTML.includes('归属待确认'));
 assert.ok(nodes.get('#md-idle-value').innerHTML.includes('已计入展示合计一次'));
 assert.equal(nodes.get('#md-idle-detail').hidden,true);
@@ -66,4 +80,4 @@ assert.equal((nodes.get('#md-idle-detail').innerHTML.match(/class="md-idle-perso
 state.idleOpen=false;renderCosts(sample);assert.equal(nodes.get('#md-idle-detail').hidden,true);
 state.start='2026-09';state.end='2026-01';assert.equal(valid(),false);
 state.start='2026-10';state.end='2026-10';assert.equal(valid(),false);
-console.log(JSON.stringify({result:'PASS',monthRanges:checks,organizations:4,checked:'汇总勾稽、商机不受时间影响、人工确认净签约、确收跨期差额、三组五项费用、财务费用不纳入、闲置只计一次、折叠区默认关闭、日期边界',sample:{expected:sample.expected,actual:sample.realized,delta:sample.delta,classifiedCost:sample.classifiedCost,idle:sample.cost.idle,cost:sample.costTotal}}));
+console.log(JSON.stringify({result:'PASS',monthRanges:checks,organizations:4,checked:'汇总勾稽、商机不受时间影响、人工确认净签约、确收跨期差额、三组七项费用、财务税费与财务费用独立归集及筛选、闲置只计一次、折叠区默认关闭、日期边界',sample:{expected:sample.expected,actual:sample.realized,delta:sample.delta,classifiedCost:sample.classifiedCost,financeTax:sample.cost.financeTax,financeExpense:sample.cost.financeExpense,idle:sample.cost.idle,cost:sample.costTotal}}));

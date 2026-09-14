@@ -19,7 +19,7 @@
 <div id="md-revenue" class="md-recognition"></div><div id="md-revenue-detail" hidden></div>
 <div class="md-operating-bottom">
 <section aria-label="成本构成">
-<div class="md-cost-header"><div><h3>成本构成</h3><span class="md-note">按最新科目框架 · 不含财务费用</span></div><div class="md-cost-total"><strong id="md-cost-total"></strong><span class="md-note">本期展示合计</span></div></div>
+<div class="md-cost-header"><div><h3>成本构成</h3><span class="md-note">按最新科目框架 · 三组七项费用</span></div><div class="md-cost-total"><strong id="md-cost-total"></strong><span class="md-note">本期展示合计</span></div></div>
 <div id="md-costs"></div><div id="md-cost-boundary" class="md-cost-boundary"></div>
 </section>
 <section class="md-idle"><h3>人员闲置</h3><div id="md-idle-value"></div><button id="md-idle-button" class="md-text-btn" type="button" aria-expanded="false" aria-controls="md-idle-detail">查看闲置人员明细 ↗</button><div id="md-idle-detail" hidden></div></section>
@@ -27,12 +27,12 @@
 <details class="md-rules" id="md-operating-rules"><summary>经营指标口径与待确认项</summary><ul>
 <li><b>确收：</b>阶段金额 = 已确认的阶段比例 × 对应净签约金额。预计按计划确认日期汇总；实际仅取已完成确认且实际确认日期落在区间内的记录，需有确认材料与审批依据。每个项目自行定义阶段，不统一套用比例模板。</li>
 <li><b>比例与差额：</b>Mock 暂按各阶段增量比例计算，累计比例需先转换为增量，不能重复计入。差额暂定义为预计 − 实际，正值表示未达；比例字段表达及差额正负方向待确认。差额下钻同时列出未按期完成和跨期补确认，保证能对账。</li>
-<li><b>最新费用框架：</b>成本下设“项目费用”；OP 费用下设“运营费用、销售费用”；经营费用下设“交付产研费用、管理费用”。金额按所选月份与 OP 归集，分组小计仅由所属科目相加，不与明细重复相加。科目占比 = 该科目金额 ÷ 本期展示合计。</li>
+<li><b>最新费用框架：</b>成本下设“项目费用”；OP 费用下设“运营费用、销售费用、财务税费”；经营费用下设“交付产研费用、管理费用、财务费用”。金额按所选月份与 OP 归集，分组小计仅由所属科目相加，不与明细重复相加。科目占比 = 该科目金额 ÷ 本期展示合计。</li>
 <li><b>项目费用：</b>本版 Mock 暂沿用 Σ（项目实际人天 × 对应 P 值）+ 项目直接费用，保留与项目看板的金额关联。截图未包含完整科目定义，项目费用是否包含人工、各类费用的具体边界，仍需按完整框架确认。P 值单位演示采用元/人天。</li>
 <li><b>OP / 经营费用：</b>运营、销售、交付产研、管理费用分别使用独立模拟金额，不从旧“运营成本”或“其他成本”复制后再累计。后续按飞书费用的核算科目归集；公共经营费用分摊到 OP 的规则需确认，当前 OP 归属仅用于演示筛选，不代表已完成真实数据对接。</li>
-<li><b>闲置与去重：</b>闲置成本 = Σ（闲置人天 × 对应 P 值），其在新科目框架中的归属尚未确定，暂列“待归属闲置”，只计入展示合计一次。展示合计 = 五项已分类费用 + 待归属闲置；右侧人员闲置是同一金额的辅助查看，不再次相加。归属确认后应转入对应科目并移除待归属项，不能两边同时保留；销售、售前、管理人员无项目工时不直接判作闲置。</li>
-<li><b>明确排除：</b>OP 与公司经营层级的财务费用本期均不展示、不参与合计、不填零，也不按确收金额 × 7% 或其他比例估算。本期展示合计不等于公司全口径成本，更不能直接作为法定财务利润。</li>
-<li><b>依据与来源：</b>确收沿用《经营看板指标体系与数据口径对齐》会议结论；成本科目按最新补充框架及“财务费用不纳入”的确认调整。计划来源为飞书项目、工时预算与费用记录；本页仍全部为模拟数据。</li>
+<li><b>闲置与去重：</b>闲置成本 = Σ（闲置人天 × 对应 P 值），其在新科目框架中的归属尚未确定，暂列“待归属闲置”，只计入展示合计一次。展示合计 = 七项已分类费用 + 待归属闲置；右侧人员闲置是同一金额的辅助查看，不再次相加。归属确认后应转入对应科目并移除待归属项，不能两边同时保留；销售、售前、管理人员无项目工时不直接判作闲置。</li>
+<li><b>财务税费 / 财务费用：</b>按最新要求分别纳入 OP 费用、经营费用，使用两个独立 Mock 科目金额，并按所选月份与 OP 汇总至各自小计和展示合计，不互相复制或重复归集。真实取数来源、两项科目边界、计提算法及组织分摊规则待确认；当前未按确收金额 × 7% 或其他比例计提，未取到的数据也不填成零。本期展示合计不等于公司全口径成本，更不能直接作为法定财务利润。</li>
+<li><b>依据与来源：</b>确收沿用《经营看板指标体系与数据口径对齐》会议结论；成本科目按最新补充框架及本次新增两项财务类科目的要求调整。项目、工时预算与普通费用计划来源为飞书记录，新增财务类科目来源待确认；本页仍全部为模拟数据。</li>
 </ul></details>
 </section>
 </main><footer class="md-footer"><span>依据：经营看板会议结论 + 最新成本科目补充</span><span>仅演示展示与算法 · 未修改飞书数据</span></footer><div id="md-live" class="md-live" aria-live="polite"></div>
@@ -58,20 +58,21 @@ for(let m=1;m<=9;m++){
     const ratio=p.id==='h'?1:p.id==='a'?aRatio[m-1]:dRatio[m-1],netValue=p.id==='h'?hPlan[m-1]:p.id==='a'?600:300;
     milestones.push({id:`r-${p.id}-${m}`,project:p.id,op:p.op,owner:p.owner,name:p.id==='h'?`${m}月服务确认`:p.id==='a'?`阶段 ${m} 验收`:`版本 ${m} 确认`,planned,actual,approved:actual!==null,ratio,net:netValue,amount:Math.round(netValue*ratio*100)/100});
     const idleDays=[4,5,6][i]+(m%3);idle.push({op:p.op,month:mkey(m),person:['员工 A','员工 B','员工 C'][i],days:idleDays,p:p.p,cost:idleDays*p.p/10000});
-    // Independent mock subject amounts; no finance fee or revenue-based accrual.
-    support.push({op:p.op,month:mkey(m),operating:[8,12,7][i],selling:[3,6,2][i],deliveryResearch:[4,8,5][i],management:[3,4,2][i]});
+    // Independent mock amounts in ten-thousand yuan, not revenue-based accruals.
+    // Finance sources, accounting boundaries and allocation rules remain unconfirmed.
+    support.push({op:p.op,month:mkey(m),operating:[8,12,7][i],selling:[3,6,2][i],financeTax:[1.4,2.2,.8][i],deliveryResearch:[4,8,5][i],management:[3,4,2][i],financeExpense:[.5,.9,.4][i]});
   });
 }
 contracts.push({id:'frame-h',op:'人力',day:'2026-01-01',amount:null,net:null,type:'开口框架'});
 const opportunities=[{op:'人力',status:'确保',amount:90},{op:'人力',status:'争取',amount:50},{op:'汽车',status:'确保',amount:120},{op:'汽车',status:'争取',amount:80},{op:'数字员工',status:'确保',amount:48},{op:'数字员工',status:'争取',amount:32},{op:'汽车',status:'已签',amount:168},{op:'数字员工',status:'战败',amount:70}];
 const sum=(rows,fn)=>rows.reduce((a,r)=>a+fn(r),0);const period=(d)=>!!d&&d.slice(0,7)>=state.start&&d.slice(0,7)<=state.end;const scope=r=>state.op==='all'||r.op===state.op;const value=n=>`${money(n)}<small>万元</small>`;
 function valid(){return /^2026-(0[1-9])$/.test(state.start)&&/^2026-(0[1-9])$/.test(state.end)&&state.start<=state.end;}
-const costGroups=[{id:'cost',label:'成本',items:[['project','项目费用']]},{id:'op',label:'OP 费用',items:[['operating','运营费用'],['selling','销售费用']]},{id:'company',label:'经营费用',items:[['deliveryResearch','交付产研费用'],['management','管理费用']]}];
+const costGroups=[{id:'cost',label:'成本',items:[['project','项目费用']]},{id:'op',label:'OP 费用',items:[['operating','运营费用'],['selling','销售费用'],['financeTax','财务税费']]},{id:'company',label:'经营费用',items:[['deliveryResearch','交付产研费用'],['management','管理费用'],['financeExpense','财务费用']]}];
 function model(){
  const cs=contracts.filter(r=>scope(r)&&period(r.day)),ps=projects.filter(scope),ws=work.filter(r=>scope(r)&&period(r.month)),ss=support.filter(r=>scope(r)&&period(r.month)),is=idle.filter(r=>scope(r)&&period(r.month)),rs=milestones.filter(scope);
  const planned=rs.filter(r=>period(r.planned)),actual=rs.filter(r=>r.approved&&period(r.actual)),expected=sum(planned,r=>r.amount),realized=sum(actual,r=>r.amount);
  const expense=sum(ws,r=>r.expense),labor=sum(ws,r=>r.actual),idling=sum(is,r=>r.cost);
- const cost={project:labor+expense,operating:sum(ss,r=>r.operating),selling:sum(ss,r=>r.selling),deliveryResearch:sum(ss,r=>r.deliveryResearch),management:sum(ss,r=>r.management),idle:idling};
+ const cost={project:labor+expense,operating:sum(ss,r=>r.operating),selling:sum(ss,r=>r.selling),financeTax:sum(ss,r=>r.financeTax),deliveryResearch:sum(ss,r=>r.deliveryResearch),management:sum(ss,r=>r.management),financeExpense:sum(ss,r=>r.financeExpense),idle:idling};
  const groupTotals=Object.fromEntries(costGroups.map(g=>[g.id,sum(g.items,([key])=>cost[key])]));const classifiedCost=sum(Object.values(groupTotals),n=>n),costTotal=classifiedCost+idling;
  return {cs,ps,ws,is,rs,planned,actual,expected,realized,delta:expected-realized,labor,expense,cost,groupTotals,classifiedCost,costTotal,sales:{signed:sum(cs.filter(r=>r.amount!==null),r=>r.amount),net:sum(cs.filter(r=>r.net!==null),r=>r.net),invoice:sum(invoices.filter(r=>scope(r)&&period(r.day)),r=>r.amount),cash:sum(payments.filter(r=>scope(r)&&period(r.day)),r=>r.amount),pool:sum(opportunities.filter(r=>scope(r)&&['确保','争取'].includes(r.status)),r=>r.amount)},pending:cs.filter(r=>r.amount!==null&&r.net===null).length};
 }
@@ -100,7 +101,7 @@ function renderRecognition(m){
 }
 function renderCosts(m){
  $('#md-cost-total').textContent=money(m.costTotal)+' 万';
- $('#md-costs').innerHTML=costGroups.map(g=>`<section class="md-cost-group" data-group="${g.id}" aria-label="${g.label}"><h4>${g.label}<span>小计 ${money(m.groupTotals[g.id])} 万</span></h4>${g.items.map(([key,label])=>{const share=m.costTotal?m.cost[key]/m.costTotal*100:0;return `<div class="md-cost-row" data-cost="${key}"><span>${label}</span><div class="md-track" role="img" aria-label="${label}占展示合计 ${money(share)}%"><i style="width:${share}%"></i></div><strong>${money(m.cost[key])} 万<small>${money(share)}%</small></strong></div>`;}).join('')}</section>`).join('');
+ $('#md-costs').innerHTML=costGroups.map(g=>`<section class="md-cost-group" data-group="${g.id}" aria-label="${g.label}"><h4>${g.label}<span>小计 ${money(m.groupTotals[g.id])} 万</span></h4>${g.items.map(([key,label])=>{const share=m.costTotal?m.cost[key]/m.costTotal*100:0;return `<div class="md-cost-row" data-cost="${key}"><span>${label}${['financeTax','financeExpense'].includes(key)?'<small>模拟金额</small>':''}</span><div class="md-track" role="img" aria-label="${label}占展示合计 ${money(share)}%"><i style="width:${share}%"></i></div><strong>${money(m.cost[key])} 万<small>${money(share)}%</small></strong></div>`;}).join('')}</section>`).join('');
  $('#md-cost-boundary').innerHTML=`<div class="md-cost-pending"><span>待归属闲置 <span class="md-tag">归属待确认</span></span><strong>${money(m.cost.idle)} 万</strong></div><span>已分类 ${money(m.classifiedCost)} 万 + 待归属闲置 ${money(m.cost.idle)} 万 = 展示合计 ${money(m.costTotal)} 万。右侧闲置为同一金额，不重复相加。</span>`;
  $('#md-idle-value').innerHTML=`<span class="md-value">${value(m.cost.idle)}</span><span class="md-note">${money(sum(m.is,r=>r.days))} 个闲置人天 · 已计入展示合计一次</span><span class="md-note">新科目归属待确认，暂列待归属项。</span>`;$('#md-idle-button').setAttribute('aria-expanded',String(state.idleOpen));
  const box=$('#md-idle-detail');box.hidden=!state.idleOpen;if(!state.idleOpen)return;const rows=ops.filter(op=>state.op==='all'||op===state.op).map(op=>{const rows=m.is.filter(r=>r.op===op);return {op,person:rows[0]?.person,days:sum(rows,r=>r.days),cost:sum(rows,r=>r.cost),p:rows[0]?.p};});
