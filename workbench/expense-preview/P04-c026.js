@@ -11,14 +11,14 @@ function resetDescriptionDraft() {
 }
 function descriptionDraft() {
   const groups = materialGroups()
-  const categories = groups.map(group => `${group.label}${money(group.reimbursableCents)}`).join('、')
+  const categories = categoryGroups(groups).map(group => `${group.name}${money(group.amountCents)}`).join('、')
   const ride = groups.find(group => group.code === 'RIDE')
   return `本次报销包含${categories}，合计${money(reviewAmountCents())}。${ride ? `网约车${ride.itineraries.length}张行程单与${ride.invoices.length}张发票按整组金额核对，行程单不重复计入。` : ''}`
 }
 function syncDescriptionDraft() {
   if (c026Edited) return
   c026Text.value = descriptionDraft()
-  c026Feedback.textContent = '合成初稿已按当前票据类别生成，可继续编辑；不代表真实 OCR 结果。'
+  c026Feedback.textContent = '合成初稿已按当前费用类别生成，可继续编辑；不代表真实 OCR 结果。'
 }
 c026Text.addEventListener('input', () => { c026Edited = true; c026Feedback.textContent = '已人工修改。确认前将先保存文本并重新预检。' })
 document.getElementById('c026-generate').addEventListener('click', () => {
@@ -32,7 +32,7 @@ document.getElementById('c026-generate').addEventListener('click', () => {
 })
 document.getElementById('c026-mismatch-demo').addEventListener('click', () => {
   demo('ready')
-  const rideInvoice = model.files.find(file => file.category === 'RIDE' && file.role === 'invoice')
+  const rideInvoice = model.files.find(file => file.materialKind === 'RIDE' && file.role === 'invoice')
   rideInvoice.amountCents += 1200
   renderReview('ready')
 })

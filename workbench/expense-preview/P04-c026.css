@@ -4,6 +4,12 @@
 .expense-section-head strong,.c026-description-head strong{font-size:14px}
 .expense-section-head span{font-size:11px;color:#8794aa}
 .expense-overview>p{font-size:11px;line-height:1.6;color:#8592a6;margin:12px 0 0}
+.category-help{font-size:11px;line-height:1.65;color:#7c899d;margin:10px 0 0}
+.category-directory{border:1px solid #e5eafa;border-radius:8px;margin-top:12px;padding:0 12px}
+.category-directory summary{cursor:pointer;padding:12px 0;font-size:12px;font-weight:650;color:#5068c5}
+.category-directory>div{border-top:1px solid #edf0f7;padding:12px 0;display:flex;flex-wrap:wrap;gap:7px}
+.category-chip{display:inline-flex;border:1px solid #e0e6ef;border-radius:99px;padding:5px 9px;font-size:11px;color:#718097;background:#f9fafc}
+.category-chip.active{background:#edf2ff;border-color:#bdd0fb;color:#4763c4;font-weight:650}
 .expense-metrics{display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:9px;margin-top:15px}
 .expense-metric{min-width:0;padding:12px;background:#f7f9fd;border-radius:8px}
 .expense-metric small,.expense-metric b{display:block;overflow-wrap:anywhere}
@@ -17,6 +23,10 @@
 .expense-group-title{font-size:13px;font-weight:700;color:#33425c}
 .expense-group-count{font-size:11px;color:#8996a9;margin-top:5px}
 .expense-group-amount{text-align:right;white-space:nowrap}.expense-group-amount b{display:block;color:#2b3852;font-size:17px}.expense-group-amount small{font-size:10px;color:#8b98ab}
+.category-reason{font-size:11px;color:#7688a5;margin-top:10px}
+.material-checks{border-top:1px solid #e9edf4;margin-top:13px}
+.material-check{padding:13px 0 0}.material-check+.material-check{border-top:1px dashed #e3e9f2;margin-top:13px}
+.material-check-head{display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:12px;color:#53627b}.material-check-head b{font-size:13px;color:#33425c}
 .expense-group-status{display:inline-block;margin-top:11px;font-size:11px;padding:5px 8px;border-radius:99px;color:#358a69;background:#edf8f1}
 .expense-group-status.attention{color:#986b35;background:#fff5e7}.expense-group-status.mismatch{color:#b45d47;background:#fff0e9}
 .expense-group-note{font-size:11px;color:#6d7d94;line-height:1.6;margin:10px 0 0}
