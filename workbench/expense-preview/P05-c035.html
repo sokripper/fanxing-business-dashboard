@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>P05 财务辅助审核台 · C-035 候选</title>
+  <title>P05 财务审核与打印台 · C-035 候选</title>
   <style>
     :root{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:#202630;background:#f7f8fa}
     *{box-sizing:border-box}body{margin:0}button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed}
@@ -23,13 +23,23 @@
     .paper table{table-layout:fixed}.paper td,.paper th{border:1px solid #30343a;padding:7px 9px;text-align:left;overflow-wrap:anywhere;font-weight:400}
     .paper th{text-align:center;font-weight:600}.paper .label,.paper thead{background:#f2f3f5}.paper td.nested{padding:0;border-right:0;border-left:0}.paper .nested table{margin:-1px 0;width:100%;border-collapse:collapse}.paper .generated-note{font-size:10px;color:#6f7580;margin-top:10px}.originals-placeholder{min-height:250px}
     @media(max-width:680px){.paper{padding:20px 10px;font-size:11px;min-width:570px}.paper-meta{font-size:10px}.paper td,.paper th{padding:6px}}
+    .batch-toolbar button:disabled{opacity:.45;cursor:not-allowed}
+    .batch-toolbar .reject,.drawer-actions .reject{border-color:#e9b8b8;background:#fff;color:#aa4242}
+    .batch-toolbar .approve,.drawer-actions .approve{border-color:#426fdf;background:#426fdf;color:#fff}
+    .approval-modal{position:fixed;inset:0;z-index:40;display:grid;place-items:center;background:#1a253677;padding:20px}
+    .approval-modal-card{width:min(480px,100%);background:#fff;border-radius:12px;padding:25px;box-shadow:0 15px 50px #12192635}
+    .approval-modal-card h2{font-size:19px;margin-bottom:12px}.approval-modal-card p{color:#617082;font-size:13px;line-height:1.6}
+    .approval-modal-card textarea{width:100%;min-height:92px;resize:vertical;border:1px solid #cfd7e4;border-radius:7px;padding:10px;font:inherit}
+    .approval-modal-card label{display:block;font-size:13px;font-weight:650;margin:16px 0 8px}
+    .approval-modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}.approval-modal-actions button{border:1px solid #dce2eb;background:#fff;border-radius:7px;padding:9px 17px}
+    .approval-modal-actions .confirm{background:#426fdf;border-color:#426fdf;color:#fff}.approval-modal-actions .confirm.reject{background:#aa4242;border-color:#aa4242}
   </style>
 </head>
 <body>
 <main class="workspace">
-  <p class="eyebrow">财务专属 · 辅助审核</p>
-  <h1>把问题看清楚，再到飞书审批</h1>
-  <p class="intro">工作台展示辅助核对事实与关注点；财务决定仍由本人在飞书完成。</p>
+  <p class="eyebrow">财务专属 · 审批处理与打印</p>
+  <h1>核对材料，在这里处理审批</h1>
+  <p class="intro">财务可对本人待办单笔或批量通过、驳回；整单最终通过后进入待打印。本静态原型只演示交互，不连接飞书。</p>
   <section class="overview" aria-label="财务概览">
     <button class="overview-card active" data-view="todo"><span class="label">◉ 待我审核</span><strong id="todo-count">2</strong></button>
     <button class="overview-card" data-view="toPrint"><span class="label">▤ 待打印</span><strong id="toPrint-count">1</strong></button>
@@ -37,8 +47,8 @@
   </section>
   <section class="list-card" aria-label="财务报销统一列表">
     <div class="list-toolbar"><div class="tabs" role="tablist"><button class="tab active" data-view="todo">待我审核</button><button class="tab" data-view="progress">审批流转中</button><button class="tab" data-view="toPrint">待打印</button><button class="tab" data-view="printed">已打印</button><button class="tab" data-view="all">全部</button></div><div class="search-wrap"><input id="search" aria-label="搜索申请人或报销内容" placeholder="搜索申请人或报销内容"><button id="refresh">刷新</button></div></div>
-    <div class="status-line" id="sync-status" aria-live="polite">演示数据仅用于核对布局；正式页面从可信接口分页读取。</div>
-    <div id="batch-toolbar" class="batch-toolbar" hidden><span id="selected-count">已选 0 笔</span><button class="primary" id="batch-print" disabled>批量打印</button><span class="sub">每批最多 50 笔</span></div><div class="table-wrap"><table class="cases"><thead><tr><th class="check-col"><input id="check-all" type="checkbox" aria-label="选择本页可打印单据"></th><th>报销单</th><th>金额</th><th>核查建议</th><th>需要关注</th><th>状态</th><th>操作</th></tr></thead><tbody id="rows"></tbody></table></div>
+    <div class="status-line" id="sync-status" aria-live="polite">演示数据与操作均不连接飞书，不会改变真实审批状态。</div>
+    <div id="batch-toolbar" class="batch-toolbar" hidden><span id="selected-count">已选 0 笔</span><button class="approve" id="batch-approve" hidden disabled>批量通过</button><button class="reject" id="batch-reject" hidden disabled>批量驳回</button><button class="primary" id="batch-print" hidden disabled>批量打印</button><span class="sub" id="batch-hint"></span></div><div class="table-wrap"><table class="cases"><thead><tr><th class="check-col"><input id="check-all" type="checkbox" aria-label="选择本页可操作单据"></th><th>报销单</th><th>金额</th><th>核查建议</th><th>需要关注</th><th>状态</th><th>操作</th></tr></thead><tbody id="rows"></tbody></table></div>
   </section>
 </main>
 <div class="overlay" id="overlay"><aside class="drawer" role="dialog" aria-modal="true" aria-label="报销详情">
@@ -48,15 +58,17 @@
     <div class="facts"><div class="fact"><span>来源</span><span id="source">飞书来源</span></div><div class="fact"><span>费用归属</span><span id="attribution">当前授权归属</span></div><div class="fact"><span>付款公司</span><span id="company">待核验</span></div><div class="fact"><span>飞书审批</span><span id="state">待核验</span></div></div>
     <section class="section first"><div class="section-title"><h2>核查结论</h2><span class="tag" id="drawer-tag">证据不足</span></div><div class="conclusion" id="conclusion">当前材料正在核对。</div></section>
     <section class="section"><h2>证据与需要关注</h2><p class="notice" id="attention"></p><div class="evidence"><div class="evidence-item">金额核对<b id="amount-check">待核对</b></div><div class="evidence-item">发票验重<b id="duplicate-check">无法确认</b></div><div class="evidence-item">税务验真<b id="tax-check">未验证</b></div><div class="evidence-item">原件完整性<b id="material-check">待核对</b></div></div><div class="drawer-actions"><button id="feishu-link">查看原飞书实例</button><button id="retry">重试状态查询</button></div></section>
+    <section class="section" id="approval-section" hidden><h2>处理当前待办</h2><p class="notice">核查建议仅供参考，不自动决定审批。通过后仍须等待飞书后续节点全部通过；驳回后退出当前待办。原型操作不会提交到飞书。</p><div class="drawer-actions"><button class="approve" id="single-approve">通过</button><button class="reject" id="single-reject">驳回</button></div></section>
     <section class="section"><h2>打印材料</h2><p class="notice" id="print-note">仅整单最终通过且同实例原件齐备后，才可生成预览。</p><div class="drawer-actions"><button class="primary" id="preview" disabled>打印本单</button><button id="reopen" hidden>查看打印材料</button></div></section>
   </div>
 </aside></div>
+<div id="approval-dialog" class="approval-modal" role="dialog" aria-modal="true" aria-labelledby="approval-dialog-title" hidden><div class="approval-modal-card"><h2 id="approval-dialog-title">确认审批操作</h2><p id="approval-dialog-summary"></p><p>这是静态演示：确认后只会改变本页样例状态，不会调用飞书接口或处理真实单据。</p><div id="approval-reason-wrap" hidden><label for="approval-reason">驳回原因（必填）</label><textarea id="approval-reason" placeholder="请填写给申请人的驳回原因"></textarea></div><div class="approval-modal-actions"><button id="approval-cancel">取消</button><button class="confirm" id="approval-confirm">确认</button></div></div></div>
 <section id="print-preview" class="preview-modal" role="dialog" aria-modal="true" aria-label="打印材料预览" hidden>
 <div class="preview-actions"><h2>打印材料预览</h2><div><button class="secondary" id="preview-close">返回列表</button> <button id="print-now">打印</button></div></div>
 <p class="preview-note">原型示例，不含真实审批或票据。正式材料按单排列：工作台生成审批总览 → 发票原件 → 行程单原件。</p><div id="print-result" class="result-feedback" aria-live="polite"></div><div id="papers"></div></section>
 <script>
 // 设计原型中的合成展示数据；不请求业务服务、不生成业务打印记录。
-const statusLabels={todo:'待我审核',progress:'审批流转中',toPrint:'待打印',printed:'已打印'};
+const statusLabels={todo:'待我审核',progress:'审批流转中',toPrint:'待打印',printed:'已打印',rejected:'已驳回'};
 const cases=[
  {id:'样例 A',applicant:'申请人甲',expense:'差旅费用',source:'飞书来源',amount:'¥138.50',conclusion:'证据不足',attention:'原件处理中；验重范围不足，无法确认',view:'todo',material:'部分取得',ready:false},
  {id:'样例 B',applicant:'申请人乙',expense:'财务费用',source:'工作台来源',amount:'¥201.60',conclusion:'存在异常',attention:'票面金额与申报金额不一致',view:'todo',material:'已取得',ready:true},
@@ -65,25 +77,33 @@ const cases=[
  {id:'样例 E',applicant:'申请人戊',expense:'管理费用',source:'飞书来源',amount:'¥180.00',conclusion:'可辅助核对',attention:'已记录打印操作，如未成功，可再次打印',view:'printed',material:'已取得',ready:true},
  {id:'样例 F',applicant:'申请人己',expense:'差旅费用',source:'工作台来源',amount:'¥128.00',conclusion:'证据不足',attention:'缺少一份行程单原件，不能生成打印材料',view:'toPrint',material:'缺少行程单',ready:false}
 ];
-let view='todo',selected=null,syncFailed=false,printScope=[],printStarted=false;
+let view='todo',selected=null,syncFailed=false,printScope=[],printStarted=false,pendingApproval=null;
 const checked=new Set();const $=id=>document.getElementById(id);
 const safe=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function mayPrint(x){return ['toPrint','printed'].includes(x.view)&&x.ready&&!syncFailed}
+function mayApprove(x){return x.view==='todo'&&!syncFailed}
+function maySelect(x){return view==='todo'?mayApprove(x):['toPrint','printed'].includes(view)?mayPrint(x):false}
 function searched(){const q=$('search').value.trim();return cases.filter(x=>!q||(x.applicant+x.expense+x.id).includes(q))}
 function currentCases(){return searched().filter(x=>view==='all'||x.view===view)}
 function render(){
  const list=currentCases();for(const v of ['todo','toPrint','printed'])$(v+'-count').textContent=searched().filter(x=>x.view===v).length;
- $('batch-toolbar').hidden=!['toPrint','printed'].includes(view);
- $('selected-count').textContent=`已选 ${checked.size} 笔`;$('batch-print').textContent=view==='printed'?'批量再次打印':'批量打印';$('batch-print').disabled=checked.size===0||syncFailed;
- $('check-all').disabled=!list.some(mayPrint);$('check-all').checked=list.some(mayPrint)&&list.filter(mayPrint).every(x=>checked.has(x.id));
- $('rows').innerHTML=list.length?list.map(x=>`<tr><td><input type="checkbox" aria-label="选择${safe(x.id)}" data-check="${safe(x.id)}" ${mayPrint(x)?'':'disabled'} ${checked.has(x.id)?'checked':''}></td><td><button class="case-main" data-id="${safe(x.id)}">${safe(x.applicant)} · ${safe(x.expense)}</button><span class="sub">${safe(x.source)}</span></td><td class="amount">${safe(x.amount)}</td><td><span class="tag ${x.conclusion==='存在异常'?'bad':x.conclusion==='证据不足'?'warn':''}">${safe(x.conclusion)}</span></td><td class="focus">${safe(syncFailed?'状态暂无法确认，请重试':x.attention)}</td><td class="business-state">${statusLabels[x.view]}</td><td><button class="action" data-id="${safe(x.id)}">查看 ›</button></td></tr>`).join(''):'<tr><td class="empty" colspan="7">当前筛选没有可展示的单据</td></tr>';
+ $('batch-toolbar').hidden=!['todo','toPrint','printed'].includes(view);
+ $('batch-approve').hidden=view!=='todo';$('batch-reject').hidden=view!=='todo';$('batch-print').hidden=view==='todo';
+ $('batch-hint').textContent=view==='todo'?'仅可选择当前待我审核的单据；演示操作不提交飞书':'每批最多 50 笔';
+ $('selected-count').textContent=`已选 ${checked.size} 笔`;
+ $('batch-approve').disabled=checked.size===0||syncFailed;$('batch-reject').disabled=checked.size===0||syncFailed;
+ $('batch-print').textContent=view==='printed'?'批量再次打印':'批量打印';$('batch-print').disabled=checked.size===0||syncFailed;
+ const eligible=list.filter(maySelect);$('check-all').disabled=eligible.length===0;$('check-all').checked=eligible.length>0&&eligible.every(x=>checked.has(x.id));
+ $('check-all').setAttribute('aria-label',view==='todo'?'选择本页待我审核单据':'选择本页可打印单据');
+ $('rows').innerHTML=list.length?list.map(x=>`<tr><td><input type="checkbox" aria-label="选择${safe(x.id)}" data-check="${safe(x.id)}" ${maySelect(x)?'':'disabled'} ${checked.has(x.id)?'checked':''}></td><td><button class="case-main" data-id="${safe(x.id)}">${safe(x.applicant)} · ${safe(x.expense)}</button><span class="sub">${safe(x.source)}</span></td><td class="amount">${safe(x.amount)}</td><td><span class="tag ${x.conclusion==='存在异常'?'bad':x.conclusion==='证据不足'?'warn':''}">${safe(x.conclusion)}</span></td><td class="focus">${safe(syncFailed?'状态暂无法确认，请重试':x.attention)}</td><td class="business-state">${statusLabels[x.view]}</td><td><button class="action" data-id="${safe(x.id)}">查看 ›</button></td></tr>`).join(''):'<tr><td class="empty" colspan="7">当前筛选没有可展示的单据</td></tr>';
  document.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>openDetail(cases.find(x=>x.id===b.dataset.id)));
  document.querySelectorAll('[data-check]').forEach(b=>b.onchange=()=>{b.checked?checked.add(b.dataset.check):checked.delete(b.dataset.check);render()});
 }
 function openDetail(x){
- selected=x;$('drawer-id').textContent=x.source;$('drawer-title').textContent=`${x.applicant}的报销单`;$('expense').textContent=x.expense;$('applicant').textContent=x.applicant;$('drawer-amount').textContent=x.amount;$('source').textContent=x.source;$('attribution').textContent='当前组织与费用归属（示例）';$('company').textContent='当前授权付款主体（示例）';$('state').textContent=syncFailed?'状态暂无法确认':['toPrint','printed'].includes(x.view)?'整单最终通过':x.view==='progress'?'审批流转中，当前无需你处理':'当前待你在飞书审核';
+ selected=x;$('drawer-id').textContent=x.source;$('drawer-title').textContent=`${x.applicant}的报销单`;$('expense').textContent=x.expense;$('applicant').textContent=x.applicant;$('drawer-amount').textContent=x.amount;$('source').textContent=x.source;$('attribution').textContent='当前组织与费用归属（示例）';$('company').textContent='当前授权付款主体（示例）';$('state').textContent=syncFailed?'状态暂无法确认':['toPrint','printed'].includes(x.view)?'整单最终通过':x.view==='progress'?'审批流转中，等待后续节点':x.view==='rejected'?'已驳回（演示）':'当前待你在平台审核';
  $('drawer-tag').textContent=x.conclusion;$('conclusion').textContent=x.attention+'。辅助结论不代表审批结果。';$('conclusion').classList.toggle('warn',x.conclusion!=='可辅助核对');$('attention').textContent=x.attention;$('amount-check').textContent=x.conclusion==='存在异常'?'金额不一致，查看原始凭证':'按已取得的材料核对';$('duplicate-check').textContent=x.conclusion==='证据不足'?'验重范围不足/无法确认':'可信范围内未发现重复';$('tax-check').textContent='低于阈值，未做税务验真';$('material-check').textContent=x.material;
  $('print-note').textContent=syncFailed?'状态暂无法确认，重试成功前不可打印':!['toPrint','printed'].includes(x.view)?'整单尚未最终通过，不可打印':!x.ready?'缺少行程单原件，请查看对应飞书实例':x.view==='printed'?'已记录打印操作，如未成功，可再次打印。':'整单已通过，可生成工作台审批总览并与同单原件合并。';
+ $('approval-section').hidden=x.view!=='todo';$('single-approve').disabled=!mayApprove(x);$('single-reject').disabled=!mayApprove(x);
  $('preview').textContent=x.view==='printed'?'再次打印':'打印本单';$('preview').disabled=!mayPrint(x);$('reopen').hidden=x.view!=='printed';$('reopen').disabled=!mayPrint(x);$('overlay').classList.add('open');
 }
 function showPreview(items){
@@ -111,7 +131,37 @@ function showPreview(items){
 }
 function setView(v){view=v;checked.clear();document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===view));render()}
 document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>setView(b.dataset.view));
-$('search').oninput=()=>{checked.clear();render()};$('check-all').onchange=e=>{currentCases().filter(mayPrint).forEach(x=>e.target.checked?checked.add(x.id):checked.delete(x.id));render()};
+$('search').oninput=()=>{checked.clear();render()};$('check-all').onchange=e=>{currentCases().filter(maySelect).forEach(x=>e.target.checked?checked.add(x.id):checked.delete(x.id));render()};
+function openApprovalDialog(action,items){
+ if(!items.length||items.some(x=>!mayApprove(x)))return;
+ pendingApproval={action,items};
+ const rejecting=action==='reject';
+ $('approval-dialog-title').textContent=rejecting?'确认驳回':'确认通过';
+ $('approval-dialog-summary').textContent=`将对 ${items.length} 笔本人待办${rejecting?'驳回':'通过'}。${rejecting?'驳回后退出当前待办。':'通过后进入审批流转中，只有整单最终通过后才能打印。'}`;
+ $('approval-reason-wrap').hidden=!rejecting;$('approval-reason').value='';$('approval-reason').setCustomValidity('');
+ $('approval-confirm').textContent=rejecting?'确认驳回':'确认通过';$('approval-confirm').classList.toggle('reject',rejecting);
+ $('approval-dialog').hidden=false;
+ if(rejecting)$('approval-reason').focus();else $('approval-confirm').focus();
+}
+function closeApprovalDialog(){pendingApproval=null;$('approval-dialog').hidden=true}
+$('batch-approve').onclick=()=>openApprovalDialog('approve',cases.filter(x=>checked.has(x.id)));
+$('batch-reject').onclick=()=>openApprovalDialog('reject',cases.filter(x=>checked.has(x.id)));
+$('single-approve').onclick=()=>openApprovalDialog('approve',[selected]);
+$('single-reject').onclick=()=>openApprovalDialog('reject',[selected]);
+$('approval-cancel').onclick=closeApprovalDialog;
+$('approval-dialog').onclick=e=>{if(e.target===$('approval-dialog'))closeApprovalDialog()};
+$('approval-confirm').onclick=()=>{
+ if(!pendingApproval)return;
+ const {action,items}=pendingApproval;
+ const reason=$('approval-reason').value.trim();
+ if(action==='reject'&&!reason){$('approval-reason').setCustomValidity('请填写驳回原因');$('approval-reason').reportValidity();return}
+ $('approval-reason').setCustomValidity('');
+ items.forEach(x=>{x.view=action==='approve'?'progress':'rejected';x.attention=action==='approve'?'财务节点已通过（演示）；等待飞书后续审批节点':'财务已驳回（演示）：'+reason});
+ checked.clear();closeApprovalDialog();
+ $('sync-status').textContent=`演示：${items.length} 笔已${action==='approve'?'通过并进入审批流转中':'驳回'}；仅改变本页样例，不会调用飞书。`;
+ render();
+ if(selected&&$('overlay').classList.contains('open'))openDetail(selected);
+};
 $('batch-print').onclick=()=>showPreview(cases.filter(x=>checked.has(x.id)));$('preview').onclick=()=>showPreview([selected]);$('reopen').onclick=()=>showPreview([selected]);
 $('print-now').onclick=()=>{printStarted=true;$('print-now').disabled=true;$('print-result').textContent='等待浏览器打印返回；尚未记录已打印。';try{window.print()}catch(e){printStarted=false;$('print-now').disabled=false;$('print-result').textContent='打印调用失败，请重试。'}};
 window.addEventListener('afterprint',()=>{if(!printStarted)return;printStarted=false;printScope.forEach(x=>{x.view='printed';x.attention='已记录打印操作，如未成功，可再次打印'});checked.clear();$('print-now').disabled=false;$('print-result').textContent='原型已收到浏览器返回，仅更新示例状态；不代表实际出纸或正式接口验收。';render();if(selected&&$('overlay').classList.contains('open'))openDetail(selected)});
