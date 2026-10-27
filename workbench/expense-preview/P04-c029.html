@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>梵行报销助手 · P04 C029 网约车整组金额核对</title>
+  <title>梵行报销助手 · 个人侧混合票据核对原型</title>
   <link rel="stylesheet" href="./P04-c022.css">
-  <link rel="stylesheet" href="./P04-c026.css">
+  <link rel="stylesheet" href="./P04-c026.css?v=mixed-groups-1">
   <style>.ride-batch-confirmation{display:flex;align-items:center;gap:10px;margin:16px 0 6px;padding:14px 16px;border:1px solid #d7e3f4;border-radius:10px;background:#f5f9ff;font-weight:600}.ride-batch-confirmation input{width:18px;height:18px;flex:none}.ride-batch-confirmation+.footer-hint{display:block;margin:0 0 8px 0}@media(max-width:375px){.ride-batch-confirmation{align-items:flex-start}}</style>
 </head>
 <body>
@@ -28,23 +28,20 @@
 
     <section id="compose-panel" class="surface form-surface" aria-label="费用归属与上传材料">
       <div class="section-head"><div class="section-icon">01</div><div><h2>这笔费用属于哪里？</h2><p>项目费用按项目带出组织；其他费用选择实际发生的组织。</p></div></div>
-      <fieldset class="field-group"><legend>费用类型 <em>*</em></legend><div class="type-grid" id="type-grid"></div></fieldset>
+      <fieldset class="field-group"><legend>费用类型／整单归属 <em>*</em></legend><div class="type-grid" id="type-grid"></div><p class="field-help">这里确定整单费用归属；同一报销单可以包含不同票据类别，系统会在下一步分别核对。</p></fieldset>
       <div id="attribution" class="attribution"></div>
       <div class="divider"></div>
       <div class="section-head"><div class="section-icon">02</div><div><h2>上传材料</h2><p>图片和 PDF 使用同一入口；每份材料都可以单独查看处理结果。</p></div></div>
       <div class="upload-zone" id="upload-zone"><span class="upload-icon" aria-hidden="true">↑</span><div><strong>选择图片或 PDF</strong><small>本视觉稿只加入合成文件名，不读取本地文件</small></div><button id="add-demo-file" type="button" class="button secondary">加入演示文件</button></div>
       <div id="file-list" class="file-list" aria-live="polite"></div><p id="precheck-error" class="inline-error" hidden>暂时无法完成识别，请稍后重试。您选择的费用归属和材料已保留。</p>
-      <p class="footer-hint">本报销单材料直接进入整组核对；系统分别识别发票和行程单并比较合计。金额相等不代表验真或其他校验通过。</p>
+      <p class="footer-hint">系统按票据类别汇总可报销金额；行程单是网约车金额核对依据，不与发票重复计入。金额匹配不代表其他校验通过。</p>
       <div class="card-footer"><span class="footer-hint">材料保存后再预检；失败的文件不会被当作已上传。</span><button id="precheck-button" class="button primary" type="button">保存并查看结论 <span aria-hidden="true">→</span></button></div>
     </section>
 
     <section id="review-panel" class="surface review-surface" hidden aria-label="预检与本人确认">
       <div class="review-top"><div><span class="eyebrow">系统预检结论</span><h2 id="review-title"></h2><p id="review-description"></p></div><span class="review-state" id="review-state"></span></div>
-      <section class="c026-trip" aria-label="网约车整组金额核对">
-        <div class="c026-trip-head"><strong>网约车整批金额核对</strong><span id="c026-trip-status">金额匹配；其他规则单独判断</span></div>
-        <div class="c026-trip-amounts"><div><small>行程单合计金额 · 本组报销金额</small><b>¥ 138.50</b></div><div><small>关联发票价税合计</small><b>¥ 138.50</b></div><div><small>差额</small><b id="c026-difference">¥ 0.00</b></div></div>
-        <details><summary>查看逐附件与页码依据</summary><p>行程单（演示，页 1）¥ 138.50；发票 A（演示）¥ 56.88；发票 B（演示）¥ 81.62。两组金额分别求和，不相加。</p></details>
-      </section>
+      <section class="expense-overview" aria-label="整单费用汇总"><div class="expense-section-head"><strong>本单费用汇总</strong><span>按票据类别分组</span></div><div id="expense-summary" class="expense-metrics"></div><p>网约车行程单只作核对依据，不重复计入报销总额；其他类别按已识别发票金额汇总。</p></section>
+      <section class="category-breakdown" aria-label="分类票据核对"><div class="expense-section-head"><strong>按费用类别核对</strong><span id="category-count"></span></div><div id="expense-groups" class="expense-groups"></div></section>
       <section class="c026-description" aria-label="整单费用描述">
         <div class="c026-description-head"><div><strong>费用描述</strong><p>系统可根据本次材料生成初稿；您可以修改。票面和金额仍由系统生成。</p></div><button type="button" class="button secondary" id="c026-generate">生成初稿</button></div>
         <textarea id="c026-description-text" rows="3" aria-label="可编辑的整单费用描述" placeholder="可自行填写；留空不影响已合格材料提交"></textarea>
@@ -65,8 +62,8 @@
 
   <div id="confirm-overlay" class="confirm-overlay" hidden><div class="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-title"><div class="dialog-icon">!</div><h2 id="confirm-title">当前内容尚未保存</h2><p>重新处理历史申请会替换当前页面未保存的输入。您可以先返回保存，或者放弃当前输入后继续。</p><div><button id="confirm-cancel" class="button secondary" type="button">返回当前内容</button><button id="confirm-continue" class="button danger" type="button">放弃并继续</button></div></div></div>
 
-  <div class="demo-controls" aria-label="视觉稿场景控制"><strong>视觉稿场景</strong><button type="button" data-demo="blank">空白</button><button type="button" data-demo="partial">多文件部分失败</button><button type="button" data-demo="prechecking">预检中</button><button type="button" data-demo="precheck-failed">预检失败</button><button type="button" data-demo="ready">可确认</button><button type="button" id="c026-mismatch-demo">网约车金额不符</button><button type="button" id="c026-generate-fail-demo">生成失败可手填</button><button type="button" data-demo="supplement">需补材料</button><button type="button" data-demo="submitting">提交中</button><label>提交回执 <select id="outcome-choice"><option value="success">成功</option><option value="failed">明确失败</option><option value="unknown">结果未知</option><option value="before-attempt">提交前拒绝</option></select></label></div>
-  <script src="./P04-c022.js"></script>
-  <script src="./P04-c026.js"></script>
+  <div class="demo-controls" aria-label="视觉稿场景控制"><strong>视觉稿场景</strong><button type="button" data-demo="blank">空白</button><button type="button" data-demo="partial">多文件部分失败</button><button type="button" data-demo="prechecking">预检中</button><button type="button" data-demo="precheck-failed">预检失败</button><button type="button" data-demo="ready">混合票据可确认</button><button type="button" id="c026-mismatch-demo">网约车金额不符</button><button type="button" id="c026-generate-fail-demo">生成失败可手填</button><button type="button" data-demo="supplement">需补材料</button><button type="button" data-demo="submitting">提交中</button><label>提交回执 <select id="outcome-choice"><option value="success">成功</option><option value="failed">明确失败</option><option value="unknown">结果未知</option><option value="before-attempt">提交前拒绝</option></select></label></div>
+  <script src="./P04-c022.js?v=mixed-groups-1"></script>
+  <script src="./P04-c026.js?v=mixed-groups-1"></script>
 </body>
 </html>

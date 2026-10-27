@@ -7,6 +7,24 @@ const expenseTypes = [
   ['PROJECT', '项目费用'], ['SALES', '销售费用'], ['FINANCE', '财务费用'],
   ['MANAGEMENT', '管理费用'], ['OPERATIONS', '运营费用']
 ]
+const materialCategories = [
+  ['RIDE', '网约车'], ['FLIGHT', '飞机票'], ['HOTEL', '酒店住宿'],
+  ['DINING', '餐饮'], ['OTHER', '其他费用']
+]
+const mixedDemoMaterials = [
+  ['网约车发票_01.pdf', 'RIDE', 'invoice', 5688],
+  ['网约车发票_02.pdf', 'RIDE', 'invoice', 8162],
+  ['网约车行程单_01.pdf', 'RIDE', 'itinerary', 13850],
+  ['飞机票_01.pdf', 'FLIGHT', 'invoice', 68000],
+  ['飞机票_02.pdf', 'FLIGHT', 'invoice', 58000],
+  ['酒店住宿_01.pdf', 'HOTEL', 'invoice', 28000],
+  ['酒店住宿_02.pdf', 'HOTEL', 'invoice', 32000],
+  ['酒店住宿_03.pdf', 'HOTEL', 'invoice', 30000],
+  ['餐饮发票_01.pdf', 'DINING', 'invoice', 8860],
+  ['餐饮发票_02.pdf', 'DINING', 'invoice', 7800],
+  ['餐饮发票_03.pdf', 'DINING', 'invoice', 8000]
+]
+const money = cents => `¥ ${(cents / 100).toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
 const projects = [
   { id: 'visual-project-one', name: '数字员工－内部运营助手', stages: ['内部研发'], iteration: '无' },
   { id: 'visual-project-many', name: '演示项目－多阶段协作', stages: ['方案设计', '项目交付'], iteration: '无' }
@@ -46,6 +64,7 @@ function resetDraft() {
   $('acknowledge').checked = false
   $('precheck-error').hidden = true
   $('submit-error').hidden = true
+  if (typeof resetDescriptionDraft === 'function') resetDescriptionDraft()
 }
 
 function selectedProject() { return projects.find(project => project.id === model.projectId) }
@@ -57,6 +76,23 @@ function attributionReady() {
 function successfulFiles() { return model.files.filter(file => file.status === 'success') }
 function pendingFiles() { return model.files.filter(file => file.status !== 'success') }
 function typeLabel() { return expenseTypes.find(([code]) => code === model.expenseType)?.[1] || '未选择' }
+function categoryLabel(code) { return materialCategories.find(([key]) => key === code)?.[1] || '其他费用' }
+function materialGroups() {
+  return materialCategories.map(([code, label]) => {
+    const files = successfulFiles().filter(file => file.category === code)
+    const invoices = files.filter(file => file.role === 'invoice')
+    const itineraries = files.filter(file => file.role === 'itinerary')
+    const invoiceCents = invoices.reduce((sum, file) => sum + file.amountCents, 0)
+    const itineraryCents = itineraries.reduce((sum, file) => sum + file.amountCents, 0)
+    return {
+      code, label, files, invoices, itineraries, invoiceCents, itineraryCents,
+      reimbursableCents: code === 'RIDE' ? (itineraryCents || invoiceCents) : invoiceCents,
+      mismatch: code === 'RIDE' && files.length > 0 &&
+        (!invoices.length || !itineraries.length || invoiceCents !== itineraryCents)
+    }
+  }).filter(group => group.files.length)
+}
+function reviewAmountCents() { return materialGroups().reduce((sum, group) => sum + group.reimbursableCents, 0) }
 function listStatusLabel(status) {
   return {
     draft: '草稿', rejected: '需要处理', supplement: '需要处理',
@@ -130,7 +166,7 @@ function renderAttribution() {
 function renderFiles() {
   $('upload-zone').classList.toggle('disabled', !attributionReady())
   $('add-demo-file').disabled = !attributionReady()
-  $('file-list').innerHTML = model.files.length ? model.files.map(file => `<div class="file-row"><span class="file-icon">PDF</span><span class="file-meta"><strong title="${escapeHtml(file.name)}">${escapeHtml(file.name)}</strong><small>${file.status === 'success' ? '已加入当前演示材料' : file.status === 'failed' ? '文件处理失败，当前未加入材料' : '正在处理该文件'}</small></span><span class="file-status ${file.status === 'failed' ? 'failed' : file.status === 'working' ? 'working' : ''}">${file.status === 'success' ? '演示成功' : file.status === 'failed' ? '演示失败' : '处理中'}</span>${file.status === 'failed' ? `<button type="button" class="file-action" data-retry="${file.id}">重试</button>` : ''}<button type="button" class="file-action" data-remove="${file.id}">移除</button></div>`).join('') : '<p class="file-empty">还没有材料。草稿可先保存；预检前需有至少一份成功材料。</p>'
+  $('file-list').innerHTML = model.files.length ? model.files.map(file => `<div class="file-row"><span class="file-icon">PDF</span><span class="file-meta"><strong title="${escapeHtml(file.name)}">${escapeHtml(file.name)}</strong><small>${escapeHtml(categoryLabel(file.category))} · ${file.role === 'itinerary' ? '行程单' : '发票'} · ${file.status === 'success' ? '已加入当前演示材料' : file.status === 'failed' ? '处理失败，未计入材料' : '正在处理'}</small></span><span class="file-status ${file.status === 'failed' ? 'failed' : file.status === 'working' ? 'working' : ''}">${file.status === 'success' ? '演示成功' : file.status === 'failed' ? '演示失败' : '处理中'}</span>${file.status === 'failed' ? `<button type="button" class="file-action" data-retry="${file.id}">重试</button>` : ''}<button type="button" class="file-action" data-remove="${file.id}">移除</button></div>`).join('') : '<p class="file-empty">还没有材料。草稿可先保存；预检前需有至少一份成功材料。</p>'
   document.querySelectorAll('[data-retry]').forEach(button => button.onclick = () => retryFile(Number(button.dataset.retry)))
   document.querySelectorAll('[data-remove]').forEach(button => button.onclick = () => {
     model.files = model.files.filter(file => file.id !== Number(button.dataset.remove)); model.dirty = true; renderFiles(); renderPrecheckButton()
@@ -161,30 +197,65 @@ function renderCompose() {
   renderTypeOptions(); renderAttribution(); renderFiles(); renderPrecheckButton(); renderResult()
 }
 
+function renderCategoryReview(groups) {
+  const invoiceCount = groups.reduce((sum, group) => sum + group.invoices.length, 0)
+  const itineraryCount = groups.reduce((sum, group) => sum + group.itineraries.length, 0)
+  $('expense-summary').innerHTML = [
+    ['预计报销总额', money(reviewAmountCents()), 'total'],
+    ['发票', `${invoiceCount} 张`, ''],
+    ['行程单', `${itineraryCount} 张`, ''],
+    ['费用类别', `${groups.length} 类`, '']
+  ].map(([label, value, style]) => `<div class="expense-metric ${style}"><small>${label}</small><b>${value}</b></div>`).join('')
+  $('category-count').textContent = `${groups.length} 类费用分别核对`
+  $('expense-groups').innerHTML = groups.map(group => {
+    const ride = group.code === 'RIDE'
+    const status = group.mismatch ? '金额不符或缺少行程单 · 暂不能提交' : ride ? '行程单与发票合计匹配' : '发票金额已汇总 · 其他规则继续核对'
+    const note = ride
+      ? `行程单合计 ${money(group.itineraryCents)}；发票合计 ${money(group.invoiceCents)}；差额 ${money(Math.abs(group.itineraryCents - group.invoiceCents))}。本组仅按行程单金额计入一次。`
+      : `本组 ${group.invoices.length} 张发票，价税合计 ${money(group.invoiceCents)}；不受网约车行程单金额影响。`
+    return `<article class="expense-group ${group.mismatch ? 'mismatch' : ''}">
+      <div class="expense-group-head"><div><div class="expense-group-title">${escapeHtml(group.label)}</div><div class="expense-group-count">${group.invoices.length} 张发票${group.itineraries.length ? ` · ${group.itineraries.length} 张行程单` : ''}</div></div><div class="expense-group-amount"><b>${money(group.reimbursableCents)}</b><small>本组报销金额</small></div></div>
+      <span class="expense-group-status ${group.mismatch ? 'mismatch' : ride ? '' : 'attention'}">${status}</span>
+      <p class="expense-group-note">${note}</p>
+      <details><summary>查看本组材料与金额依据</summary><p>${group.files.map(file => `${escapeHtml(file.name)}（${file.role === 'itinerary' ? '行程单' : '发票'}）${money(file.amountCents)}`).join('；')}</p></details>
+    </article>`
+  }).join('') || '<p class="notice">当前没有可汇总的材料。</p>'
+}
+
 function renderReview(mode) {
-  model.reviewMode = mode
+  const groups = materialGroups()
+  const mismatch = groups.some(group => group.mismatch)
+  model.reviewMode = mode === 'supplement' ? 'supplement' : mismatch ? 'mismatch' : 'ready'
   model.view = 'review'
   renderCompose()
   const supplement = mode === 'supplement'
-  $('review-title').textContent = supplement ? '需要补充材料' : '可提交，需财务复核'
-  $('review-description').textContent = supplement ? '材料中有必要信息尚不可辨认。请返回补充或重试失败的文件，当前不能提交。' : '材料可读，已保留可靠事实；费用用途仍需财务复核，不影响您继续本人确认。'
-  $('review-state').textContent = supplement ? '待补材料' : '可继续'
-  $('review-state').classList.toggle('supplement', supplement)
-  $('review-evidence').innerHTML = `<div class="evidence-row"><b>材料状态</b><span>${successfulFiles().length} 份演示材料已通过，${pendingFiles().length} 份需处理</span></div><div class="evidence-row"><b>规则结论</b><span>${supplement ? '关键材料仍需补充，当前没有确认资格' : '票据用途交由财务复核；已识别金额与日期保持原值'}</span></div>`
+  const blocked = supplement || mismatch
+  if (blocked) {
+    $('page-title').textContent = '核对材料后再提交'
+    $('page-subtitle').textContent = '当前有需要处理的材料；其他费用类别仍按各自金额展示，不会和网约车行程单混算。'
+  }
+  $('review-title').textContent = supplement ? '需要补充材料' : mismatch ? '需核对网约车材料' : '可提交，需财务复核'
+  $('review-description').textContent = supplement ? '材料中有必要信息尚不可辨认。请返回补充或重试失败的文件，当前不能提交。' : mismatch ? '网约车行程单与本组发票金额未匹配，请返回核对；其他类别的金额已分别汇总。' : '系统已按费用类别分别汇总。请核对整单金额与各组材料；需复核的部分将随单交给财务。'
+  $('review-state').textContent = blocked ? '暂不能提交' : '可继续'
+  $('review-state').classList.toggle('supplement', blocked)
+  renderCategoryReview(groups)
+  $('review-evidence').innerHTML = `<div class="evidence-row"><b>材料状态</b><span>${successfulFiles().length} 份演示材料已通过，${pendingFiles().length} 份需处理</span></div><div class="evidence-row"><b>规则结论</b><span>${supplement ? '关键材料仍需补充，当前没有确认资格' : mismatch ? '网约车组金额未匹配；其余类别单独保留已识别金额' : '费用用途交由财务复核；金额与日期保留已识别原值'}</span></div>`
   const project = selectedProject()
   $('generated-content').innerHTML = [
     ['报销类型', typeLabel()], ['归属', model.expenseType === 'PROJECT' ? `${project?.name || '未选项目'} · ${model.stage || '阶段未选'}` : `${selectedOrg()?.name || '未选组织'} · ${model.subdepartment || '未选子部门'}`],
     ['项目迭代', model.expenseType === 'PROJECT' ? project?.iteration || '未带出' : '不适用'],
-    ['付款主体', '演示付款主体（以实际权威来源为准）'], ['系统生成明细', supplement ? '待补充后生成' : '1 条演示明细'],
-    ['系统识别票据', `${successfulFiles().length} 份演示材料`], ['系统生成金额', supplement ? '金额待核验' : '¥ 268.50']
+    ['付款主体', '演示付款主体（以实际权威来源为准）'], ['系统生成明细', supplement ? '待补充后生成' : `${groups.length} 类费用明细`],
+    ['系统识别材料', `${successfulFiles().length} 份：${groups.reduce((sum, group) => sum + group.invoices.length, 0)} 张发票、${groups.reduce((sum, group) => sum + group.itineraries.length, 0)} 张行程单`],
+    ['系统生成金额', blocked ? '需核对后确认' : money(reviewAmountCents())]
   ].map(([key, value]) => `<div class="generated-row"><span>${escapeHtml(key)}</span><strong>${escapeHtml(value)}</strong></div>`).join('')
-  $('ack-label').hidden = supplement
+  if (typeof syncDescriptionDraft === 'function') syncDescriptionDraft()
+  $('ack-label').hidden = blocked
   $('submit-error').hidden = true
   $('acknowledge').checked = false
   $('submit-button').disabled = true
   $('submit-button').classList.remove('loading')
   $('submit-button').textContent = '确认并提交'
-  $('submit-button').hidden = supplement
+  $('submit-button').hidden = blocked
 }
 
 function renderResult() {
@@ -276,8 +347,12 @@ function protectUnsaved(next) {
 }
 function closeConfirm() { model.pendingConfirm = null; $('confirm-overlay').hidden = true }
 
-function addDemoFile(status = 'success', name) {
-  model.files.push({ id: model.nextFile++, status, name: name || `演示材料_${model.nextFile}.pdf` })
+function addDemoFile(status = 'success', name, details = {}) {
+  model.files.push({
+    id: model.nextFile++, status, name: name || `演示材料_${model.nextFile}.pdf`,
+    category: details.category || 'OTHER', role: details.role || 'invoice',
+    amountCents: details.amountCents ?? 26850
+  })
   model.dirty = true
   renderFiles(); renderPrecheckButton()
 }
@@ -294,7 +369,7 @@ function precheck(mode = 'ready', delay = 850) {
   }, delay)
 }
 function submit() {
-  if (model.view !== 'review' || model.reviewMode === 'supplement' || !$('acknowledge').checked || model.submitting) return
+  if (model.view !== 'review' || model.reviewMode !== 'ready' || !$('acknowledge').checked || model.submitting) return
   const generation = model.generation
   model.submitting = true
   $('submit-button').disabled = true
@@ -314,7 +389,7 @@ function submit() {
     const id = `VIS-${model.nextRecord++}`
     const kind = outcome === 'failed' ? 'failed' : outcome === 'unknown' ? 'unknown' : 'success'
     const status = kind === 'success' ? 'pending' : kind
-    model.history.unshift({ id, status, label: kind === 'success' ? '审批中' : kind === 'failed' ? '技术提交失败' : '提交结果待确认', amount: '¥ 268.50', date: '2026-10-13', updated: '2026-10-13', type: typeLabel(), files: successfulFiles().length })
+    model.history.unshift({ id, status, label: kind === 'success' ? '审批中' : kind === 'failed' ? '技术提交失败' : '提交结果待确认', amount: money(reviewAmountCents()), date: '2026-10-13', updated: '2026-10-13', type: typeLabel(), files: successfulFiles().length })
     resetDraft()
     model.lastResult = { id, kind }
     updateHistorySummary()
@@ -335,7 +410,11 @@ function demo(name) {
     addDemoFile('failed', '非常非常长的演示附件名称_跨部门差旅与酒店材料_20261013_第二份_多页扫描文件.pdf')
     renderCompose(); return
   }
-  addDemoFile('success', '演示电子发票_20261013.pdf')
+  if (['ready', 'supplement', 'submitting'].includes(name)) {
+    mixedDemoMaterials.forEach(([fileName, category, role, amountCents]) => addDemoFile('success', fileName, { category, role, amountCents }))
+  } else {
+    addDemoFile('success', '演示电子发票_20261013.pdf')
+  }
   if (name === 'prechecking') { renderCompose(); precheck('ready', 12000); return }
   if (name === 'precheck-failed') { renderCompose(); precheck('failed', 800); return }
   renderReview(name === 'supplement' ? 'supplement' : 'ready')
