@@ -1,0 +1,18 @@
+/* C-026 only: preserve the C-022 shell and add two review sections. */
+.c026-trip,.c026-description{border:1px solid #e7ecf4;border-radius:10px;padding:17px 18px;margin-top:18px;background:#fff}
+.c026-trip-head,.c026-description-head{display:flex;justify-content:space-between;align-items:center;gap:14px}
+.c026-trip-head strong,.c026-description-head strong{font-size:14px}
+.c026-trip-head span{font-size:11px;padding:5px 9px;border-radius:99px;background:#eaf8f2;color:#32936d;white-space:nowrap}
+.c026-trip.mismatch{border-color:#f0cbbd;background:#fffaf7}
+.c026-trip.mismatch .c026-trip-head span{background:#fff0e9;color:#b45d47}
+.c026-trip-amounts{display:grid;grid-template-columns:2fr 1.3fr .7fr;gap:10px;margin:15px 0 12px}
+.c026-trip-amounts div{padding:12px;background:#f7f9fd;border-radius:8px;min-width:0}
+.c026-trip-amounts small,.c026-trip-amounts b{display:block;overflow-wrap:anywhere}
+.c026-trip-amounts small{font-size:11px;color:#8490a4;line-height:1.4}
+.c026-trip-amounts b{font-size:16px;margin-top:5px}
+.c026-trip details{font-size:12px;color:#65748c}
+.c026-trip details p{line-height:1.6;margin-bottom:0}
+.c026-description-head p,.c026-description-feedback{font-size:11px;line-height:1.55;color:#8b98ab;margin:5px 0 0}
+.c026-description textarea{width:100%;box-sizing:border-box;border:1px solid #dce3ef;border-radius:8px;resize:vertical;padding:11px 12px;font:inherit;font-size:13px;color:#354258;margin-top:14px;min-height:80px}
+.c026-description textarea:focus{outline:2px solid #a8bbff}
+@media(max-width:520px){.c026-trip-amounts{grid-template-columns:1fr}.c026-description-head{align-items:flex-start;flex-direction:column}.c026-description-head .button{width:100%}}

@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>P05 财务辅助审核台 · C-035 候选</title>
+  <style>
+    :root{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:#202630;background:#f7f8fa}
+    *{box-sizing:border-box}body{margin:0}button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed}
+    .workspace{max-width:1440px;margin:0 auto;padding:42px 48px 80px}.eyebrow{color:#758091;font-size:13px;margin:0 0 14px}
+    h1{font-size:28px;letter-spacing:-.02em;margin:0 0 14px;font-weight:750}h2{font-size:16px;margin:0}.intro{color:#7d8796;font-size:14px;margin:0 0 34px}
+    .overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:28px}.overview-card{height:84px;border:1px solid #e7e9ef;background:#fff;border-radius:12px;padding:22px 23px;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;color:#5c6674}.overview-card.active{border-color:#ccd5ee;background:#f8f9fd}.overview-card strong{color:#1c2430;font-size:27px}.overview-card:hover{border-color:#aabcec}.overview-card .label{display:flex;align-items:center;gap:10px;font-size:14px}
+    .list-card{background:#fff;border:1px solid #e8eaee;border-radius:12px;overflow:hidden}.list-toolbar{min-height:70px;padding:15px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px}.tabs{display:flex;align-self:stretch;gap:12px}.tab{border:0;background:transparent;color:#838c99;padding:0 4px;border-bottom:2px solid transparent;white-space:nowrap}.tab.active{color:#242b37;border-color:#242b37;font-weight:650}.search-wrap{display:flex;align-items:center;gap:8px}.search-wrap input{width:245px;height:40px;border:1px solid #dfe3e9;border-radius:7px;padding:0 12px;color:#26313f;background:#fff}.search-wrap button,.text-button{border:1px solid #e1e5ea;border-radius:7px;background:#fff;color:#414b5a;padding:9px 13px}.search-wrap button:hover,.text-button:hover{background:#f6f8fb}
+    .status-line{padding:0 22px 13px;color:#7b8694;font-size:12px}.status-line.error{color:#a06428}.table-wrap{overflow-x:auto}.cases{width:100%;min-width:795px;border-collapse:collapse;text-align:left}.cases th{background:#f7f8fa;color:#7d8795;font-size:12px;font-weight:650}.cases th,.cases td{padding:16px 20px;border-top:1px solid #ebedf1;vertical-align:middle}.cases td{height:82px;font-size:14px}.cases tbody tr:hover{background:#fbfcfe}.case-main{border:0;background:none;padding:0;text-align:left;color:#242b36;font-weight:680}.case-main:hover{text-decoration:underline}.sub{display:block;color:#84909c;font-size:12px;margin-top:6px}.amount{font-weight:700;white-space:nowrap}.tag{display:inline-flex;align-items:center;border-radius:5px;padding:5px 9px;font-size:12px;font-weight:630;background:#eaf6f0;color:#398568;white-space:nowrap}.tag.warn{background:#fff3e3;color:#a16a22}.tag.bad{background:#fcefeb;color:#a05b4a}.tag.gray{background:#f0f2f5;color:#667484}.focus{color:#46515e;line-height:1.5}.action{border:0;background:none;color:#293443;font-weight:620;padding:6px 0;white-space:nowrap}.action:hover{text-decoration:underline}.empty{padding:35px 20px;text-align:center;color:#778494}
+    .overlay{position:fixed;inset:0;background:#1a253654;display:none;z-index:10}.overlay.open{display:block}.drawer{position:absolute;right:0;top:0;bottom:0;width:min(660px,100%);background:#fff;overflow:auto;box-shadow:-10px 0 35px #12192620}.drawer-head{position:sticky;top:0;z-index:2;background:#fff;border-bottom:1px solid #e9ecf0;padding:24px 26px;display:flex;justify-content:space-between;gap:16px}.drawer-head small{color:#7c8794}.drawer-head h2{font-size:20px;margin-top:7px}.close{border:0;background:#fff;font-size:23px;color:#303943;padding:0 4px;height:28px}.drawer-body{padding:25px 26px 48px}.invoice-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin:0 0 22px}.invoice-head strong{font-size:16px}.invoice-head .amount{font-size:23px}.facts{background:#f7f8fa;border-radius:9px;padding:14px 19px;margin:0 0 25px}.fact{display:grid;grid-template-columns:90px 1fr;gap:12px;padding:10px 0;font-size:13px}.fact span:first-child{color:#758190}.fact span:last-child{overflow-wrap:anywhere}.section{border-top:1px solid #eef0f3;padding-top:24px;margin-top:25px}.section.first{border:0;padding-top:0}.section-title{display:flex;align-items:center;gap:10px;margin-bottom:14px}.conclusion{border:1px solid #dcece5;background:#f1f9f5;border-radius:9px;padding:17px;color:#3d6350;line-height:1.6;font-size:13px}.conclusion.warn{background:#fff9ef;border-color:#f1e5ca;color:#795d35}.evidence{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.evidence-item{border:1px solid #e7ebef;border-radius:8px;padding:11px 12px;font-size:12px}.evidence-item b{display:block;margin-top:5px;font-size:13px}.notice{color:#6f7b8b;font-size:13px;line-height:1.6}.drawer-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}.drawer-actions button{border:1px solid #e2e7ee;border-radius:7px;background:#fff;padding:9px 13px;color:#2c4058}.drawer-actions button:disabled{color:#aab2be;background:#f5f6f8}.drawer-actions button.primary:not(:disabled){border-color:#426fdf;background:#426fdf;color:#fff}
+    @media(max-width:900px){.workspace{padding:25px 20px 55px}.overview{gap:9px}.overview-card{padding:15px}.cases th,.cases td{padding:13px 12px}}@media(max-width:680px){.workspace{padding:18px 12px 45px}.overview{grid-template-columns:1fr}.overview-card{height:65px}.list-toolbar{display:block;padding:12px 15px}.tabs{height:42px;overflow-x:auto}.search-wrap{margin-top:12px}.search-wrap input{flex:1;min-width:0;width:auto}.drawer-head,.drawer-body{padding-left:18px;padding-right:18px}.evidence{grid-template-columns:1fr}}
+
+    [hidden]{display:none!important}.batch-toolbar{display:flex;align-items:center;gap:16px;padding:14px 22px;border-top:1px solid #ebedf1;background:#fafbfe;font-size:13px}.batch-toolbar .sub{margin:0}.batch-toolbar button,.preview-actions button{border:1px solid #426fdf;background:#426fdf;color:#fff;border-radius:7px;padding:9px 15px}.check-col{width:36px}.cases input{accent-color:#426fdf;width:16px;height:16px}.business-state{color:#566171;white-space:nowrap;font-size:12px}.preview-modal{position:fixed;inset:5vh 10vw;z-index:30;background:#fff;box-shadow:0 0 0 100vmax #16203670;border-radius:12px;overflow:auto;padding:25px}.preview-actions{display:flex;justify-content:space-between;align-items:center;gap:12px}.preview-actions button.secondary{background:white;color:#526174;border-color:#dfe4eb}.paper{border:1px solid #dfe4eb;margin:20px auto;padding:24px;max-width:720px;line-height:1.8}.paper h3{text-align:center}.paper table{border-collapse:collapse;width:100%}.paper td{border:1px solid #ddd;padding:8px}.paper small{color:#768091}.preview-note{font-size:13px;color:#748090}.result-feedback{padding:12px 0;color:#426b59}.cases{min-width:960px}@media(max-width:680px){.preview-modal{inset:2vh 3vw;padding:16px}.batch-toolbar{flex-wrap:wrap}}@media print{body>*:not(#print-preview){display:none!important}#print-preview{position:static;inset:auto;box-shadow:none;padding:0}.preview-actions,.preview-note,.result-feedback{display:none}.paper{break-after:page;border:0}}
+
+    .paper{padding:38px 30px;max-width:820px;min-height:980px;color:#24282e;background:#fff;font-size:13px;line-height:1.55}
+    .paper h3{font-size:21px;font-weight:700;margin:12px 0 4px}
+    .paper-meta{display:flex;justify-content:space-between;align-items:flex-end;color:#59616d;font-size:12px;margin:0 0 20px;gap:18px}.paper-meta>span:last-child{text-align:right}
+    .paper table{table-layout:fixed}.paper td,.paper th{border:1px solid #30343a;padding:7px 9px;text-align:left;overflow-wrap:anywhere;font-weight:400}
+    .paper th{text-align:center;font-weight:600}.paper .label,.paper thead{background:#f2f3f5}.paper td.nested{padding:0;border-right:0;border-left:0}.paper .nested table{margin:-1px 0;width:100%;border-collapse:collapse}.paper .generated-note{font-size:10px;color:#6f7580;margin-top:10px}.originals-placeholder{min-height:250px}
+    @media(max-width:680px){.paper{padding:20px 10px;font-size:11px;min-width:570px}.paper-meta{font-size:10px}.paper td,.paper th{padding:6px}}
+  </style>
+</head>
+<body>
+<main class="workspace">
+  <p class="eyebrow">财务专属 · 辅助审核</p>
+  <h1>把问题看清楚，再到飞书审批</h1>
+  <p class="intro">工作台展示辅助核对事实与关注点；财务决定仍由本人在飞书完成。</p>
+  <section class="overview" aria-label="财务概览">
+    <button class="overview-card active" data-view="todo"><span class="label">◉ 待我审核</span><strong id="todo-count">2</strong></button>
+    <button class="overview-card" data-view="toPrint"><span class="label">▤ 待打印</span><strong id="toPrint-count">1</strong></button>
+    <button class="overview-card" data-view="printed"><span class="label">✓ 已打印</span><strong id="printed-count">0</strong></button>
+  </section>
+  <section class="list-card" aria-label="财务报销统一列表">
+    <div class="list-toolbar"><div class="tabs" role="tablist"><button class="tab active" data-view="todo">待我审核</button><button class="tab" data-view="progress">审批流转中</button><button class="tab" data-view="toPrint">待打印</button><button class="tab" data-view="printed">已打印</button><button class="tab" data-view="all">全部</button></div><div class="search-wrap"><input id="search" aria-label="搜索申请人或报销内容" placeholder="搜索申请人或报销内容"><button id="refresh">刷新</button></div></div>
+    <div class="status-line" id="sync-status" aria-live="polite">演示数据仅用于核对布局；正式页面从可信接口分页读取。</div>
+    <div id="batch-toolbar" class="batch-toolbar" hidden><span id="selected-count">已选 0 笔</span><button class="primary" id="batch-print" disabled>批量打印</button><span class="sub">每批最多 50 笔</span></div><div class="table-wrap"><table class="cases"><thead><tr><th class="check-col"><input id="check-all" type="checkbox" aria-label="选择本页可打印单据"></th><th>报销单</th><th>金额</th><th>核查建议</th><th>需要关注</th><th>状态</th><th>操作</th></tr></thead><tbody id="rows"></tbody></table></div>
+  </section>
+</main>
+<div class="overlay" id="overlay"><aside class="drawer" role="dialog" aria-modal="true" aria-label="报销详情">
+  <header class="drawer-head"><div><small id="drawer-id">示例单据</small><h2 id="drawer-title">报销详情</h2></div><button class="close" id="close" aria-label="关闭详情">×</button></header>
+  <div class="drawer-body">
+    <div class="invoice-head"><div><strong id="expense">费用</strong><span class="sub" id="applicant">申请人</span></div><strong class="amount" id="drawer-amount">¥0.00</strong></div>
+    <div class="facts"><div class="fact"><span>来源</span><span id="source">飞书来源</span></div><div class="fact"><span>费用归属</span><span id="attribution">当前授权归属</span></div><div class="fact"><span>付款公司</span><span id="company">待核验</span></div><div class="fact"><span>飞书审批</span><span id="state">待核验</span></div></div>
+    <section class="section first"><div class="section-title"><h2>核查结论</h2><span class="tag" id="drawer-tag">证据不足</span></div><div class="conclusion" id="conclusion">当前材料正在核对。</div></section>
+    <section class="section"><h2>证据与需要关注</h2><p class="notice" id="attention"></p><div class="evidence"><div class="evidence-item">金额核对<b id="amount-check">待核对</b></div><div class="evidence-item">发票验重<b id="duplicate-check">无法确认</b></div><div class="evidence-item">税务验真<b id="tax-check">未验证</b></div><div class="evidence-item">原件完整性<b id="material-check">待核对</b></div></div><div class="drawer-actions"><button id="feishu-link">查看原飞书实例</button><button id="retry">重试状态查询</button></div></section>
+    <section class="section"><h2>打印材料</h2><p class="notice" id="print-note">仅整单最终通过且同实例原件齐备后，才可生成预览。</p><div class="drawer-actions"><button class="primary" id="preview" disabled>打印本单</button><button id="reopen" hidden>查看打印材料</button></div></section>
+  </div>
+</aside></div>
+<section id="print-preview" class="preview-modal" role="dialog" aria-modal="true" aria-label="打印材料预览" hidden>
+<div class="preview-actions"><h2>打印材料预览</h2><div><button class="secondary" id="preview-close">返回列表</button> <button id="print-now">打印</button></div></div>
+<p class="preview-note">原型示例，不含真实审批或票据。正式材料按单排列：工作台生成审批总览 → 发票原件 → 行程单原件。</p><div id="print-result" class="result-feedback" aria-live="polite"></div><div id="papers"></div></section>
+<script>
+// 设计原型中的合成展示数据；不请求业务服务、不生成业务打印记录。
+const statusLabels={todo:'待我审核',progress:'审批流转中',toPrint:'待打印',printed:'已打印'};
+const cases=[
+ {id:'样例 A',applicant:'申请人甲',expense:'差旅费用',source:'飞书来源',amount:'¥138.50',conclusion:'证据不足',attention:'原件处理中；验重范围不足，无法确认',view:'todo',material:'部分取得',ready:false},
+ {id:'样例 B',applicant:'申请人乙',expense:'财务费用',source:'工作台来源',amount:'¥201.60',conclusion:'存在异常',attention:'票面金额与申报金额不一致',view:'todo',material:'已取得',ready:true},
+ {id:'样例 C',applicant:'申请人丙',expense:'运营费用',source:'飞书来源',amount:'¥96.00',conclusion:'可辅助核对',attention:'已取得的金额一致；低于阈值，未做税务验真',view:'toPrint',material:'已取得',ready:true},
+ {id:'样例 D',applicant:'申请人丁',expense:'销售费用',source:'工作台来源',amount:'¥320.00',conclusion:'证据不足',attention:'当前财务节点已办，仍等待其他审批人',view:'progress',material:'已取得',ready:true},
+ {id:'样例 E',applicant:'申请人戊',expense:'管理费用',source:'飞书来源',amount:'¥180.00',conclusion:'可辅助核对',attention:'已记录打印操作，如未成功，可再次打印',view:'printed',material:'已取得',ready:true},
+ {id:'样例 F',applicant:'申请人己',expense:'差旅费用',source:'工作台来源',amount:'¥128.00',conclusion:'证据不足',attention:'缺少一份行程单原件，不能生成打印材料',view:'toPrint',material:'缺少行程单',ready:false}
+];
+let view='todo',selected=null,syncFailed=false,printScope=[],printStarted=false;
+const checked=new Set();const $=id=>document.getElementById(id);
+const safe=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function mayPrint(x){return ['toPrint','printed'].includes(x.view)&&x.ready&&!syncFailed}
+function searched(){const q=$('search').value.trim();return cases.filter(x=>!q||(x.applicant+x.expense+x.id).includes(q))}
+function currentCases(){return searched().filter(x=>view==='all'||x.view===view)}
+function render(){
+ const list=currentCases();for(const v of ['todo','toPrint','printed'])$(v+'-count').textContent=searched().filter(x=>x.view===v).length;
+ $('batch-toolbar').hidden=!['toPrint','printed'].includes(view);
+ $('selected-count').textContent=`已选 ${checked.size} 笔`;$('batch-print').textContent=view==='printed'?'批量再次打印':'批量打印';$('batch-print').disabled=checked.size===0||syncFailed;
+ $('check-all').disabled=!list.some(mayPrint);$('check-all').checked=list.some(mayPrint)&&list.filter(mayPrint).every(x=>checked.has(x.id));
+ $('rows').innerHTML=list.length?list.map(x=>`<tr><td><input type="checkbox" aria-label="选择${safe(x.id)}" data-check="${safe(x.id)}" ${mayPrint(x)?'':'disabled'} ${checked.has(x.id)?'checked':''}></td><td><button class="case-main" data-id="${safe(x.id)}">${safe(x.applicant)} · ${safe(x.expense)}</button><span class="sub">${safe(x.source)}</span></td><td class="amount">${safe(x.amount)}</td><td><span class="tag ${x.conclusion==='存在异常'?'bad':x.conclusion==='证据不足'?'warn':''}">${safe(x.conclusion)}</span></td><td class="focus">${safe(syncFailed?'状态暂无法确认，请重试':x.attention)}</td><td class="business-state">${statusLabels[x.view]}</td><td><button class="action" data-id="${safe(x.id)}">查看 ›</button></td></tr>`).join(''):'<tr><td class="empty" colspan="7">当前筛选没有可展示的单据</td></tr>';
+ document.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>openDetail(cases.find(x=>x.id===b.dataset.id)));
+ document.querySelectorAll('[data-check]').forEach(b=>b.onchange=()=>{b.checked?checked.add(b.dataset.check):checked.delete(b.dataset.check);render()});
+}
+function openDetail(x){
+ selected=x;$('drawer-id').textContent=x.source;$('drawer-title').textContent=`${x.applicant}的报销单`;$('expense').textContent=x.expense;$('applicant').textContent=x.applicant;$('drawer-amount').textContent=x.amount;$('source').textContent=x.source;$('attribution').textContent='当前组织与费用归属（示例）';$('company').textContent='当前授权付款主体（示例）';$('state').textContent=syncFailed?'状态暂无法确认':['toPrint','printed'].includes(x.view)?'整单最终通过':x.view==='progress'?'审批流转中，当前无需你处理':'当前待你在飞书审核';
+ $('drawer-tag').textContent=x.conclusion;$('conclusion').textContent=x.attention+'。辅助结论不代表审批结果。';$('conclusion').classList.toggle('warn',x.conclusion!=='可辅助核对');$('attention').textContent=x.attention;$('amount-check').textContent=x.conclusion==='存在异常'?'金额不一致，查看原始凭证':'按已取得的材料核对';$('duplicate-check').textContent=x.conclusion==='证据不足'?'验重范围不足/无法确认':'可信范围内未发现重复';$('tax-check').textContent='低于阈值，未做税务验真';$('material-check').textContent=x.material;
+ $('print-note').textContent=syncFailed?'状态暂无法确认，重试成功前不可打印':!['toPrint','printed'].includes(x.view)?'整单尚未最终通过，不可打印':!x.ready?'缺少行程单原件，请查看对应飞书实例':x.view==='printed'?'已记录打印操作，如未成功，可再次打印。':'整单已通过，可生成工作台审批总览并与同单原件合并。';
+ $('preview').textContent=x.view==='printed'?'再次打印':'打印本单';$('preview').disabled=!mayPrint(x);$('reopen').hidden=x.view!=='printed';$('reopen').disabled=!mayPrint(x);$('overlay').classList.add('open');
+}
+function showPreview(items){
+ if(!items.length||items.some(x=>!mayPrint(x)))return;
+ if(items.length>50){$('sync-status').textContent='每批最多50笔，请减少选择';return}
+ printScope=items;printStarted=false;$('print-result').textContent='';$('print-now').disabled=false;
+ $('papers').innerHTML=items.map(x=>`<article class="paper">
+ <h3>费用报销-自动化</h3>
+ <div class="paper-meta"><span>申请编号：原型-${safe(x.id)}</span><span>打印人员：财务示例<br>打印时间：本次打印时生成</span></div>
+ <table class="overview-table"><colgroup><col style="width:19%"><col style="width:31%"><col style="width:19%"><col style="width:31%"></colgroup>
+ <tbody><tr><td class="label">申请人</td><td>${safe(x.applicant)}</td><td class="label">申请时间</td><td>2026-10-20（示例）</td></tr>
+ <tr><td class="label">所属部门</td><td>示例部门</td><td class="label">审批状态</td><td>已通过（示例）</td></tr>
+ <tr><th colspan="4">审批详情</th></tr>
+ <tr><td class="label">付款公司</td><td>示例公司</td><td class="label">组织结构</td><td>示例组织</td></tr>
+ <tr><td class="label">子部门组织</td><td>示例子部门</td><td class="label">费用类型</td><td>${safe(x.expense)}</td></tr>
+ <tr><td colspan="4">费用明细</td></tr>
+ <tr><td colspan="4" class="nested"><table class="line-items"><colgroup><col style="width:5%"><col style="width:32%"><col style="width:32%"><col style="width:31%"></colgroup><thead><tr><td>#</td><td>报销内容</td><td>费用类别</td><td>金额</td></tr></thead><tbody><tr><td>1</td><td>有材料依据的费用内容（示例）</td><td>示例类别</td><td>${safe(x.amount.replace('¥',''))} CNY-人民币元</td></tr></tbody></table></td></tr>
+ <tr><td class="label">发票文件（PDF版）</td><td colspan="3">1 个（示例）</td></tr>
+ <tr><th colspan="4">审批记录</th></tr>
+ <tr><td class="label" rowspan="2">发起</td><td colspan="3">${safe(x.applicant)} / 发起审批 / 2026-10-20 09:00（示例）</td></tr>
+ <tr><td colspan="3">系统 / 抄送 1 人 示例收件人 / 2026-10-20 09:00（示例）</td></tr>
+ <tr><td class="label">审批</td><td colspan="3">示例审批人 / 同意 / 2026-10-20 10:00（示例）</td></tr>
+ </tbody></table><p class="generated-note">工作台生成 · 合成原型示例，非真实审批凭证</p>
+ </article><article class="paper originals-placeholder"><h3>本单原件区域</h3><p>对应发票与行程单按已确认排版附后；本原型未放入真实原件，不作为打印验收材料。</p></article>`).join('');$('print-preview').hidden=false;
+}
+function setView(v){view=v;checked.clear();document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===view));render()}
+document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>setView(b.dataset.view));
+$('search').oninput=()=>{checked.clear();render()};$('check-all').onchange=e=>{currentCases().filter(mayPrint).forEach(x=>e.target.checked?checked.add(x.id):checked.delete(x.id));render()};
+$('batch-print').onclick=()=>showPreview(cases.filter(x=>checked.has(x.id)));$('preview').onclick=()=>showPreview([selected]);$('reopen').onclick=()=>showPreview([selected]);
+$('print-now').onclick=()=>{printStarted=true;$('print-now').disabled=true;$('print-result').textContent='等待浏览器打印返回；尚未记录已打印。';try{window.print()}catch(e){printStarted=false;$('print-now').disabled=false;$('print-result').textContent='打印调用失败，请重试。'}};
+window.addEventListener('afterprint',()=>{if(!printStarted)return;printStarted=false;printScope.forEach(x=>{x.view='printed';x.attention='已记录打印操作，如未成功，可再次打印'});checked.clear();$('print-now').disabled=false;$('print-result').textContent='原型已收到浏览器返回，仅更新示例状态；不代表实际出纸或正式接口验收。';render();if(selected&&$('overlay').classList.contains('open'))openDetail(selected)});
+$('preview-close').onclick=()=>{$('print-preview').hidden=true};
+$('refresh').onclick=()=>{syncFailed=!syncFailed;checked.clear();$('sync-status').textContent=syncFailed?'原型失败态：状态暂无法确认，保留最近状态；点击刷新重试':'原型成功态：状态已同步；示例数据不代表真实联调';$('sync-status').classList.toggle('error',syncFailed);render();if(selected&&$('overlay').classList.contains('open'))openDetail(selected)};
+$('retry').onclick=()=>{syncFailed=false;$('sync-status').textContent='原型重试成功';render();if(selected&&$('overlay').classList.contains('open'))openDetail(selected)};
+$('feishu-link').onclick=()=>{$('attention').textContent='原型不跳转真实审批；正式页面使用该实例已核实的飞书链接。'};
+$('close').onclick=()=>$('overlay').classList.remove('open');$('overlay').onclick=e=>{if(e.target===$('overlay'))$('close').click()};render();
+</script>
+</body></html>
