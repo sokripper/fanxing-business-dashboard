@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>梵行报销助手 · 个人侧混合票据核对原型</title>
   <link rel="stylesheet" href="./P04-c022.css">
-  <link rel="stylesheet" href="./P04-c026.css?v=category-lines-1">
+  <link rel="stylesheet" href="./P04-c026.css?v=category-lines-2">
   <style>.ride-batch-confirmation{display:flex;align-items:center;gap:10px;margin:16px 0 6px;padding:14px 16px;border:1px solid #d7e3f4;border-radius:10px;background:#f5f9ff;font-weight:600}.ride-batch-confirmation input{width:18px;height:18px;flex:none}.ride-batch-confirmation+.footer-hint{display:block;margin:0 0 8px 0}@media(max-width:375px){.ride-batch-confirmation{align-items:flex-start}}</style>
 </head>
 <body>
@@ -57,8 +57,8 @@
 
   <div id="confirm-overlay" class="confirm-overlay" hidden><div class="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-title"><div class="dialog-icon">!</div><h2 id="confirm-title">当前内容尚未保存</h2><p>重新处理历史申请会替换当前页面未保存的输入。您可以先返回保存，或者放弃当前输入后继续。</p><div><button id="confirm-cancel" class="button secondary" type="button">返回当前内容</button><button id="confirm-continue" class="button danger" type="button">放弃并继续</button></div></div></div>
 
-  <div class="demo-controls" aria-label="视觉稿示例控制"><strong>视觉稿示例</strong><button type="button" data-demo="blank">空白</button><button type="button" data-demo="partial">多文件部分失败</button><button type="button" data-demo="prechecking">预检中</button><button type="button" data-demo="precheck-failed">预检失败</button><button type="button" data-demo="ready">混合票据可确认</button><button type="button" id="c026-mismatch-demo">网约车金额不符</button><button type="button" id="c026-generate-fail-demo">生成失败可手填</button><button type="button" data-demo="supplement">需补材料</button><button type="button" data-demo="submitting">提交中</button><label>提交回执 <select id="outcome-choice"><option value="success">成功</option><option value="failed">明确失败</option><option value="unknown">结果未知</option><option value="before-attempt">提交前拒绝</option></select></label></div>
-  <script src="./P04-c022.js?v=category-lines-1"></script>
-  <script src="./P04-c026.js?v=category-lines-1"></script>
+  <details class="demo-controls" aria-label="视觉稿示例控制"><summary>演示示例</summary><div class="demo-options"><button type="button" data-demo="blank">空白</button><button type="button" data-demo="partial">多文件部分失败</button><button type="button" data-demo="prechecking">预检中</button><button type="button" data-demo="precheck-failed">预检失败</button><button type="button" data-demo="ready">混合票据可确认</button><button type="button" id="c026-mismatch-demo">网约车金额不符</button><button type="button" id="c026-generate-fail-demo">生成失败可手填</button><button type="button" data-demo="supplement">需补材料</button><button type="button" data-demo="submitting">提交中</button><label>提交回执 <select id="outcome-choice"><option value="success">成功</option><option value="failed">明确失败</option><option value="unknown">结果未知</option><option value="before-attempt">提交前拒绝</option></select></label></div></details>
+  <script src="./P04-c022.js?v=category-lines-2"></script>
+  <script src="./P04-c026.js?v=category-lines-2"></script>
 </body>
 </html>
