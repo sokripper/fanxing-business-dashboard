@@ -1,35 +1,63 @@
-// Synthetic design interaction only. No API, invoice bytes, or real approval.
-const c026Text = document.getElementById('c026-description-text')
-const c026Feedback = document.getElementById('c026-description-feedback')
-let c026Edited = false
-let c026Generation = 0
+// Synthetic design interaction only. Each expense category owns one editable description.
+const categoryDescriptions = new Map()
+const editedDescriptions = new Set()
+const pendingDescriptions = new Map()
+let descriptionGeneration = 0
+
 function resetDescriptionDraft() {
-  c026Generation += 1
-  c026Edited = false
-  c026Text.value = ''
-  c026Feedback.textContent = '演示稿：系统根据当前各类票据生成初稿，您可以编辑。'
+  categoryDescriptions.clear()
+  editedDescriptions.clear()
+  pendingDescriptions.clear()
 }
-function descriptionDraft() {
-  const groups = materialGroups()
-  const categories = categoryGroups(groups).map(group => `${group.name}${money(group.amountCents)}`).join('、')
-  const ride = groups.find(group => group.code === 'RIDE')
-  return `本次报销包含${categories}，合计${money(reviewAmountCents())}。${ride ? `网约车${ride.itineraries.length}张行程单与${ride.invoices.length}张发票按整组金额核对，行程单不重复计入。` : ''}`
+
+function descriptionDraftForCategory(category) {
+  const purpose = {
+    '差旅费用': '赴客户现场出差',
+    '招待费用': '客户接待餐饮',
+    '交通费用': '市内公务出行'
+  }[category.name]
+  const materials = category.groups.map(group => {
+    const invoiceName = { RIDE: '网约车发票', FLIGHT: '机票', HOTEL: '住宿发票', DINING: '餐饮发票' }[group.code] || '发票'
+    const invoices = `${invoiceName}${group.invoices.length}张`
+    return group.itineraries.length ? `${invoices}、行程单${group.itineraries.length}张` : invoices
+  }).join('、')
+  return `${purpose || `本次${category.name}`}，${materials}。`
 }
+
 function syncDescriptionDraft() {
-  if (c026Edited) return
-  c026Text.value = descriptionDraft()
-  c026Feedback.textContent = '合成初稿已按当前费用类别生成，可继续编辑；不代表真实 OCR 结果。'
+  const categories = new Map(categoryGroups().map(category => [category.name, category]))
+  document.querySelectorAll('[data-description-category]').forEach(textarea => {
+    const name = textarea.dataset.descriptionCategory
+    const category = categories.get(name)
+    if (!category) return
+    if (!editedDescriptions.has(name)) categoryDescriptions.set(name, descriptionDraftForCategory(category))
+    textarea.value = categoryDescriptions.get(name) || ''
+    const feedback = document.querySelector(`[data-description-feedback="${name}"]`)
+    const generate = document.querySelector(`[data-generate-category="${name}"]`)
+    feedback.textContent = editedDescriptions.has(name) ? '已修改本类描述。' : '根据本类材料生成的示例，可修改。'
+    textarea.addEventListener('input', () => {
+      categoryDescriptions.set(name, textarea.value)
+      editedDescriptions.add(name)
+      pendingDescriptions.delete(name)
+      feedback.textContent = '已修改本类描述。'
+    })
+    generate.addEventListener('click', () => {
+      const token = ++descriptionGeneration
+      pendingDescriptions.set(name, token)
+      feedback.textContent = '正在生成本类描述…'
+      window.setTimeout(() => {
+        if (!textarea.isConnected || pendingDescriptions.get(name) !== token) return
+        const draft = descriptionDraftForCategory(category)
+        textarea.value = draft
+        categoryDescriptions.set(name, draft)
+        editedDescriptions.delete(name)
+        pendingDescriptions.delete(name)
+        feedback.textContent = '本类描述已生成，可继续修改。'
+      }, 600)
+    })
+  })
 }
-c026Text.addEventListener('input', () => { c026Edited = true; c026Feedback.textContent = '已人工修改。确认前将先保存文本并重新预检。' })
-document.getElementById('c026-generate').addEventListener('click', () => {
-  const generation = ++c026Generation
-  c026Feedback.textContent = '正在生成文字初稿；材料事实和金额不受影响。'
-  window.setTimeout(() => {
-    if (generation !== c026Generation || c026Edited) return
-    c026Text.value = descriptionDraft()
-    c026Feedback.textContent = '初稿已生成，可继续编辑。此为合成演示文字，不代表真实 OCR。'
-  }, 600)
-})
+
 document.getElementById('c026-mismatch-demo').addEventListener('click', () => {
   demo('ready')
   const rideInvoice = model.files.find(file => file.materialKind === 'RIDE' && file.role === 'invoice')
@@ -38,6 +66,7 @@ document.getElementById('c026-mismatch-demo').addEventListener('click', () => {
 })
 document.getElementById('c026-generate-fail-demo').addEventListener('click', () => {
   demo('ready')
-  c026Generation++
-  c026Feedback.textContent = '文字生成暂不可用。您可手动填写，也可留空；已合格材料仍可继续。'
+  document.querySelectorAll('[data-description-feedback]').forEach(feedback => {
+    feedback.textContent = '生成暂不可用，可直接修改本类描述。'
+  })
 })

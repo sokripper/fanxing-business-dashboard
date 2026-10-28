@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>梵行报销助手 · 个人侧混合票据核对原型</title>
   <link rel="stylesheet" href="./P04-c022.css">
-  <link rel="stylesheet" href="./P04-c026.css?v=official-23-1">
+  <link rel="stylesheet" href="./P04-c026.css?v=category-lines-1">
   <style>.ride-batch-confirmation{display:flex;align-items:center;gap:10px;margin:16px 0 6px;padding:14px 16px;border:1px solid #d7e3f4;border-radius:10px;background:#f5f9ff;font-weight:600}.ride-batch-confirmation input{width:18px;height:18px;flex:none}.ride-batch-confirmation+.footer-hint{display:block;margin:0 0 8px 0}@media(max-width:375px){.ride-batch-confirmation{align-items:flex-start}}</style>
 </head>
 <body>
@@ -41,12 +41,7 @@
     <section id="review-panel" class="surface review-surface" hidden aria-label="预检与本人确认">
       <div class="review-top"><div><span class="eyebrow">系统预检结论</span><h2 id="review-title"></h2><p id="review-description"></p></div><span class="review-state" id="review-state"></span></div>
       <section class="expense-overview" aria-label="整单费用汇总"><div class="expense-section-head"><strong>本单费用汇总</strong><span>按正式费用类别分组</span></div><div id="expense-summary" class="expense-metrics"></div><p>费用类别采用当前对接的 23 项目录；网约车行程单只作核对依据，不重复计入报销总额。</p></section>
-      <section class="category-breakdown" aria-label="正式费用类别与材料核对"><div class="expense-section-head"><strong>按费用类别核对</strong><span id="category-count"></span></div><p class="category-help">下面只展示本单涉及的正式类别；网约车、机票、住宿、餐饮是材料场景，并非费用类别。本示例的归类由演示业务用途预设，不是凭发票名称自动判断。</p><details class="category-directory"><summary>查看当前对接的 23 项费用类别</summary><div id="official-category-list"></div></details><div id="expense-groups" class="expense-groups"></div></section>
-      <section class="c026-description" aria-label="整单费用描述">
-        <div class="c026-description-head"><div><strong>费用描述</strong><p>系统可根据本次材料生成初稿；您可以修改。票面和金额仍由系统生成。</p></div><button type="button" class="button secondary" id="c026-generate">生成初稿</button></div>
-        <textarea id="c026-description-text" rows="3" aria-label="可编辑的整单费用描述" placeholder="可自行填写；留空不影响已合格材料提交"></textarea>
-        <p id="c026-description-feedback" class="c026-description-feedback" aria-live="polite">演示稿：进入本页时生成初稿。人工修改后，迟到结果不会覆盖；确认前先保存再重新预检。</p>
-      </section>
+      <section class="category-breakdown" aria-label="费用明细"><div class="expense-section-head"><strong>费用明细</strong><span id="category-count"></span></div><p class="category-help">一类费用对应一条明细和一段描述。金额由材料汇总；描述可逐条修改。</p><div id="expense-groups" class="expense-groups"></div><details class="category-directory"><summary>查看 23 项费用类别目录</summary><div id="official-category-list"></div></details></section>
       <div id="review-evidence" class="evidence"></div>
       <details class="generated-details"><summary>查看系统生成信息 <span>付款主体、费用明细及金额</span></summary><div id="generated-content"></div></details>
       <p id="submit-error" class="inline-error" hidden>提交前校验未通过，请核对费用归属或材料。当前输入已保留，尚未发起审批。</p>
@@ -62,8 +57,8 @@
 
   <div id="confirm-overlay" class="confirm-overlay" hidden><div class="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-title"><div class="dialog-icon">!</div><h2 id="confirm-title">当前内容尚未保存</h2><p>重新处理历史申请会替换当前页面未保存的输入。您可以先返回保存，或者放弃当前输入后继续。</p><div><button id="confirm-cancel" class="button secondary" type="button">返回当前内容</button><button id="confirm-continue" class="button danger" type="button">放弃并继续</button></div></div></div>
 
-  <div class="demo-controls" aria-label="视觉稿场景控制"><strong>视觉稿场景</strong><button type="button" data-demo="blank">空白</button><button type="button" data-demo="partial">多文件部分失败</button><button type="button" data-demo="prechecking">预检中</button><button type="button" data-demo="precheck-failed">预检失败</button><button type="button" data-demo="ready">混合票据可确认</button><button type="button" id="c026-mismatch-demo">网约车金额不符</button><button type="button" id="c026-generate-fail-demo">生成失败可手填</button><button type="button" data-demo="supplement">需补材料</button><button type="button" data-demo="submitting">提交中</button><label>提交回执 <select id="outcome-choice"><option value="success">成功</option><option value="failed">明确失败</option><option value="unknown">结果未知</option><option value="before-attempt">提交前拒绝</option></select></label></div>
-  <script src="./P04-c022.js?v=official-23-1"></script>
-  <script src="./P04-c026.js?v=official-23-1"></script>
+  <div class="demo-controls" aria-label="视觉稿示例控制"><strong>视觉稿示例</strong><button type="button" data-demo="blank">空白</button><button type="button" data-demo="partial">多文件部分失败</button><button type="button" data-demo="prechecking">预检中</button><button type="button" data-demo="precheck-failed">预检失败</button><button type="button" data-demo="ready">混合票据可确认</button><button type="button" id="c026-mismatch-demo">网约车金额不符</button><button type="button" id="c026-generate-fail-demo">生成失败可手填</button><button type="button" data-demo="supplement">需补材料</button><button type="button" data-demo="submitting">提交中</button><label>提交回执 <select id="outcome-choice"><option value="success">成功</option><option value="failed">明确失败</option><option value="unknown">结果未知</option><option value="before-attempt">提交前拒绝</option></select></label></div>
+  <script src="./P04-c022.js?v=category-lines-1"></script>
+  <script src="./P04-c026.js?v=category-lines-1"></script>
 </body>
 </html>

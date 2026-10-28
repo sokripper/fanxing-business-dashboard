@@ -18,12 +18,7 @@ const materialKinds = [
   ['RIDE', '网约车'], ['FLIGHT', '飞机票'], ['HOTEL', '酒店住宿'],
   ['DINING', '餐饮'], ['OTHER', '其他票据']
 ]
-const demoCategoryPurposes = {
-  '交通费用': '演示业务用途：市内交通',
-  '差旅费用': '演示业务用途：出差机票与住宿',
-  '招待费用': '演示业务用途：客户招待餐饮'
-}
-// 每份合成材料的正式费用类别由演示业务用途预设；不是按发票名称自动推断。
+// 合成材料的费用类别在演示数据中预设；正式归类不能只凭发票名称推断。
 const mixedDemoMaterials = [
   ['网约车发票_01.pdf', '交通费用', 'RIDE', 'invoice', 5688],
   ['网约车发票_02.pdf', '交通费用', 'RIDE', 'invoice', 8162],
@@ -237,25 +232,23 @@ function renderCategoryReview(materials) {
   $('official-category-list').innerHTML = officialExpenseCategories.map(name =>
     `<span class="category-chip ${active.has(name) ? 'active' : ''}">${escapeHtml(name)}</span>`
   ).join('')
-  $('expense-groups').innerHTML = categories.map(category => {
+  $('expense-groups').innerHTML = categories.map((category, index) => {
     const checks = category.groups.map(group => {
       const ride = group.code === 'RIDE'
-      const status = group.mismatch ? '金额不符或缺少行程单 · 暂不能提交' : ride ? '行程单与发票合计匹配' : '发票金额已汇总 · 其他规则继续核对'
+      const status = group.mismatch ? '金额不符或缺少行程单' : ride ? '行程单与发票合计匹配' : '发票金额已汇总'
       const note = ride
         ? `行程单合计 ${money(group.itineraryCents)}；发票合计 ${money(group.invoiceCents)}；差额 ${money(Math.abs(group.itineraryCents - group.invoiceCents))}。只计入一次。`
-        : `${group.invoices.length} 张发票，价税合计 ${money(group.invoiceCents)}；其他校验仍独立执行。`
+        : `${group.invoices.length} 张发票，价税合计 ${money(group.invoiceCents)}。`
       return `<div class="material-check"><div class="material-check-head"><strong>${escapeHtml(group.label)}</strong><b>${money(group.reimbursableCents)}</b></div>
-        <div class="expense-group-count">${group.invoices.length} 张发票${group.itineraries.length ? ` · ${group.itineraries.length} 张行程单` : ''}</div>
-        <span class="expense-group-status ${group.mismatch ? 'mismatch' : ride ? '' : 'attention'}">${status}</span>
-        <p class="expense-group-note">${note}</p>
-        <details><summary>查看本组材料与金额依据</summary><p>${group.files.map(file => `${escapeHtml(file.name)}（${file.role === 'itinerary' ? '行程单' : '发票'}）${money(file.amountCents)}`).join('；')}</p></details></div>`
+        <p class="expense-group-note">${escapeHtml(status)}；${note}</p>
+        <p class="material-file-list">${group.files.map(file => `${escapeHtml(file.name)}（${file.role === 'itinerary' ? '行程单' : '发票'}）${money(file.amountCents)}`).join('；')}</p></div>`
     }).join('')
     return `<article class="expense-group ${category.mismatch ? 'mismatch' : ''}">
-      <div class="expense-group-head"><div><div class="expense-group-title">${escapeHtml(category.name)}</div><div class="expense-group-count">${category.invoices} 张发票${category.itineraries ? ` · ${category.itineraries} 张行程单` : ''} · ${category.groups.length} 种材料场景</div></div><div class="expense-group-amount"><b>${money(category.amountCents)}</b><small>本类报销金额</small></div></div>
-      <div class="category-reason">${escapeHtml(demoCategoryPurposes[category.name] || '演示业务用途：人工已确认')}</div>
-      <div class="material-checks">${checks}</div>
+      <div class="expense-line-top"><span class="expense-line-index">${String(index + 1).padStart(2, '0')}</span><div class="expense-line-main"><strong>${escapeHtml(category.name)}</strong><small>${category.invoices} 张发票${category.itineraries ? ` · ${category.itineraries} 张行程单` : ''}</small></div><div class="expense-group-amount"><b>${money(category.amountCents)}</b><small>报销金额</small></div></div>
+      <div class="expense-line-description"><label for="description-${index}">费用描述</label><div class="expense-line-editor"><textarea id="description-${index}" rows="2" data-description-category="${escapeHtml(category.name)}" aria-label="${escapeHtml(category.name)}费用描述" placeholder="填写这类费用的用途，可编辑"></textarea><button type="button" class="button secondary" data-generate-category="${escapeHtml(category.name)}">生成初稿</button></div><small data-description-feedback="${escapeHtml(category.name)}">可根据本类材料生成，也可直接修改。</small></div>
+      <details class="expense-line-evidence"><summary>${category.mismatch ? '金额待核对' : '查看材料与核对依据'}</summary><div class="material-checks">${checks}</div></details>
     </article>`
-  }).join('') || '<p class="notice">当前没有可汇总的材料。</p>'
+  }).join('') || '<p class="notice">当前没有可汇总的费用明细。</p>'
 }
 
 function renderReview(mode) {
@@ -280,7 +273,7 @@ function renderReview(mode) {
   $('generated-content').innerHTML = [
     ['报销类型', typeLabel()], ['归属', model.expenseType === 'PROJECT' ? `${project?.name || '未选项目'} · ${model.stage || '阶段未选'}` : `${selectedOrg()?.name || '未选组织'} · ${model.subdepartment || '未选子部门'}`],
     ['项目迭代', model.expenseType === 'PROJECT' ? project?.iteration || '未带出' : '不适用'],
-    ['付款主体', '演示付款主体（以实际权威来源为准）'], ['系统生成明细', supplement ? '待补充后生成' : `${categoryGroups(groups).length} 个费用类别、${groups.length} 个材料场景`],
+    ['付款主体', '演示付款主体（以实际权威来源为准）'], ['系统生成明细', supplement ? '待补充后生成' : `${categoryGroups(groups).length} 条费用明细`],
     ['系统识别材料', `${successfulFiles().length} 份：${groups.reduce((sum, group) => sum + group.invoices.length, 0)} 张发票、${groups.reduce((sum, group) => sum + group.itineraries.length, 0)} 张行程单`],
     ['系统生成金额', blocked ? '需核对后确认' : money(reviewAmountCents())]
   ].map(([key, value]) => `<div class="generated-row"><span>${escapeHtml(key)}</span><strong>${escapeHtml(value)}</strong></div>`).join('')
