@@ -89,6 +89,7 @@ function bindCategoryAdjustment() {
   })
 }
 function openCategoryAdjustment(category, opener) {
+  if (typeof resetInvoicePreview === 'function') resetInvoicePreview()
   const files = successfulFiles().filter(file => file.role === 'invoice' &&
     ['DINING', 'RIDE'].includes(file.materialKind) && file.expenseCategory === category)
   classificationDraft = { generation: model.generation, files,
@@ -104,9 +105,14 @@ function openCategoryAdjustment(category, opener) {
 }
 function renderClassificationRows() {
   const draft = classificationDraft
-  $('classification-rows').innerHTML = draft.files.map(file => {
+  $('classification-rows').innerHTML = draft.files.map((file, index) => {
     const id = String(file.id)
-    return `<tr><td><input type="checkbox" data-classification-check="${escapeHtml(id)}" aria-label="选择${escapeHtml(file.name)}" ${draft.selected.has(id) ? 'checked' : ''}></td><td><strong>${escapeHtml(file.name)}</strong><small>${materialKindLabel(file.materialKind)}</small></td><td>${money(file.amountCents)}</td><td><select data-classification-choice="${escapeHtml(id)}" aria-label="${escapeHtml(file.name)}费用类别">${classificationOptions(draft.categories.get(id))}</select></td></tr>`
+    return `<article class="classification-card" data-invoice-card="${escapeHtml(id)}">
+      <div class="classification-card-heading"><label><input type="checkbox" data-classification-check="${escapeHtml(id)}" aria-label="选择${escapeHtml(file.name)}" ${draft.selected.has(id) ? 'checked' : ''}><strong>${escapeHtml(file.name)}</strong></label></div>
+      <button type="button" class="invoice-thumbnail" data-preview-invoice="${escapeHtml(id)}" aria-label="放大预览${escapeHtml(file.name)}"><img src="${invoicePreviewSource(file, index)}" alt="${escapeHtml(file.name)}，票面金额${money(file.amountCents)}，示例票面" loading="lazy"><span class="invoice-thumbnail-zoom" aria-hidden="true">放大 ↗</span></button>
+      <div class="classification-card-amount"><span>${materialKindLabel(file.materialKind)}</span><b>${money(file.amountCents)}</b></div>
+      <label class="classification-card-category"><span>费用类别</span><select data-classification-choice="${escapeHtml(id)}" aria-label="${escapeHtml(file.name)}费用类别">${classificationOptions(draft.categories.get(id))}</select></label>
+    </article>`
   }).join('')
   document.querySelectorAll('[data-classification-check]').forEach(input => input.onchange = () => {
     if (input.checked) draft.selected.add(input.dataset.classificationCheck)
@@ -120,6 +126,7 @@ function renderClassificationRows() {
   })
   updateClassificationSelection()
   renderClassificationPreview()
+  if (typeof bindInvoicePreviewLinks === 'function') bindInvoicePreviewLinks()
 }
 function updateClassificationSelection() {
   const draft = classificationDraft
@@ -127,8 +134,10 @@ function updateClassificationSelection() {
   $('classification-all').checked = Boolean(draft.files.length && draft.selected.size === draft.files.length)
   $('classification-all').indeterminate = draft.selected.size > 0 && draft.selected.size < draft.files.length
   $('classification-target').disabled = !draft.selected.size
+  document.querySelectorAll('[data-invoice-card]').forEach(card => card.classList.toggle('selected', draft.selected.has(card.dataset.invoiceCard)))
 }
 function closeCategoryAdjustment() {
+  if (typeof resetInvoicePreview === 'function') resetInvoicePreview()
   classificationOverlay.hidden = true
   document.body.classList.remove('classification-open')
   classificationDraft = null
@@ -207,7 +216,7 @@ classificationOverlay.onclick = event => { if (event.target === classificationOv
 classificationOverlay.addEventListener('keydown', event => {
   if (event.key === 'Escape') { event.stopPropagation(); closeCategoryAdjustment() }
   if (event.key !== 'Tab') return
-  const controls = [...classificationOverlay.querySelectorAll('button:not(:disabled), select, input')]
+  const controls = [...classificationOverlay.querySelectorAll('button:not(:disabled), select:not(:disabled), input')].filter(control => control.getClientRects().length)
   const first = controls[0], last = controls[controls.length - 1]
   if (event.shiftKey && (document.activeElement === first || document.activeElement === classificationOverlay.querySelector('[role="dialog"]'))) { event.preventDefault(); last.focus() }
   else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus() }
