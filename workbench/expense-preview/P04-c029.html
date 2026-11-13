@@ -5,14 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>梵行报销助手 · 个人侧混合票据核对原型</title>
   <link rel="stylesheet" href="./P04-c022.css">
-  <link rel="stylesheet" href="./P04-c026.css?v=category-lines-2">
+  <link rel="stylesheet" href="./P04-c026.css?v=category-clean-3">
   <style>.ride-batch-confirmation{display:flex;align-items:center;gap:10px;margin:16px 0 6px;padding:14px 16px;border:1px solid #d7e3f4;border-radius:10px;background:#f5f9ff;font-weight:600}.ride-batch-confirmation input{width:18px;height:18px;flex:none}.ride-batch-confirmation+.footer-hint{display:block;margin:0 0 8px 0}@media(max-width:375px){.ride-batch-confirmation{align-items:flex-start}}</style>
 </head>
 <body>
-  <div class="visual-banner" role="note">
-    <span class="visual-dot"></span><strong>候选视觉稿</strong>
-    <span>所有记录和文件名均为合成演示数据；不连接业务 API、不读取发票或提交审批。</span>
-  </div>
   <header class="app-header">
     <div class="brand"><span class="brand-mark" aria-hidden="true">票</span><div><strong>梵行报销助手</strong><small>个人费用报销</small></div></div>
   </header>
@@ -22,34 +18,34 @@
     <div class="page-intro">
       <div class="eyebrow">个人费用报销 <span>·</span> 当前材料</div>
       <h1 id="page-title">先确定费用归属</h1>
-      <p id="page-subtitle">选择费用归属，上传发票材料。票面和费用明细由系统识别，提交前由您核对。</p>
+      <p id="page-subtitle">选择费用归属，上传发票。</p>
     </div>
     <div class="stepper" aria-label="报销步骤"><div class="step active" id="step-one"><i>1</i><span>归属与材料</span></div><div class="step-line"></div><div class="step" id="step-two"><i>2</i><span>核对并提交</span></div></div>
 
     <section id="compose-panel" class="surface form-surface" aria-label="费用归属与上传材料">
-      <div class="section-head"><div class="section-icon">01</div><div><h2>这笔费用属于哪里？</h2><p>项目费用按项目带出组织；其他费用选择实际发生的组织。</p></div></div>
-      <fieldset class="field-group"><legend>费用类型／整单归属 <em>*</em></legend><div class="type-grid" id="type-grid"></div><p class="field-help">这里确定整单费用归属；同一报销单可包含 23 项目录中的多个费用类别，下一步按类别核对。</p></fieldset>
+      <div class="section-head"><div class="section-icon">01</div><div><h2>这笔费用属于哪里？</h2></div></div>
+      <fieldset class="field-group"><legend>费用类型／整单归属 <em>*</em></legend><div class="type-grid" id="type-grid"></div></fieldset>
       <div id="attribution" class="attribution"></div>
       <div class="divider"></div>
-      <div class="section-head"><div class="section-icon">02</div><div><h2>上传材料</h2><p>图片和 PDF 使用同一入口；每份材料都可以单独查看处理结果。</p></div></div>
-      <div class="upload-zone" id="upload-zone"><span class="upload-icon" aria-hidden="true">↑</span><div><strong>选择图片或 PDF</strong><small>本视觉稿只加入合成文件名，不读取本地文件</small></div><button id="add-demo-file" type="button" class="button secondary">加入演示文件</button></div>
+      <div class="section-head"><div class="section-icon">02</div><div><h2>上传材料</h2></div></div>
+      <div class="upload-zone" id="upload-zone"><span class="upload-icon" aria-hidden="true">↑</span><div><strong>选择图片或 PDF</strong></div><button id="add-demo-file" type="button" class="button secondary">加入演示文件</button></div>
       <div id="file-list" class="file-list" aria-live="polite"></div><p id="precheck-error" class="inline-error" hidden>暂时无法完成识别，请稍后重试。您选择的费用归属和材料已保留。</p>
-      <p class="footer-hint">系统按正式费用类别汇总金额，并在类别内核对材料；行程单是网约车金额依据，不与发票重复计入。</p>
-      <div class="card-footer"><span class="footer-hint">材料保存后再预检；失败的文件不会被当作已上传。</span><button id="precheck-button" class="button primary" type="button">保存并查看结论 <span aria-hidden="true">→</span></button></div>
+
+      <div class="card-footer"><button id="precheck-button" class="button primary" type="button">保存并查看结论 <span aria-hidden="true">→</span></button></div>
     </section>
 
     <section id="review-panel" class="surface review-surface" hidden aria-label="预检与本人确认">
       <div class="review-top"><div><span class="eyebrow">系统预检结论</span><h2 id="review-title"></h2><p id="review-description"></p></div><span class="review-state" id="review-state"></span></div>
-      <section class="expense-overview" aria-label="整单费用汇总"><div class="expense-section-head"><strong>本单费用汇总</strong><span>按正式费用类别分组</span></div><div id="expense-summary" class="expense-metrics"></div><p>费用类别采用当前对接的 23 项目录；网约车行程单只作核对依据，不重复计入报销总额。</p></section>
-      <section class="category-breakdown" aria-label="费用明细"><div class="expense-section-head"><strong>费用明细</strong><span id="category-count"></span></div><p class="category-help">一类费用对应一条明细和一段描述。金额由材料汇总；描述可逐条修改。</p><div id="expense-groups" class="expense-groups"></div><details class="category-directory"><summary>查看 23 项费用类别目录</summary><div id="official-category-list"></div></details></section>
-      <div id="review-evidence" class="evidence"></div>
-      <details class="generated-details"><summary>查看系统生成信息 <span>付款主体、费用明细及金额</span></summary><div id="generated-content"></div></details>
+      <section class="expense-overview" aria-label="整单费用汇总"><div class="expense-section-head"><strong>本单费用汇总</strong></div><div id="expense-summary" class="expense-metrics"></div></section>
+      <section class="category-breakdown" aria-label="费用明细"><div class="expense-section-head"><strong>费用明细</strong><span id="category-count"></span></div><div id="classification-result" class="classification-result" role="status" tabindex="-1" hidden></div><div id="expense-groups" class="expense-groups"></div><details class="category-directory"><summary>费用类别目录</summary><div id="official-category-list"></div></details></section>
+
+      <details class="generated-details"><summary>报销信息</summary><div id="generated-content"></div></details>
       <p id="submit-error" class="inline-error" hidden>提交前校验未通过，请核对费用归属或材料。当前输入已保留，尚未发起审批。</p>
       <div class="review-actions"><button type="button" class="button ghost" id="back-to-compose">返回修改材料</button><div class="confirm-side"><label id="ack-label"><input type="checkbox" id="acknowledge"> 我已查看当前结论</label><button type="button" id="submit-button" class="button primary">确认并提交</button></div></div>
     </section>
 
     <section class="my-card" aria-label="我的报销记录"><div class="my-card-icon" aria-hidden="true">▤</div><div><h2>我的报销</h2><p id="my-card-summary">3 条申请 · 1 条待处理 · 1 条草稿</p></div><button type="button" class="button text-button" id="my-card-open">查看记录 <span aria-hidden="true">→</span></button></section>
-    <p class="page-note">提交后可在“我的报销”中查看办理进展。</p>
+
   </main>
 
   <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
@@ -57,8 +53,22 @@
 
   <div id="confirm-overlay" class="confirm-overlay" hidden><div class="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-title"><div class="dialog-icon">!</div><h2 id="confirm-title">当前内容尚未保存</h2><p>重新处理历史申请会替换当前页面未保存的输入。您可以先返回保存，或者放弃当前输入后继续。</p><div><button id="confirm-cancel" class="button secondary" type="button">返回当前内容</button><button id="confirm-continue" class="button danger" type="button">放弃并继续</button></div></div></div>
 
+  <div id="category-adjust-overlay" class="category-adjust-overlay" hidden>
+    <section class="category-adjust-dialog" role="dialog" aria-modal="true" aria-labelledby="category-adjust-title" tabindex="-1">
+      <header class="category-adjust-header"><div><h2 id="category-adjust-title">调整费用类别</h2></div><button type="button" id="category-adjust-close" class="icon-button" aria-label="关闭分类调整">×</button></header>
+      <div class="category-adjust-body">
+
+        <div class="classification-toolbar"><label><input type="checkbox" id="classification-all"> 全选</label><span id="classification-selected">已选 0 张</span><select id="classification-target" aria-label="批量调整目标类别"></select></div>
+        <div class="classification-table-wrap"><table class="classification-table"><thead><tr><th aria-label="选择"></th><th>发票</th><th>金额</th><th>费用类别</th></tr></thead><tbody id="classification-rows"></tbody></table></div>
+        <div id="classification-preview" class="classification-preview" aria-live="polite"></div>
+
+      </div>
+      <footer class="category-adjust-footer"><span id="classification-total"></span><div><button type="button" id="category-adjust-cancel" class="button secondary">取消</button><button type="button" id="category-adjust-save" class="button primary">保存并更新明细</button></div></footer>
+    </section>
+  </div>
+
   <details class="demo-controls" aria-label="视觉稿示例控制"><summary>演示示例</summary><div class="demo-options"><button type="button" data-demo="blank">空白</button><button type="button" data-demo="partial">多文件部分失败</button><button type="button" data-demo="prechecking">预检中</button><button type="button" data-demo="precheck-failed">预检失败</button><button type="button" data-demo="ready">混合票据可确认</button><button type="button" id="c026-mismatch-demo">网约车金额不符</button><button type="button" id="c026-generate-fail-demo">生成失败可手填</button><button type="button" data-demo="supplement">需补材料</button><button type="button" data-demo="submitting">提交中</button><label>提交回执 <select id="outcome-choice"><option value="success">成功</option><option value="failed">明确失败</option><option value="unknown">结果未知</option><option value="before-attempt">提交前拒绝</option></select></label></div></details>
-  <script src="./P04-c022.js?v=category-lines-2"></script>
-  <script src="./P04-c026.js?v=category-lines-2"></script>
+  <script src="./P04-c022.js?v=category-clean-3"></script>
+  <script src="./P04-c026.js?v=category-clean-3"></script>
 </body>
 </html>

@@ -15,7 +15,7 @@ const officialExpenseCategories = [
   '折旧费用', '电话费用', '交通费用', '装修摊销', '银行费用'
 ]
 const materialKinds = [
-  ['RIDE', '网约车'], ['FLIGHT', '飞机票'], ['HOTEL', '酒店住宿'],
+  ['RIDE', '网约车'], ['FLIGHT', '飞机票'], ['TRAIN', '火车票'], ['HOTEL', '酒店住宿'],
   ['DINING', '餐饮'], ['OTHER', '其他票据']
 ]
 // 合成材料的费用类别在演示数据中预设；正式归类不能只凭发票名称推断。
@@ -25,6 +25,7 @@ const mixedDemoMaterials = [
   ['网约车行程单_01.pdf', '交通费用', 'RIDE', 'itinerary', 13850],
   ['飞机票_01.pdf', '差旅费用', 'FLIGHT', 'invoice', 68000],
   ['飞机票_02.pdf', '差旅费用', 'FLIGHT', 'invoice', 58000],
+  ['火车票_01.pdf', '差旅费用', 'TRAIN', 'invoice', 23500],
   ['酒店住宿_01.pdf', '差旅费用', 'HOTEL', 'invoice', 28000],
   ['酒店住宿_02.pdf', '差旅费用', 'HOTEL', 'invoice', 32000],
   ['酒店住宿_03.pdf', '差旅费用', 'HOTEL', 'invoice', 30000],
@@ -70,6 +71,7 @@ function resetDraft() {
   model.prechecking = false
   model.submitting = false
   $('acknowledge').checked = false
+  $('classification-result').hidden = true
   $('precheck-error').hidden = true
   $('submit-error').hidden = true
   if (typeof resetDescriptionDraft === 'function') resetDescriptionDraft()
@@ -85,20 +87,32 @@ function successfulFiles() { return model.files.filter(file => file.status === '
 function pendingFiles() { return model.files.filter(file => file.status !== 'success') }
 function typeLabel() { return expenseTypes.find(([code]) => code === model.expenseType)?.[1] || '未选择' }
 function materialKindLabel(code) { return materialKinds.find(([key]) => key === code)?.[1] || '其他票据' }
+// 行程单按整批核对；费用归类按发票分配，跨类别也不重复计费。
+function rideBatchCheck() {
+  const files = successfulFiles().filter(file => file.materialKind === 'RIDE')
+  const invoices = files.filter(file => file.role === 'invoice')
+  const itineraries = files.filter(file => file.role === 'itinerary')
+  const invoiceCents = invoices.reduce((sum, file) => sum + file.amountCents, 0)
+  const itineraryCents = itineraries.reduce((sum, file) => sum + file.amountCents, 0)
+  return { invoices, itineraries, invoiceCents, itineraryCents,
+    mismatch: Boolean(files.length && (!invoices.length || !itineraries.length || invoiceCents !== itineraryCents)) }
+}
 function materialGroups() {
+  const ride = rideBatchCheck()
   return officialExpenseCategories.flatMap(category => materialKinds.map(([code, label]) => {
-    const files = successfulFiles().filter(file => file.expenseCategory === category && file.materialKind === code)
+    const files = successfulFiles().filter(file => file.expenseCategory === category && file.materialKind === code &&
+      (code !== 'RIDE' || file.role === 'invoice' || !ride.invoices.length))
+    if (!files.length) return null
     const invoices = files.filter(file => file.role === 'invoice')
-    const itineraries = files.filter(file => file.role === 'itinerary')
+    const itineraries = code === 'RIDE' ? ride.itineraries : files.filter(file => file.role === 'itinerary')
     const invoiceCents = invoices.reduce((sum, file) => sum + file.amountCents, 0)
     const itineraryCents = itineraries.reduce((sum, file) => sum + file.amountCents, 0)
     return {
       category, code, label, files, invoices, itineraries, invoiceCents, itineraryCents,
-      reimbursableCents: code === 'RIDE' ? (itineraryCents || invoiceCents) : invoiceCents,
-      mismatch: code === 'RIDE' && files.length > 0 &&
-        (!invoices.length || !itineraries.length || invoiceCents !== itineraryCents)
+      reimbursableCents: code === 'RIDE' && !ride.invoices.length ? itineraryCents : invoiceCents,
+      mismatch: code === 'RIDE' && ride.mismatch
     }
-  })).filter(group => group.files.length)
+  })).filter(Boolean)
 }
 function categoryGroups(materials = materialGroups()) {
   return officialExpenseCategories.map(name => {
@@ -153,13 +167,9 @@ function renderAttribution() {
   if (!model.expenseType) { target.innerHTML = ''; return }
   if (model.expenseType === 'PROJECT') {
     const project = selectedProject()
-    target.innerHTML = `<div class="field-row"><div class="field-block"><label for="project-choice">选择项目 <em>*</em></label><select id="project-choice"><option value="">请选择项目（无需先搜索）</option>${model.filteredProjects.map(item => `<option value="${item.id}" ${model.projectId === item.id ? 'selected' : ''}>${escapeHtml(item.name)}</option>`).join('')}</select></div>
+    target.innerHTML = `<div class="field-row"><div class="field-block"><label for="project-choice">选择项目 <em>*</em></label><select id="project-choice"><option value="">请选择项目</option>${model.filteredProjects.map(item => `<option value="${item.id}" ${model.projectId === item.id ? 'selected' : ''}>${escapeHtml(item.name)}</option>`).join('')}</select></div>
       ${project?.stages.length > 1 ? `<div class="field-block"><label for="stage-choice">项目阶段 <em>*</em></label><select id="stage-choice"><option value="">请选择当前阶段</option>${project.stages.map(stage => `<option value="${escapeHtml(stage)}" ${model.stage === stage ? 'selected' : ''}>${escapeHtml(stage)}</option>`).join('')}</select></div>` : `<div class="field-block"><label>项目阶段</label><div class="derived" style="margin-top:0;min-height:43px"><strong>${escapeHtml(model.stage || '选定项目后自动带出')}</strong></div></div>`}</div>
-      ${project ? `<div class="derived"><span>系统带出迭代</span><strong>${escapeHtml(project.iteration)}</strong><span>组织及子部门由确认的项目上下文生成</span></div>` : '<p class="field-help">先确认项目；同名多阶段项目只出现一次，多个有效阶段才需要您选择。</p>'}`
-    const helper = document.createElement('p')
-    helper.className = 'field-help'
-    helper.textContent = '可直接选择；正式页面支持下拉内可选搜索与服务端分页加载更多。本原型仅两条合成候选。'
-    target.append(helper)
+      ${project ? `<div class="derived"><span>项目迭代</span><strong>${escapeHtml(project.iteration)}</strong></div>` : ''}`
     $('project-choice').onchange = event => {
       model.projectId = event.target.value || null
       const current = selectedProject()
@@ -172,7 +182,7 @@ function renderAttribution() {
     return
   }
   const org = selectedOrg()
-  target.innerHTML = `<div class="field-row"><div class="field-block"><label for="organization-choice">组织结构 <em>*</em></label><select id="organization-choice"><option value="">请选择实际发生的组织</option>${organizations.map(item => `<option value="${item.id}" ${model.organizationId === item.id ? 'selected' : ''}>${item.name}</option>`).join('')}</select></div><div class="field-block"><label for="subdepartment-choice">子部门组织 <em>*</em></label><select id="subdepartment-choice" ${org ? '' : 'disabled'}><option value="">${org ? '请选择子部门' : '请先选择组织'}</option>${org?.subs.map(item => `<option value="${item}" ${model.subdepartment === item ? 'selected' : ''}>${item}</option>`).join('') || ''}</select></div></div><p class="field-help">选择费用实际发生的组织与子部门，不默认使用上传人的所属部门。</p>`
+  target.innerHTML = `<div class="field-row"><div class="field-block"><label for="organization-choice">组织结构 <em>*</em></label><select id="organization-choice"><option value="">请选择实际发生的组织</option>${organizations.map(item => `<option value="${item.id}" ${model.organizationId === item.id ? 'selected' : ''}>${item.name}</option>`).join('')}</select></div><div class="field-block"><label for="subdepartment-choice">子部门组织 <em>*</em></label><select id="subdepartment-choice" ${org ? '' : 'disabled'}><option value="">${org ? '请选择子部门' : '请先选择组织'}</option>${org?.subs.map(item => `<option value="${item}" ${model.subdepartment === item ? 'selected' : ''}>${item}</option>`).join('') || ''}</select></div></div>`
   const refresh = document.createElement('button')
   refresh.type = 'button'
   refresh.className = 'button secondary'
@@ -186,7 +196,7 @@ function renderAttribution() {
 function renderFiles() {
   $('upload-zone').classList.toggle('disabled', !attributionReady())
   $('add-demo-file').disabled = !attributionReady()
-  $('file-list').innerHTML = model.files.length ? model.files.map(file => `<div class="file-row"><span class="file-icon">PDF</span><span class="file-meta"><strong title="${escapeHtml(file.name)}">${escapeHtml(file.name)}</strong><small>${escapeHtml(file.expenseCategory)} · ${escapeHtml(materialKindLabel(file.materialKind))}${file.role === 'itinerary' ? '行程单' : '发票'} · ${file.status === 'success' ? '已加入当前演示材料' : file.status === 'failed' ? '处理失败，未计入材料' : '正在处理'}</small></span><span class="file-status ${file.status === 'failed' ? 'failed' : file.status === 'working' ? 'working' : ''}">${file.status === 'success' ? '演示成功' : file.status === 'failed' ? '演示失败' : '处理中'}</span>${file.status === 'failed' ? `<button type="button" class="file-action" data-retry="${file.id}">重试</button>` : ''}<button type="button" class="file-action" data-remove="${file.id}">移除</button></div>`).join('') : '<p class="file-empty">还没有材料。草稿可先保存；预检前需有至少一份成功材料。</p>'
+  $('file-list').innerHTML = model.files.length ? model.files.map(file => `<div class="file-row"><span class="file-icon">PDF</span><span class="file-meta"><strong title="${escapeHtml(file.name)}">${escapeHtml(file.name)}</strong><small>${escapeHtml(file.expenseCategory)} · ${file.role === 'itinerary' ? '行程单' : escapeHtml(materialKindLabel(file.materialKind))}</small></span><span class="file-status ${file.status === 'failed' ? 'failed' : file.status === 'working' ? 'working' : ''}">${file.status === 'success' ? '已上传' : file.status === 'failed' ? '处理失败' : '处理中'}</span>${file.status === 'failed' ? `<button type="button" class="file-action" data-retry="${file.id}">重试</button>` : ''}<button type="button" class="file-action" data-remove="${file.id}">移除</button></div>`).join('') : '<p class="file-empty">暂无材料</p>'
   document.querySelectorAll('[data-retry]').forEach(button => button.onclick = () => retryFile(Number(button.dataset.retry)))
   document.querySelectorAll('[data-remove]').forEach(button => button.onclick = () => {
     model.files = model.files.filter(file => file.id !== Number(button.dataset.remove)); model.dirty = true; renderFiles(); renderPrecheckButton()
@@ -213,21 +223,21 @@ function renderCompose() {
   $('step-one').classList.toggle('active', model.view === 'compose')
   $('step-two').classList.toggle('active', model.view === 'review')
   $('page-title').textContent = model.view === 'compose' ? '先确定费用归属' : '核对一下，就可以提交'
-  $('page-subtitle').textContent = model.view === 'compose' ? '选择费用归属，上传发票材料。票面和费用明细由系统识别，提交前由您核对。' : '请核对系统结论。需复核的部分会随单交给财务，不需要您填写系统生成字段。'
+  $('page-subtitle').textContent = model.view === 'compose' ? '选择费用归属，上传发票。' : ''
+  $('page-subtitle').hidden = model.view !== 'compose'
   renderTypeOptions(); renderAttribution(); renderFiles(); renderPrecheckButton(); renderResult()
 }
 
 function renderCategoryReview(materials) {
   const categories = categoryGroups(materials)
-  const invoiceCount = categories.reduce((sum, group) => sum + group.invoices, 0)
-  const itineraryCount = categories.reduce((sum, group) => sum + group.itineraries, 0)
+  const invoiceCount = successfulFiles().filter(file => file.role === 'invoice').length
+  const itineraryCount = successfulFiles().filter(file => file.role === 'itinerary').length
   $('expense-summary').innerHTML = [
     ['预计报销总额', money(reviewAmountCents()), 'total'],
     ['发票', `${invoiceCount} 张`, ''],
-    ['行程单', `${itineraryCount} 张`, ''],
-    ['涉及费用类别', `${categories.length} / ${officialExpenseCategories.length} 类`, '']
+    ['行程单', `${itineraryCount} 张`, '']
   ].map(([label, value, style]) => `<div class="expense-metric ${style}"><small>${label}</small><b>${value}</b></div>`).join('')
-  $('category-count').textContent = `本单涉及 ${categories.length} / ${officialExpenseCategories.length} 类`
+  $('category-count').textContent = `${categories.length} 类`
   const active = new Set(categories.map(group => group.name))
   $('official-category-list').innerHTML = officialExpenseCategories.map(name =>
     `<span class="category-chip ${active.has(name) ? 'active' : ''}">${escapeHtml(name)}</span>`
@@ -237,16 +247,17 @@ function renderCategoryReview(materials) {
       const ride = group.code === 'RIDE'
       const status = group.mismatch ? '金额不符或缺少行程单' : ride ? '行程单与发票合计匹配' : '发票金额已汇总'
       const note = ride
-        ? `行程单合计 ${money(group.itineraryCents)}；发票合计 ${money(group.invoiceCents)}；差额 ${money(Math.abs(group.itineraryCents - group.invoiceCents))}。只计入一次。`
+        ? `整批行程单 ${money(rideBatchCheck().itineraryCents)}；整批打车发票 ${money(rideBatchCheck().invoiceCents)}；差额 ${money(Math.abs(rideBatchCheck().itineraryCents - rideBatchCheck().invoiceCents))}。本类分配 ${money(group.invoiceCents)}，行程单不重复计费。`
         : `${group.invoices.length} 张发票，价税合计 ${money(group.invoiceCents)}。`
       return `<div class="material-check"><div class="material-check-head"><strong>${escapeHtml(group.label)}</strong><b>${money(group.reimbursableCents)}</b></div>
         <p class="expense-group-note">${escapeHtml(status)}；${note}</p>
-        <p class="material-file-list">${group.files.map(file => `${escapeHtml(file.name)}（${file.role === 'itinerary' ? '行程单' : '发票'}）${money(file.amountCents)}`).join('；')}</p></div>`
+        <p class="material-file-list">${[...new Set([...group.files, ...group.itineraries])].map(file => `${escapeHtml(file.name)}（${file.role === 'itinerary' ? '行程单' : '发票'}）${money(file.amountCents)}`).join('；')}</p></div>`
     }).join('')
-    return `<article class="expense-group ${category.mismatch ? 'mismatch' : ''}">
-      <div class="expense-line-top"><span class="expense-line-index">${String(index + 1).padStart(2, '0')}</span><div class="expense-line-main"><strong>${escapeHtml(category.name)}</strong><small>${category.invoices} 张发票${category.itineraries ? ` · ${category.itineraries} 张行程单` : ''}</small></div><div class="expense-group-amount"><b>${money(category.amountCents)}</b><small>报销金额</small></div></div>
-      <div class="expense-line-description"><label for="description-${index}">费用描述</label><div class="expense-line-editor"><textarea id="description-${index}" rows="2" data-description-category="${escapeHtml(category.name)}" aria-label="${escapeHtml(category.name)}费用描述" placeholder="填写这类费用的用途，可编辑"></textarea><button type="button" class="button secondary" data-generate-category="${escapeHtml(category.name)}">生成初稿</button></div><small data-description-feedback="${escapeHtml(category.name)}">可根据本类材料生成，也可直接修改。</small></div>
-      <details class="expense-line-evidence"><summary>${category.mismatch ? '金额待核对' : '查看材料与核对依据'}</summary><div class="material-checks">${checks}</div></details>
+    return `<article data-expense-category="${escapeHtml(category.name)}" class="expense-group ${category.mismatch ? 'mismatch' : ''}">
+      <div class="expense-line-top"><span class="expense-line-index">${String(index + 1).padStart(2, '0')}</span><div class="expense-line-main"><strong>${escapeHtml(category.name)}</strong><small>${category.invoices} 张发票${category.itineraries ? ` · ${category.itineraries} 张行程单（共用）` : ''}</small></div><div class="expense-group-amount"><b>${money(category.amountCents)}</b></div></div>
+      ${category.groups.some(group => ['DINING', 'RIDE'].includes(group.code)) ? `<div class="category-adjust-action"><button type="button" class="button text-button" data-adjust-category="${escapeHtml(category.name)}">调整分类 →</button></div>` : ''}
+      <div class="expense-line-description"><label for="description-${index}">费用描述</label><div class="expense-line-editor"><textarea id="description-${index}" rows="2" data-description-category="${escapeHtml(category.name)}" aria-label="${escapeHtml(category.name)}费用描述" placeholder="填写这类费用的用途，可编辑"></textarea><button type="button" class="button secondary" data-generate-category="${escapeHtml(category.name)}">生成初稿</button></div><small data-description-feedback="${escapeHtml(category.name)}" role="status" hidden></small></div>
+      <details class="expense-line-evidence"><summary>${category.mismatch ? '金额待核对' : '查看材料'}</summary><div class="material-checks">${checks}</div></details>
     </article>`
   }).join('') || '<p class="notice">当前没有可汇总的费用明细。</p>'
 }
@@ -261,23 +272,23 @@ function renderReview(mode) {
   const blocked = supplement || mismatch
   if (blocked) {
     $('page-title').textContent = '核对材料后再提交'
-    $('page-subtitle').textContent = '当前有需要处理的材料；其他费用类别仍按各自金额展示，不会和网约车行程单混算。'
   }
   $('review-title').textContent = supplement ? '需要补充材料' : mismatch ? '需核对网约车材料' : '可提交，需财务复核'
-  $('review-description').textContent = supplement ? '材料中有必要信息尚不可辨认。请返回补充或重试失败的文件，当前不能提交。' : mismatch ? '网约车行程单与本组发票金额未匹配，请返回核对；其他类别的金额已分别汇总。' : '系统已按费用类别分别汇总。请核对整单金额与各组材料；需复核的部分将随单交给财务。'
+  $('review-description').textContent = supplement ? '部分材料无法识别，请返回补充或重试。' : mismatch ? '打车发票与行程单金额不符，请核对材料。' : ''
+  $('review-description').hidden = !blocked
   $('review-state').textContent = blocked ? '暂不能提交' : '可继续'
   $('review-state').classList.toggle('supplement', blocked)
   renderCategoryReview(groups)
-  $('review-evidence').innerHTML = `<div class="evidence-row"><b>材料状态</b><span>${successfulFiles().length} 份演示材料已通过，${pendingFiles().length} 份需处理</span></div><div class="evidence-row"><b>规则结论</b><span>${supplement ? '关键材料仍需补充，当前没有确认资格' : mismatch ? '网约车组金额未匹配；其余类别单独保留已识别金额' : '费用用途交由财务复核；金额与日期保留已识别原值'}</span></div>`
   const project = selectedProject()
   $('generated-content').innerHTML = [
     ['报销类型', typeLabel()], ['归属', model.expenseType === 'PROJECT' ? `${project?.name || '未选项目'} · ${model.stage || '阶段未选'}` : `${selectedOrg()?.name || '未选组织'} · ${model.subdepartment || '未选子部门'}`],
     ['项目迭代', model.expenseType === 'PROJECT' ? project?.iteration || '未带出' : '不适用'],
     ['付款主体', '演示付款主体（以实际权威来源为准）'], ['系统生成明细', supplement ? '待补充后生成' : `${categoryGroups(groups).length} 条费用明细`],
-    ['系统识别材料', `${successfulFiles().length} 份：${groups.reduce((sum, group) => sum + group.invoices.length, 0)} 张发票、${groups.reduce((sum, group) => sum + group.itineraries.length, 0)} 张行程单`],
+    ['系统识别材料', `${successfulFiles().length} 份：${groups.reduce((sum, group) => sum + group.invoices.length, 0)} 张发票、${successfulFiles().filter(file => file.role === 'itinerary').length} 张行程单`],
     ['系统生成金额', blocked ? '需核对后确认' : money(reviewAmountCents())]
   ].map(([key, value]) => `<div class="generated-row"><span>${escapeHtml(key)}</span><strong>${escapeHtml(value)}</strong></div>`).join('')
   if (typeof syncDescriptionDraft === 'function') syncDescriptionDraft()
+  if (typeof bindCategoryAdjustment === 'function') bindCategoryAdjustment()
   $('ack-label').hidden = blocked
   $('submit-error').hidden = true
   $('acknowledge').checked = false
@@ -335,12 +346,12 @@ function renderDrawer() {
   $('drawer-back').hidden = !item
   $('drawer-title').textContent = item ? '报销详情' : '我的报销'
   if (!item) {
-    $('drawer-content').innerHTML = `<p class="drawer-subtitle">仅查看本人记录 · 合成演示数据 · 第 1 页 / 共 ${model.history.length} 条</p>${model.history.map(record => `<button type="button" class="history-row" data-record="${record.id}"><div><strong>报销记录 ${record.id}</strong><small>${record.date} 创建 · ${record.updated} 更新</small><p class="history-amount">${record.amount}</p></div><span class="history-badge ${record.status}">${listStatusLabel(record.status)}</span><span aria-hidden="true">›</span></button>`).join('')}`
+    $('drawer-content').innerHTML = `<p class="drawer-subtitle">共 ${model.history.length} 条</p>${model.history.map(record => `<button type="button" class="history-row" data-record="${record.id}"><div><strong>报销记录 ${record.id}</strong><small>${record.date} 创建 · ${record.updated} 更新</small><p class="history-amount">${record.amount}</p></div><span class="history-badge ${record.status}">${listStatusLabel(record.status)}</span><span aria-hidden="true">›</span></button>`).join('')}`
     document.querySelectorAll('[data-record]').forEach(button => button.onclick = () => { model.selectedHistoryId = button.dataset.record; renderDrawer() })
     return
   }
   const followup = item.status === 'rejected'
-    ? '<button id="reprocess-history" class="button primary" type="button">修改并重新提交</button><p class="detail-note">进入修改前，会先核对原审批确实被业务驳回。</p>'
+    ? '<button id="reprocess-history" class="button primary" type="button">修改并重新提交</button>'
     : item.status === 'draft'
       ? '<button id="continue-history" class="button secondary" type="button">继续填写</button>'
       : ['unknown', 'submitting'].includes(item.status)

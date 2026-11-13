@@ -31,13 +31,16 @@
       <button id="personal-tab" role="tab" aria-controls="personal-frame" aria-selected="true" type="button">个人侧</button>
       <button id="finance-tab" role="tab" aria-controls="finance-frame" aria-selected="false" type="button">财务侧</button>
     </nav>
-    <div class="note">原型演示数据 · 不连接真实业务</div>
+    <div class="note">交互原型 · 演示数据</div>
   </header>
   <main>
-    <iframe id="personal-frame" role="tabpanel" title="个人侧报销原型" src="./P04-c029.html?v=category-lines-2"></iframe>
+    <iframe id="personal-frame" role="tabpanel" title="个人侧报销原型" src="./P04-c029.html?v=category-clean-3"></iframe>
     <iframe id="finance-frame" role="tabpanel" title="财务侧审核原型" src="./P05-c035.html?v=4ad03f0" hidden></iframe>
   </main>
   <script>
+    if (new URLSearchParams(location.search).get('review') === '1') {
+      document.getElementById('personal-frame').src += '&review=1';
+    }
     const tabs = {
       personal: [document.getElementById('personal-tab'), document.getElementById('personal-frame')],
       finance: [document.getElementById('finance-tab'), document.getElementById('finance-frame')]
